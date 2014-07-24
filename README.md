@@ -1,4 +1,5 @@
 mazecrawler
 ===========
 
-A 3D, first-person, maze-navigation game for the Pebble smartwatch.
+A 3D, first-person, maze-navigation game for the Pebble smartwatch, written in
+C by David C. Drake (www.davidcdrake.com).
