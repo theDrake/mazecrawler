@@ -1,9 +1,7 @@
 /******************************************************************************
      Filename: maze_crawler.h
 
-       Author: David C. Drake (david@davidcdrake.com)
-
-Last modified: 2/3/2014
+       Author: David C. Drake (www.davidcdrake.com)
 
   Description: Header file for MazeCrawler, a 3D, first-person, maze-navigation
                game developed for the Pebble smartwatch (SDK 2.0). Copyright

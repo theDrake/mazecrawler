@@ -1,9 +1,7 @@
 /******************************************************************************
      Filename: main.c
 
-       Author: David C. Drake (david@davidcdrake.com)
-
-Last modified: 3/14/2014
+       Author: David C. Drake (www.davidcdrake.com)
 
   Description: Function definitions for MazeCrawler, a 3D, first-person, maze-
                navigation game developed for the Pebble smartwatch (SDK 2.0).
