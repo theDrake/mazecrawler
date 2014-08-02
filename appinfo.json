@@ -1,0 +1,19 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "David C. Drake",
+    "longName": "MazeCrawler",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "shortName": "MazeCrawler",
+    "uuid": "0d03bd47-b5d2-4644-b746-b056b5492383",
+    "versionCode": 1,
+    "versionLabel": "1.1",
+    "watchapp": {
+        "watchface": false
+    }
+}
