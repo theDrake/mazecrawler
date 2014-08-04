@@ -1,12 +1,12 @@
 /******************************************************************************
-     Filename: main.c
+   Filename: main.c
 
-       Author: David C. Drake (www.davidcdrake.com)
+     Author: David C. Drake (www.davidcdrake.com)
 
-  Description: Function definitions for MazeCrawler, a 3D, first-person, maze-
-               navigation game developed for the Pebble smartwatch (SDK 2.0).
-               Copyright 2014, David C. Drake. More information available
-               online: http://davidcdrake.com/mazecrawler
+Description: Function definitions for MazeCrawler, a 3D, first-person, maze-
+             navigation game developed for the Pebble smartwatch (SDK 2.0).
+             Copyright 2014, David C. Drake. More information available online:
+             http://davidcdrake.com/mazecrawler
 ******************************************************************************/
 
 #include "maze_crawler.h"
@@ -125,16 +125,19 @@ void show_narration(void)
           break;
         default:
           while (g_narration_page_num  - 1 < NUM_ACHIEVEMENTS &&
-                 g_player->achievement_unlocked[g_narration_page_num - 1] == false)
+                 g_player->achievement_unlocked[g_narration_page_num - 1] ==
+                   false)
           {
             g_narration_page_num++;
           }
           if (g_narration_page_num - 1 < NUM_ACHIEVEMENTS)
           {
             strcpy(narration_str, "Achievements:\n  \"");
-            strcat(narration_str, get_achievement_name(g_narration_page_num - 1));
+            strcat(narration_str,
+                   get_achievement_name(g_narration_page_num - 1));
             strcat(narration_str, "\": ");
-            strcat(narration_str, get_achievement_description(g_narration_page_num - 1));
+            strcat(narration_str,
+                   get_achievement_description(g_narration_page_num - 1));
           }
           else
           {
@@ -184,7 +187,7 @@ void show_window(Window *window)
   else
   {
     while (window_stack_get_top_window() != window)
-	{
+    {
       window_stack_pop(false /* not animated */);
     }
   }
@@ -398,7 +401,7 @@ bool check_for_maze_completion(void)
     {
       g_player->points = MAX_POINTS;
       if (!g_player->achievement_unlocked[MAX_POINTS_ACHIEVEMENT])
-	  {
+      {
         g_player->achievement_unlocked[MAX_POINTS_ACHIEVEMENT] = true;
         g_new_achievement_unlocked[MAX_POINTS_ACHIEVEMENT] = true;
       }
@@ -539,7 +542,7 @@ bool check_for_maze_completion(void)
       g_new_achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT] = true;
     }
     switch(g_player->level)
-	{
+    {
       case 2:
         if(!g_player->achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT])
         {
@@ -591,7 +594,7 @@ bool check_for_maze_completion(void)
         break;
       default:
         break;
-	}
+    }
 
     // Save player progress and set up the next maze:
     //save_game_data();
@@ -929,7 +932,8 @@ void draw_floor_and_ceiling(GContext *ctx)
   {
     // Determine horizontal distance between points:
     shading_offset = 1 + y / MAX_VISIBILITY_DEPTH;
-    if (y % MAX_VISIBILITY_DEPTH >= MAX_VISIBILITY_DEPTH / 2 + MAX_VISIBILITY_DEPTH % 2)
+    if (y % MAX_VISIBILITY_DEPTH >=
+        MAX_VISIBILITY_DEPTH / 2 + MAX_VISIBILITY_DEPTH % 2)
     {
       shading_offset++;
     }
@@ -1141,7 +1145,8 @@ bool draw_wall(GContext *ctx,
 
     // Round up, if applicable:
     if ((int16_t) (upper_left.y + (i - upper_left.x) * dy_over_dx) %
-        MAX_VISIBILITY_DEPTH >= MAX_VISIBILITY_DEPTH / 2 + MAX_VISIBILITY_DEPTH % 2)
+        MAX_VISIBILITY_DEPTH >=
+        MAX_VISIBILITY_DEPTH / 2 + MAX_VISIBILITY_DEPTH % 2)
     {
       shading_offset++;
     }
@@ -1347,7 +1352,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
     {
       g_maze->seconds = MAX_SECONDS;
       if (!g_player->achievement_unlocked[ONE_HOUR_ACHIEVEMENT])
-	  {
+      {
         g_player->achievement_unlocked[ONE_HOUR_ACHIEVEMENT] = true;
         g_new_achievement_unlocked[ONE_HOUR_ACHIEVEMENT] = true;
         //save_game_data();
@@ -1357,14 +1362,14 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
 
     // Check for pending time/achievement messages:
     if (g_new_best_time > -1)
-	{
+    {
       strcpy(g_message_str, "\nNew Best Time!\n");
       cat_time_onto_str(g_message_str, g_new_best_time);
       show_message_box();
       g_new_best_time = -1;
     }
     else if ((new_achievement_index = get_new_achievement_index()) > -1)
-	{
+    {
       strcpy(g_message_str, "Achievement Unlocked!\n\n\"");
       strcat(g_message_str, get_achievement_name(new_achievement_index));
       strcat(g_message_str, "\"");
@@ -1653,8 +1658,8 @@ void graphics_click_config_provider(void *context)
 
   // "Down" button:
   window_single_repeating_click_subscribe(BUTTON_ID_DOWN,
-                                          CLICK_REPEAT_INTERVAL,
-                                          graphics_down_single_repeating_click);
+                                         CLICK_REPEAT_INTERVAL,
+                                         graphics_down_single_repeating_click);
   window_multi_click_subscribe(BUTTON_ID_DOWN,
                                MULTI_CLICK_MIN,
                                MULTI_CLICK_MAX,
@@ -2064,9 +2069,9 @@ int16_t get_num_achievements_unlocked(void)
   for (i = 0, count = 0; i < NUM_ACHIEVEMENTS; ++i)
   {
     if (g_player->achievement_unlocked[i])
-	{
+    {
       count++;
-	}
+    }
   }
 
   return count;
@@ -2345,8 +2350,9 @@ int16_t get_opposite_direction(const int16_t direction)
 
 Description: Concatenates an integer value onto the end of a string. If the
              integer is negative, a minus sign will be included. If the
-             absolute value of the integer is greater than MAX_LARGE_INT_VALUE, the
-             integer will be assigned an absolute value of MAX_LARGE_INT_VALUE.
+             absolute value of the integer is greater than MAX_LARGE_INT_VALUE,
+             the integer will be assigned an absolute value of
+             MAX_LARGE_INT_VALUE.
 
      Inputs: dest_str - Pointer to the destination string.
              integer  - Integer value to be converted to characters and
@@ -2545,7 +2551,8 @@ void init(void)
   text_layer_set_background_color(g_message_box_text_layer, GColorBlack);
   text_layer_set_text_color(g_message_box_text_layer, GColorWhite);
   text_layer_set_font(g_message_box_text_layer, MESSAGE_BOX_FONT);
-  text_layer_set_text_alignment(g_message_box_text_layer, GTextAlignmentCenter);
+  text_layer_set_text_alignment(g_message_box_text_layer,
+                                GTextAlignmentCenter);
   layer_add_child(window_get_root_layer(g_message_box_window),
                   text_layer_get_layer(g_message_box_text_layer));
 
