@@ -1,7 +1,7 @@
 /******************************************************************************
    Filename: maze_crawler.h
 
-     Author: David C. Drake (www.davidcdrake.com)
+     Author: David C. Drake (http://davidcdrake.com)
 
 Description: Header file for MazeCrawler, a 3D, first-person, maze-navigation
              game developed for the Pebble smartwatch (SDK 2.0). Copyright
@@ -13,6 +13,10 @@ Description: Header file for MazeCrawler, a 3D, first-person, maze-navigation
 #define MAZE_CRAWLER_H_
 
 #include <pebble.h>
+
+/******************************************************************************
+  Constants
+******************************************************************************/
 
 #define MESSAGE_STR_LEN           50
 #define LEVEL_STR_LEN             7
@@ -73,7 +77,7 @@ Description: Header file for MazeCrawler, a 3D, first-person, maze-navigation
 #define STORAGE_KEY               8417
 
 /******************************************************************************
-  Enumerations may take up precious memory, so #defines are used instead:
+  Enumerations (replaced with #defines to save memory)
 ******************************************************************************/
 
 // Narration types:
