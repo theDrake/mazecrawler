@@ -38,7 +38,7 @@ void show_narration(void)
   {
     if (window_stack_get_top_window() == g_narration_window)
     {
-      window_stack_pop(false /* not animated */);
+      window_stack_pop(NOT_ANIMATED);
     }
     deinit_narration();
 
@@ -52,21 +52,20 @@ void show_narration(void)
       switch (g_narration_page_num)
       {
         case 0:
-          strcpy(narration_str,
-"You have fallen into a vast network of mazes. Each maze has an exit...");
+          strcpy(narration_str, "You have fallen into a vast network of mazes."
+                                " Each maze has an exit...");
           break;
         case 1:
-          strcpy(narration_str,
-"...but each exit leads down to yet another, deeper level of the labyrinth.");
+          strcpy(narration_str, "...but each exit leads down to yet another, "
+                                "deeper level of the labyrinth.");
           break;
         case 2:
-          strcpy(narration_str,
-"Will you ever escape, or are you doomed to roam these halls to the end of "
-"your days?");
+          strcpy(narration_str, "Will you ever escape, or are you doomed to "
+                                "roam these halls to the end of your days?");
           break;
         default:
-          strcpy(narration_str,
-"You do not know, but here you are, brave explorer, and you must try!");
+          strcpy(narration_str, "You do not know, but here you are, brave "
+                                "explorer, and you must try!");
           break;
       }
       break;
@@ -87,13 +86,12 @@ void show_narration(void)
       switch (g_narration_page_num)
       {
         case 0:
-          strcpy(narration_str,
-"MazeCrawler was designed and programmed by David C. Drake:\ndavidcdrake.com");
+          strcpy(narration_str, "MazeCrawler was designed and programmed by "
+                                "David C. Drake:\ndavidcdrake.com");
           break;
         default:
-          strcpy(narration_str,
-"Thanks for playing, and special thanks to all those who helped make this "
-"possible!");
+          strcpy(narration_str, "Thanks for playing, and special thanks to all"
+                                " those who helped make this possible!");
           break;
       }
       break;
@@ -143,7 +141,7 @@ void show_narration(void)
           {
             if (window_stack_get_top_window() == g_narration_window)
             {
-              window_stack_pop(false /* not animated */);
+              window_stack_pop(NOT_ANIMATED);
             }
             deinit_narration();
 
@@ -182,13 +180,13 @@ void show_window(Window *window)
   }
   else if (!window_stack_contains_window(window))
   {
-    window_stack_push(window, false /* not animated */);
+    window_stack_push(window, NOT_ANIMATED);
   }
   else
   {
     while (window_stack_get_top_window() != window)
     {
-      window_stack_pop(false /* not animated */);
+      window_stack_pop(NOT_ANIMATED);
     }
   }
 }
@@ -206,10 +204,10 @@ void player_init(void)
 {
   int16_t i;
 
-  g_player->position = GPoint(0, 0);
+  g_player->position  = GPoint(0, 0);
   g_player->direction = rand() % NUM_DIRECTIONS;
-  g_player->level = 1;
-  g_player->points = 0;
+  g_player->level     = 1;
+  g_player->points    = 0;
   g_player->best_time = MAX_SECONDS;
   for (i = 0; i < NUM_ACHIEVEMENTS; ++i)
   {
@@ -228,8 +226,7 @@ Description: Updates the text displayed in the lower status bar.
 ******************************************************************************/
 void update_status_bar(GContext *ctx)
 {
-  static char level_str[LEVEL_STR_LEN + 1],
-              time_str[TIME_STR_LEN + 1];
+  static char level_str[LEVEL_STR_LEN + 1], time_str[TIME_STR_LEN + 1];
 
   // Display the current level number:
   strcpy(level_str, "L. ");
@@ -293,7 +290,7 @@ Description: Moves and orients the player to the maze's starting position and
 ******************************************************************************/
 void reposition_player(void)
 {
-  g_player->position = g_maze->entrance;
+  g_player->position  = g_maze->entrance;
   g_player->direction = g_maze->starting_direction;
   update_compass();
 }
@@ -389,9 +386,9 @@ bool check_for_maze_completion(void)
   {
     // Compute points earned according to maze size and time elapsed:
     points_earned = (g_maze->width * g_maze->height) / 10 +
-                    (((g_maze->width * g_maze->height) % 10 >= 5) ? 1 : 0);
+                      (((g_maze->width * g_maze->height) % 10 >= 5) ? 1 : 0);
     max_time_bonus = (g_maze->width * g_maze->height) / 2 +
-                     (g_maze->width * g_maze->height) % 2;
+                       (g_maze->width * g_maze->height) % 2;
     if (g_maze->seconds < max_time_bonus)
     {
       points_earned += max_time_bonus - g_maze->seconds;
@@ -403,7 +400,7 @@ bool check_for_maze_completion(void)
       if (!g_player->achievement_unlocked[MAX_POINTS_ACHIEVEMENT])
       {
         g_player->achievement_unlocked[MAX_POINTS_ACHIEVEMENT] = true;
-        g_new_achievement_unlocked[MAX_POINTS_ACHIEVEMENT] = true;
+        g_new_achievement_unlocked[MAX_POINTS_ACHIEVEMENT]     = true;
       }
     }
     else
@@ -521,7 +518,7 @@ bool check_for_maze_completion(void)
       if(!g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT])
       {
         g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT] = true;
-        g_new_achievement_unlocked[MAX_LEVEL_ACHIEVEMENT] = true;
+        g_new_achievement_unlocked[MAX_LEVEL_ACHIEVEMENT]     = true;
       }
     }
     if (g_maze->seconds < g_player->best_time)
@@ -533,13 +530,13 @@ bool check_for_maze_completion(void)
         !g_player->achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT])
     {
       g_player->achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT] = true;
-      g_new_achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT] = true;
+      g_new_achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT]     = true;
     }
     if (g_maze->seconds < 10 &&
         !g_player->achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT])
     {
       g_player->achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT] = true;
-      g_new_achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT] = true;
+      g_new_achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT]     = true;
     }
     switch(g_player->level)
     {
@@ -547,57 +544,56 @@ bool check_for_maze_completion(void)
         if(!g_player->achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT])
         {
           g_player->achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT] = true;
+          g_new_achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT]     = true;
         }
         break;
       case 10:
         if(!g_player->achievement_unlocked[LEVEL_10_ACHIEVEMENT])
         {
           g_player->achievement_unlocked[LEVEL_10_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[LEVEL_10_ACHIEVEMENT] = true;
+          g_new_achievement_unlocked[LEVEL_10_ACHIEVEMENT]     = true;
         }
         break;
       case 50:
         if(!g_player->achievement_unlocked[LEVEL_50_ACHIEVEMENT])
         {
           g_player->achievement_unlocked[LEVEL_50_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[LEVEL_50_ACHIEVEMENT] = true;
+          g_new_achievement_unlocked[LEVEL_50_ACHIEVEMENT]     = true;
         }
         break;
       case 100:
         if(!g_player->achievement_unlocked[LEVEL_100_ACHIEVEMENT])
         {
           g_player->achievement_unlocked[LEVEL_100_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[LEVEL_100_ACHIEVEMENT] = true;
+          g_new_achievement_unlocked[LEVEL_100_ACHIEVEMENT]     = true;
         }
         break;
       case 500:
         if(!g_player->achievement_unlocked[LEVEL_500_ACHIEVEMENT])
         {
           g_player->achievement_unlocked[LEVEL_500_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[LEVEL_500_ACHIEVEMENT] = true;
+          g_new_achievement_unlocked[LEVEL_500_ACHIEVEMENT]     = true;
         }
         break;
       case 1000:
         if(!g_player->achievement_unlocked[LEVEL_1000_ACHIEVEMENT])
         {
           g_player->achievement_unlocked[LEVEL_1000_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[LEVEL_1000_ACHIEVEMENT] = true;
+          g_new_achievement_unlocked[LEVEL_1000_ACHIEVEMENT]     = true;
         }
         break;
       case 5000:
         if(!g_player->achievement_unlocked[LEVEL_5000_ACHIEVEMENT])
         {
           g_player->achievement_unlocked[LEVEL_5000_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[LEVEL_5000_ACHIEVEMENT] = true;
+          g_new_achievement_unlocked[LEVEL_5000_ACHIEVEMENT]     = true;
         }
         break;
       default:
         break;
     }
 
-    // Save player progress and set up the next maze:
-    //save_game_data();
+    // Set up the next maze:
     maze_init();
 
     return true;
@@ -669,7 +665,7 @@ void wall_coords_init(void)
   {
     for (j = 0; j < (STRAIGHT_AHEAD * 2) + 1; ++j)
     {
-      g_back_wall_coords[i][j][TOP_LEFT] = GPoint(0, 0);
+      g_back_wall_coords[i][j][TOP_LEFT]     = GPoint(0, 0);
       g_back_wall_coords[i][j][BOTTOM_RIGHT] = GPoint(0, 0);
     }
   }
@@ -686,28 +682,30 @@ void wall_coords_init(void)
         g_back_wall_coords[i - 1][STRAIGHT_AHEAD][TOP_LEFT].y;
     }
     g_back_wall_coords[i][STRAIGHT_AHEAD][BOTTOM_RIGHT].x =
-      SCREEN_WIDTH - g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT].x;
+      GRAPHICS_FRAME_WIDTH - g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT].x;
     g_back_wall_coords[i][STRAIGHT_AHEAD][BOTTOM_RIGHT].y =
       GRAPHICS_FRAME_HEIGHT -
-      g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT].y;
+        g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT].y;
     wall_width = g_back_wall_coords[i][STRAIGHT_AHEAD][BOTTOM_RIGHT].x -
-                 g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT].x;
+                   g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT].x;
     for (j = 1; j <= STRAIGHT_AHEAD; ++j)
     {
-      g_back_wall_coords[i][STRAIGHT_AHEAD - j][TOP_LEFT] =
+      g_back_wall_coords[i][STRAIGHT_AHEAD - j][TOP_LEFT]       =
         g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT];
-      g_back_wall_coords[i][STRAIGHT_AHEAD - j][TOP_LEFT].x -= wall_width * j;
-      g_back_wall_coords[i][STRAIGHT_AHEAD - j][BOTTOM_RIGHT] =
+      g_back_wall_coords[i][STRAIGHT_AHEAD - j][TOP_LEFT].x     -= wall_width *
+                                                                     j;
+      g_back_wall_coords[i][STRAIGHT_AHEAD - j][BOTTOM_RIGHT]   =
         g_back_wall_coords[i][STRAIGHT_AHEAD][BOTTOM_RIGHT];
       g_back_wall_coords[i][STRAIGHT_AHEAD - j][BOTTOM_RIGHT].x -= wall_width *
-                                                                   j;
-      g_back_wall_coords[i][STRAIGHT_AHEAD + j][TOP_LEFT] =
+                                                                     j;
+      g_back_wall_coords[i][STRAIGHT_AHEAD + j][TOP_LEFT]       =
         g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT];
-      g_back_wall_coords[i][STRAIGHT_AHEAD + j][TOP_LEFT].x += wall_width * j;
-      g_back_wall_coords[i][STRAIGHT_AHEAD + j][BOTTOM_RIGHT] =
+      g_back_wall_coords[i][STRAIGHT_AHEAD + j][TOP_LEFT].x     += wall_width *
+                                                                     j;
+      g_back_wall_coords[i][STRAIGHT_AHEAD + j][BOTTOM_RIGHT]   =
         g_back_wall_coords[i][STRAIGHT_AHEAD][BOTTOM_RIGHT];
       g_back_wall_coords[i][STRAIGHT_AHEAD + j][BOTTOM_RIGHT].x += wall_width *
-                                                                   j;
+                                                                     j;
     }
   }
 }
@@ -727,15 +725,14 @@ Description: Initializes the global maze struct by setting its width and height
 ******************************************************************************/
 void maze_init(void)
 {
-  int16_t i, j;
+  int16_t i, j, maze_carver_direction;
   GPoint exit, maze_carver_position;
-  int16_t maze_carver_direction;
 
   // Determine width and height:
-  g_maze->width = rand() % (MAX_MAZE_WIDTH - MIN_MAZE_WIDTH + 1) +
-                  MIN_MAZE_WIDTH;
+  g_maze->width  = rand() % (MAX_MAZE_WIDTH - MIN_MAZE_WIDTH + 1) +
+                     MIN_MAZE_WIDTH;
   g_maze->height = rand() % (MAX_MAZE_HEIGHT - MIN_MAZE_HEIGHT + 1) +
-                   MIN_MAZE_HEIGHT;
+                     MIN_MAZE_HEIGHT;
 
   // Set all cells to "solid":
   for (i = 0; i < g_maze->width; ++i)
@@ -751,19 +748,19 @@ void maze_init(void)
   {
     case NORTH:
       maze_carver_position = RANDOM_POINT_NORTH;
-      exit = RANDOM_POINT_SOUTH;
+      exit                 = RANDOM_POINT_SOUTH;
       break;
     case SOUTH:
       maze_carver_position = RANDOM_POINT_SOUTH;
-      exit = RANDOM_POINT_NORTH;
+      exit                 = RANDOM_POINT_NORTH;
       break;
     case EAST:
       maze_carver_position = RANDOM_POINT_EAST;
-      exit = RANDOM_POINT_WEST;
+      exit                 = RANDOM_POINT_WEST;
       break;
     default: // case WEST:
       maze_carver_position = RANDOM_POINT_WEST;
-      exit = RANDOM_POINT_EAST;
+      exit                 = RANDOM_POINT_EAST;
       break;
   }
   g_maze->cells[maze_carver_position.x][maze_carver_position.y] = ENTRANCE;
@@ -933,7 +930,7 @@ void draw_floor_and_ceiling(GContext *ctx)
     // Determine horizontal distance between points:
     shading_offset = 1 + y / MAX_VISIBILITY_DEPTH;
     if (y % MAX_VISIBILITY_DEPTH >=
-        MAX_VISIBILITY_DEPTH / 2 + MAX_VISIBILITY_DEPTH % 2)
+          MAX_VISIBILITY_DEPTH / 2 + MAX_VISIBILITY_DEPTH % 2)
     {
       shading_offset++;
     }
@@ -1134,9 +1131,9 @@ bool draw_wall(GContext *ctx,
   }
 
   // Use "dy" to handle slanted side walls (it's zero for back walls):
-  dx = upper_right.x - upper_left.x;
-  dy = upper_right.y - upper_left.y; // Negative for right-side walls.
-  dy_over_dx = (float) dy / dx;      // Negative for right-side walls.
+  dx         = upper_right.x - upper_left.x;
+  dy         = upper_right.y - upper_left.y; // Negative for right-side walls.
+  dy_over_dx = (float) dy / dx;              // Negative for right-side walls.
   for (i = upper_left.x; i <= upper_right.x && i < SCREEN_WIDTH; ++i)
   {
     // Calculate a new shading offset for each "x" value:
@@ -1145,8 +1142,8 @@ bool draw_wall(GContext *ctx,
 
     // Round up, if applicable:
     if ((int16_t) (upper_left.y + (i - upper_left.x) * dy_over_dx) %
-        MAX_VISIBILITY_DEPTH >=
-        MAX_VISIBILITY_DEPTH / 2 + MAX_VISIBILITY_DEPTH % 2)
+          MAX_VISIBILITY_DEPTH >=
+            MAX_VISIBILITY_DEPTH / 2 + MAX_VISIBILITY_DEPTH % 2)
     {
       shading_offset++;
     }
@@ -1205,18 +1202,18 @@ bool draw_entrance(GContext *ctx, const int16_t depth, const int16_t position)
   int16_t h_radius, v_radius; // Horizontal and vertical radii for an ellipse.
 
   h_radius = ELLIPSE_RADIUS_RATIO *
-             (g_back_wall_coords[depth][position][1].x -
-              g_back_wall_coords[depth][position][0].x);
+               (g_back_wall_coords[depth][position][1].x -
+                g_back_wall_coords[depth][position][0].x);
   if (depth == 0)
   {
     v_radius = ELLIPSE_RADIUS_RATIO *
-               g_back_wall_coords[depth][position][0].y;
+                 g_back_wall_coords[depth][position][0].y;
   }
   else
   {
     v_radius = ELLIPSE_RADIUS_RATIO *
-               (g_back_wall_coords[depth][position][0].y -
-                g_back_wall_coords[depth - 1][position][0].y);
+                 (g_back_wall_coords[depth][position][0].y -
+                  g_back_wall_coords[depth - 1][position][0].y);
   }
 
   return fill_ellipse(ctx,
@@ -1245,19 +1242,19 @@ bool draw_exit(GContext *ctx, const int16_t depth, const int16_t position)
   int16_t h_radius, v_radius; // Horizontal and vertical radii for an ellipse.
 
   h_radius = ELLIPSE_RADIUS_RATIO *
-             (g_back_wall_coords[depth][position][1].x -
-              g_back_wall_coords[depth][position][0].x);
+               (g_back_wall_coords[depth][position][1].x -
+                g_back_wall_coords[depth][position][0].x);
   if (depth == 0)
   {
     v_radius = ELLIPSE_RADIUS_RATIO *
-               (GRAPHICS_FRAME_HEIGHT -
-                g_back_wall_coords[depth][position][1].y);
+                 (GRAPHICS_FRAME_HEIGHT -
+                  g_back_wall_coords[depth][position][1].y);
   }
   else
   {
     v_radius = ELLIPSE_RADIUS_RATIO *
-               (g_back_wall_coords[depth - 1][position][1].y -
-                g_back_wall_coords[depth][position][1].y);
+                 (g_back_wall_coords[depth - 1][position][1].y -
+                  g_back_wall_coords[depth][position][1].y);
   }
 
   return fill_ellipse(ctx,
@@ -1291,9 +1288,9 @@ bool fill_ellipse(GContext *ctx,
   int32_t theta;
   int16_t x_offset, y_offset;
 
-  if (center.x + h_radius < 0 ||
+  if (center.x + h_radius < 0             ||
       center.x - h_radius >= SCREEN_WIDTH ||
-      center.y + v_radius < 0 ||
+      center.y + v_radius < 0             ||
       center.y - v_radius >= GRAPHICS_FRAME_HEIGHT)
   {
     return false;
@@ -1327,7 +1324,7 @@ Description: Updates and displays the message box.
 void show_message_box(void)
 {
   text_layer_set_text(g_message_box_text_layer, g_message_str);
-  window_stack_push(g_message_box_window, false /* not animated */);
+  window_stack_push(g_message_box_window, NOT_ANIMATED);
 }
 
 /******************************************************************************
@@ -1354,8 +1351,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
       if (!g_player->achievement_unlocked[ONE_HOUR_ACHIEVEMENT])
       {
         g_player->achievement_unlocked[ONE_HOUR_ACHIEVEMENT] = true;
-        g_new_achievement_unlocked[ONE_HOUR_ACHIEVEMENT] = true;
-        //save_game_data();
+        g_new_achievement_unlocked[ONE_HOUR_ACHIEVEMENT]     = true;
       }
     }
     layer_mark_dirty(window_get_root_layer(g_graphics_window));
@@ -1389,7 +1385,7 @@ Description: Handles MazeCrawler going out of, or coming back into, focus
 
     Outputs: None.
 ******************************************************************************/
-void app_focus_handler(bool in_focus)
+void app_focus_handler(const bool in_focus)
 {
   if (!in_focus) // Some other app has taken the focus away from MazeCrawler.
   {
@@ -1609,29 +1605,11 @@ Description: The graphics window's single-click handler for the "select"
 ******************************************************************************/
 void graphics_select_single_click(ClickRecognizerRef recognizer, void *context)
 {
-  /*switch (g_player->level)
-  {
-    case 1:
-      g_player->level = 9;
-      break;
-    case 9:
-      g_player->level = 99;
-      break;
-    case 99:
-      g_player->level = 999;
-      break;
-    case 999:
-      g_player->level = 9999;
-      break;
-    default:
-      g_player->level = 1;
-      break;
-  }*/
   menu_layer_set_selected_index(g_in_game_menu,
                                 (MenuIndex) {0, 0},
                                 MenuRowAlignTop,
-                                false /* not animated */);
-  window_stack_push(g_in_game_menu_window, false /* not animated */);
+                                NOT_ANIMATED);
+  window_stack_push(g_in_game_menu_window, NOT_ANIMATED);
 }
 
 /******************************************************************************
@@ -1686,7 +1664,7 @@ Description: The message box window's single-click handler for the "select"
 void message_box_select_single_click(ClickRecognizerRef recognizer,
                                      void *context)
 {
-  window_stack_pop(false /* not animated */);
+  window_stack_pop(NOT_ANIMATED);
 }
 
 /******************************************************************************
@@ -1830,7 +1808,7 @@ void main_menu_select_callback(MenuLayer *menu_layer,
   switch (cell_index->row)
   {
     case 0: // Play
-      window_stack_push(g_graphics_window, false /* not animated */);
+      window_stack_push(g_graphics_window, NOT_ANIMATED);
       break;
     case 1: // Stats
       g_current_narration = STATS_NARRATION;
@@ -1916,7 +1894,7 @@ void in_game_menu_select_callback(MenuLayer *menu_layer,
   {
     case 0: // New Maze
       maze_init();
-      window_stack_pop(false /* not animated */);
+      window_stack_pop(NOT_ANIMATED);
       break;
     case 1: // Stats
       g_current_narration = STATS_NARRATION;
@@ -2189,16 +2167,12 @@ GPoint get_cell_farther_away(const GPoint reference_point,
   {
     case NORTH:
       return GPoint(reference_point.x, reference_point.y - distance);
-      break;
     case SOUTH:
       return GPoint(reference_point.x, reference_point.y + distance);
-      break;
     case EAST:
       return GPoint(reference_point.x + distance, reference_point.y);
-      break;
     default: // case WEST:
       return GPoint(reference_point.x - distance, reference_point.y);
-      break;
   }
 }
 
@@ -2222,16 +2196,12 @@ GPoint get_cell_to_the_left(const GPoint reference_point,
   {
     case NORTH:
       return GPoint(reference_point.x - distance, reference_point.y);
-      break;
     case SOUTH:
       return GPoint(reference_point.x + distance, reference_point.y);
-      break;
     case EAST:
       return GPoint(reference_point.x, reference_point.y - distance);
-      break;
     default: // case WEST:
       return GPoint(reference_point.x, reference_point.y + distance);
-      break;
   }
 }
 
@@ -2255,16 +2225,12 @@ GPoint get_cell_to_the_right(const GPoint reference_point,
   {
     case NORTH:
       return GPoint(reference_point.x + distance, reference_point.y);
-      break;
     case SOUTH:
       return GPoint(reference_point.x - distance, reference_point.y);
-      break;
     case EAST:
       return GPoint(reference_point.x, reference_point.y + distance);
-      break;
     default: // case WEST:
       return GPoint(reference_point.x, reference_point.y - distance);
-      break;
   }
 }
 
@@ -2294,9 +2260,9 @@ Description: Determines whether a given cell lies outside the current maze
 ******************************************************************************/
 bool out_of_bounds(const GPoint cell_coords)
 {
-  return cell_coords.x < 0 ||
+  return cell_coords.x < 0              ||
          cell_coords.x >= g_maze->width ||
-         cell_coords.y < 0 ||
+         cell_coords.y < 0              ||
          cell_coords.y >= g_maze->height;
 }
 
@@ -2348,11 +2314,10 @@ int16_t get_opposite_direction(const int16_t direction)
 /******************************************************************************
    Function: cat_int_onto_str
 
-Description: Concatenates an integer value onto the end of a string. If the
-             integer is negative, a minus sign will be included. If the
-             absolute value of the integer is greater than MAX_LARGE_INT_VALUE,
-             the integer will be assigned an absolute value of
-             MAX_LARGE_INT_VALUE.
+Description: Concatenates a "large" integer value onto the end of a string. The
+             absolute value of the integer may not exceed MAX_LARGE_INT_VALUE
+             (if it does, MAX_LARGE_INT_VALUE will be used in its place). If
+             the integer is negative, a minus sign will be included.
 
      Inputs: dest_str - Pointer to the destination string.
              integer  - Integer value to be converted to characters and
@@ -2575,7 +2540,7 @@ void init(void)
   g_maze = malloc(sizeof(maze_t));
 
   // Present the main menu (and the intro narration, if applicable):
-  window_stack_push(g_main_menu_window, true /* animated */);
+  window_stack_push(g_main_menu_window, ANIMATED);
   if (!load_game_data())
   {
     g_current_narration = INTRO_NARRATION;
