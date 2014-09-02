@@ -589,8 +589,6 @@ bool check_for_maze_completion(void)
           g_new_achievement_unlocked[LEVEL_5000_ACHIEVEMENT]     = true;
         }
         break;
-      default:
-        break;
     }
 
     // Set up the next maze:
@@ -1960,11 +1958,8 @@ char *get_achievement_name(const int16_t achievement_num)
     case UNDER_TEN_SECONDS_ACHIEVEMENT:
       strcpy(name_str, "Super Speedy");
       break;
-    case ONE_HOUR_ACHIEVEMENT:
+    default: // case ONE_HOUR_ACHIEVEMENT:
       strcpy(name_str, "Fell Asleep");
-      break;
-    default:
-      strcpy(name_str, "");
       break;
   }
 
@@ -2020,11 +2015,8 @@ char *get_achievement_description(const int16_t achievement_num)
     case UNDER_TEN_SECONDS_ACHIEVEMENT:
       strcpy(description_str, "Completed a maze in < 10 seconds!");
       break;
-    case ONE_HOUR_ACHIEVEMENT:
+    default: // case ONE_HOUR_ACHIEVEMENT:
       strcpy(description_str, "In a maze for one hour!");
-      break;
-    default:
-      strcpy(description_str, "");
       break;
   }
 
@@ -2298,16 +2290,12 @@ int16_t get_opposite_direction(const int16_t direction)
   {
     case NORTH:
       return SOUTH;
-      break;
     case SOUTH:
       return NORTH;
-      break;
     case EAST:
       return WEST;
-      break;
     default: // case WEST:
       return EAST;
-      break;
   }
 }
 
