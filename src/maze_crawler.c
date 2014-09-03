@@ -933,7 +933,7 @@ void draw_floor_and_ceiling(GContext *ctx)
       shading_offset++;
     }
     for (x = y % 2 ? 0 : (shading_offset / 2) + (shading_offset % 2);
-         x < SCREEN_WIDTH;
+         x < GRAPHICS_FRAME_WIDTH;
          x += shading_offset)
     {
       // Draw a point on the ceiling:
@@ -1031,7 +1031,7 @@ bool draw_cell_contents(GContext *ctx,
   left = g_back_wall_coords[depth][position][BOTTOM_RIGHT].x;
   if (depth == 0)
   {
-    right = SCREEN_WIDTH - 1;
+    right = GRAPHICS_FRAME_WIDTH - 1;
   }
   else
   {
@@ -1123,7 +1123,7 @@ bool draw_wall(GContext *ctx,
   int16_t i, j, dx, dy, shading_offset, half_shading_offset;
   float dy_over_dx;
 
-  if (upper_left.x >= SCREEN_WIDTH || upper_right.x < 0)
+  if (upper_left.x >= GRAPHICS_FRAME_WIDTH || upper_right.x < 0)
   {
     return false;
   }
@@ -1132,7 +1132,7 @@ bool draw_wall(GContext *ctx,
   dx         = upper_right.x - upper_left.x;
   dy         = upper_right.y - upper_left.y; // Negative for right-side walls.
   dy_over_dx = (float) dy / dx;              // Negative for right-side walls.
-  for (i = upper_left.x; i <= upper_right.x && i < SCREEN_WIDTH; ++i)
+  for (i = upper_left.x; i <= upper_right.x && i < GRAPHICS_FRAME_WIDTH; ++i)
   {
     // Calculate a new shading offset for each "x" value:
     shading_offset = 1 + ((upper_left.y + (i - upper_left.x) * dy_over_dx) /
@@ -1286,9 +1286,9 @@ bool fill_ellipse(GContext *ctx,
   int32_t theta;
   int16_t x_offset, y_offset;
 
-  if (center.x + h_radius < 0             ||
-      center.x - h_radius >= SCREEN_WIDTH ||
-      center.y + v_radius < 0             ||
+  if (center.x + h_radius < 0                     ||
+      center.x - h_radius >= GRAPHICS_FRAME_WIDTH ||
+      center.y + v_radius < 0                     ||
       center.y - v_radius >= GRAPHICS_FRAME_HEIGHT)
   {
     return false;
@@ -2094,11 +2094,11 @@ GPoint get_floor_center_point(const int16_t depth, const int16_t position)
   {
     if (position < STRAIGHT_AHEAD) // To the left of the player.
     {
-      x_midpoint2 = -0.5 * SCREEN_WIDTH;
+      x_midpoint2 = -0.5 * GRAPHICS_FRAME_WIDTH;
     }
     else if (position > STRAIGHT_AHEAD) // To the right of the player.
     {
-      x_midpoint2 = 1.5 * SCREEN_WIDTH;
+      x_midpoint2 = 1.5 * GRAPHICS_FRAME_WIDTH;
     }
     else // Directly under the player.
     {
