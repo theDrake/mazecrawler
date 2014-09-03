@@ -107,7 +107,7 @@ void show_narration(void)
           }
           else
           {
-            cat_int_onto_str(narration_str, g_player->level - 1);
+            strcat_int(narration_str, g_player->level - 1);
           }
           strcat(narration_str, "\nBest Time:\n  ");
           if (g_player->level == 1)
@@ -116,10 +116,10 @@ void show_narration(void)
           }
           else
           {
-            cat_time_onto_str(narration_str, g_player->best_time);
+            strcat_time(narration_str, g_player->best_time);
           }
           strcat(narration_str, "\nPoints:\n  ");
-          cat_int_onto_str(narration_str, g_player->points);
+          strcat_int(narration_str, g_player->points);
           break;
         default:
           while (g_narration_page_num  - 1 < NUM_ACHIEVEMENTS &&
@@ -230,12 +230,12 @@ void update_status_bar(GContext *ctx)
 
   // Display the current level number:
   strcpy(level_str, "L. ");
-  cat_int_onto_str(level_str, g_player->level);
+  strcat_int(level_str, g_player->level);
   text_layer_set_text(g_level_text_layer, level_str);
 
   // Display the amount of time spent in the current maze:
   strcpy(time_str, "");
-  cat_time_onto_str(time_str, g_maze->seconds);
+  strcat_time(time_str, g_maze->seconds);
   text_layer_set_text(g_time_text_layer, time_str);
 
   // Draw the compass:
@@ -503,9 +503,9 @@ bool check_for_maze_completion(void)
         break;
     }
     strcat(g_message_str, "\nTime: ");
-    cat_time_onto_str(g_message_str, g_maze->seconds);
+    strcat_time(g_message_str, g_maze->seconds);
     strcat(g_message_str, "\nPoints: ");
-    cat_int_onto_str(g_message_str, points_earned);
+    strcat_int(g_message_str, points_earned);
     show_message_box();
 
     // Update stats, check for a new best time, and check for achievements:
@@ -1358,7 +1358,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
     if (g_new_best_time > -1)
     {
       strcpy(g_message_str, "\nNew Best Time!\n");
-      cat_time_onto_str(g_message_str, g_new_best_time);
+      strcat_time(g_message_str, g_new_best_time);
       show_message_box();
       g_new_best_time = -1;
     }
@@ -2300,7 +2300,7 @@ int16_t get_opposite_direction(const int16_t direction)
 }
 
 /******************************************************************************
-   Function: cat_int_onto_str
+   Function: strcat_int
 
 Description: Concatenates a "large" integer value onto the end of a string. The
              absolute value of the integer may not exceed MAX_LARGE_INT_VALUE
@@ -2313,7 +2313,7 @@ Description: Concatenates a "large" integer value onto the end of a string. The
 
     Outputs: None.
 ******************************************************************************/
-void cat_int_onto_str(char *dest_str, int32_t integer)
+void strcat_int(char *dest_str, int32_t integer)
 {
   int16_t i, j;
   static char int_str[MAX_LARGE_INT_DIGITS + 1];
@@ -2361,7 +2361,7 @@ void cat_int_onto_str(char *dest_str, int32_t integer)
 }
 
 /******************************************************************************
-   Function: cat_time_onto_str
+   Function: strcat_time
 
 Description: Concatenates the amount of time spent in the current maze to the
              end of a given string in "MM:SS" format.
@@ -2371,7 +2371,7 @@ Description: Concatenates the amount of time spent in the current maze to the
 
     Outputs: Returns "true" if the concatenation is successful.
 ******************************************************************************/
-void cat_time_onto_str(char *dest_str, int16_t total_seconds)
+void strcat_time(char *dest_str, int16_t total_seconds)
 {
   int16_t minutes, remaining_seconds;
 
@@ -2383,15 +2383,15 @@ void cat_time_onto_str(char *dest_str, int16_t total_seconds)
   remaining_seconds = total_seconds % 60;
   if (minutes < 10)
   {
-    cat_int_onto_str(dest_str, 0);
+    strcat_int(dest_str, 0);
   }
-  cat_int_onto_str(dest_str, minutes);
+  strcat_int(dest_str, minutes);
   strcat(dest_str, ":");
   if (remaining_seconds < 10)
   {
-    cat_int_onto_str(dest_str, 0);
+    strcat_int(dest_str, 0);
   }
-  cat_int_onto_str(dest_str, remaining_seconds);
+  strcat_int(dest_str, remaining_seconds);
 }
 
 /******************************************************************************
