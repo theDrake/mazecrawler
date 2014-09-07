@@ -64,7 +64,7 @@ void show_narration(void)
                                 "roam these halls to the end of your days?");
           break;
         default:
-          strcpy(narration_str, "You do not know, but here you are, brave "
+          strcpy(narration_str, "You know not, yet here you are, brave "
                                 "explorer, and you must try!");
           break;
       }
@@ -87,7 +87,7 @@ void show_narration(void)
       {
         case 0:
           strcpy(narration_str, "MazeCrawler was designed and programmed by "
-                                "David C. Drake:\ndavidcdrake.com");
+                                "David C. Drake:\n\ndavidcdrake.com");
           break;
         default:
           strcpy(narration_str, "Thanks for playing, and special thanks to all"
