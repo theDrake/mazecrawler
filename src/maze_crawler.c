@@ -2323,7 +2323,7 @@ void strcat_int(char *dest_str, int32_t integer)
   if (integer < 0)
   {
     negative = true;
-    integer *= -1;
+    integer  *= -1;
   }
   if (integer > MAX_LARGE_INT_VALUE)
   {
@@ -2337,7 +2337,7 @@ void strcat_int(char *dest_str, int32_t integer)
   {
     for (i = 0; integer != 0; integer /= 10)
     {
-      j = integer % 10;
+      j            = integer % 10;
       int_str[i++] = '0' + j;
     }
     int_str[i] = '\0';
@@ -2349,7 +2349,7 @@ void strcat_int(char *dest_str, int32_t integer)
     ++i;
   }
   dest_str[i--] = '\0';
-  j = 0;
+  j             = 0;
   while (int_str[j] != '\0')
   {
     dest_str[i--] = int_str[j++];
@@ -2379,7 +2379,7 @@ void strcat_time(char *dest_str, int16_t total_seconds)
   {
     total_seconds = MAX_SECONDS;
   }
-  minutes = total_seconds / 60;
+  minutes           = total_seconds / 60;
   remaining_seconds = total_seconds % 60;
   if (minutes < 10)
   {
@@ -2462,9 +2462,9 @@ void init(void)
   window_set_background_color(g_graphics_window, GColorBlack);
   window_set_window_handlers(g_graphics_window, (WindowHandlers)
   {
-    .load = graphics_window_load,
-    .unload = graphics_window_unload,
-    .appear = graphics_window_appear,
+    .load      = graphics_window_load,
+    .unload    = graphics_window_unload,
+    .appear    = graphics_window_appear,
     .disappear = graphics_window_disappear,
   });
 
@@ -2474,7 +2474,7 @@ void init(void)
   menu_layer_set_callbacks(g_main_menu, NULL, (MenuLayerCallbacks)
   {
     .get_num_rows = menu_get_num_rows_callback,
-    .draw_row = main_menu_draw_row_callback,
+    .draw_row     = main_menu_draw_row_callback,
     .select_click = main_menu_select_callback,
   });
   menu_layer_set_click_config_onto_window(g_main_menu, g_main_menu_window);
@@ -2487,7 +2487,7 @@ void init(void)
   menu_layer_set_callbacks(g_in_game_menu, NULL, (MenuLayerCallbacks)
   {
     .get_num_rows = menu_get_num_rows_callback,
-    .draw_row = in_game_menu_draw_row_callback,
+    .draw_row     = in_game_menu_draw_row_callback,
     .select_click = in_game_menu_select_callback,
   });
   menu_layer_set_click_config_onto_window(g_in_game_menu,
@@ -2514,7 +2514,7 @@ void init(void)
 
   // Misc. variable initialization:
   g_narration_window = NULL;
-  g_new_best_time = -1;
+  g_new_best_time    = -1;
   for (i = 0; i < NUM_ACHIEVEMENTS; ++i)
   {
     g_new_achievement_unlocked[i] = false;
@@ -2525,7 +2525,7 @@ void init(void)
                                        GRAPHICS_FRAME_HEIGHT +
                                          STATUS_BAR_HEIGHT / 2));
   g_player = malloc(sizeof(player_t));
-  g_maze = malloc(sizeof(maze_t));
+  g_maze   = malloc(sizeof(maze_t));
 
   // Present the main menu (and the intro narration, if applicable):
   window_stack_push(g_main_menu_window, ANIMATED);
