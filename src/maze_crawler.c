@@ -172,7 +172,7 @@ Description: Displays a given window. (Assumes that window has already been
 
     Outputs: None.
 ******************************************************************************/
-void show_window(Window *window)
+void show_window(Window *const window)
 {
   if (window == NULL)
   {
@@ -335,7 +335,7 @@ Description: Attempts to shift a given set of position coordinates one cell
 
     Outputs: Returns "true" if the character successfully moved.
 ******************************************************************************/
-bool shift_position(GPoint *position, const int16_t direction)
+bool shift_position(GPoint *const position, const int16_t direction)
 {
   GPoint destination;
 
@@ -2313,7 +2313,7 @@ Description: Concatenates a "large" integer value onto the end of a string. The
 
     Outputs: None.
 ******************************************************************************/
-void strcat_int(char *dest_str, int32_t integer)
+void strcat_int(char *const dest_str, int32_t integer)
 {
   int16_t i, j;
   static char int_str[MAX_LARGE_INT_DIGITS + 1];
@@ -2371,7 +2371,7 @@ Description: Concatenates the amount of time spent in the current maze to the
 
     Outputs: Returns "true" if the concatenation is successful.
 ******************************************************************************/
-void strcat_time(char *dest_str, int16_t total_seconds)
+void strcat_time(char *const dest_str, int16_t total_seconds)
 {
   int16_t minutes, remaining_seconds;
 

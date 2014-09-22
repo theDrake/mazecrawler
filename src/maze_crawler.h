@@ -183,11 +183,11 @@ static const GPathInfo COMPASS_PATH_INFO = {
 ******************************************************************************/
 
 void show_narration(void);
-void show_window(Window *window);
+void show_window(Window *const window);
 void player_init(void);
 void reposition_player(void);
 bool move_player(const int16_t direction);
-bool shift_position(GPoint *position, const int16_t direction);
+bool shift_position(GPoint *const position, const int16_t direction);
 bool check_for_maze_completion(void);
 bool save_game_data(void);
 bool load_game_data(void);
@@ -268,8 +268,8 @@ int16_t get_cell_type(GPoint cell_coords);
 bool out_of_bounds(const GPoint cell_coords);
 bool is_solid(const GPoint cell_coords);
 int16_t get_opposite_direction(const int16_t direction);
-void strcat_int(char *dest_str, int32_t integer);
-void strcat_time(char *dest_str, int16_t total_seconds);
+void strcat_int(char *const dest_str, int32_t integer);
+void strcat_time(char *const dest_str, int16_t total_seconds);
 void init_narration(void);
 void deinit_narration(void);
 void init(void);
