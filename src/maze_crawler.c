@@ -1374,31 +1374,6 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
 }
 
 /******************************************************************************
-   Function: app_focus_handler
-
-Description: Handles MazeCrawler going out of, or coming back into, focus
-             (e.g., when a notification window temporarily hides this app).
-
-     Inputs: in_focus - "True" if MazeCrawler is now in focus.
-
-    Outputs: None.
-******************************************************************************/
-void app_focus_handler(const bool in_focus)
-{
-  if (!in_focus) // Some other app has taken the focus away from MazeCrawler.
-  {
-    g_game_paused = true;
-  }
-  else // MazeCrawler is now back in focus.
-  {
-    if (window_stack_get_top_window() == g_graphics_window)
-    {
-      g_game_paused = false;
-    }
-  }
-}
-
-/******************************************************************************
    Function: graphics_window_appear
 
 Description: Called when the graphics window appears.
@@ -2470,7 +2445,7 @@ void init(void)
 
   // Main menu initialization:
   g_main_menu_window = window_create();
-  g_main_menu = menu_layer_create(FULL_SCREEN_FRAME);
+  g_main_menu        = menu_layer_create(FULL_SCREEN_FRAME);
   menu_layer_set_callbacks(g_main_menu, NULL, (MenuLayerCallbacks)
   {
     .get_num_rows = menu_get_num_rows_callback,
@@ -2483,7 +2458,7 @@ void init(void)
 
   // In-game menu initialization:
   g_in_game_menu_window = window_create();
-  g_in_game_menu = menu_layer_create(FULL_SCREEN_FRAME);
+  g_in_game_menu        = menu_layer_create(FULL_SCREEN_FRAME);
   menu_layer_set_callbacks(g_in_game_menu, NULL, (MenuLayerCallbacks)
   {
     .get_num_rows = menu_get_num_rows_callback,
@@ -2508,9 +2483,6 @@ void init(void)
                                 GTextAlignmentCenter);
   layer_add_child(window_get_root_layer(g_message_box_window),
                   text_layer_get_layer(g_message_box_text_layer));
-
-  // Focus service subscription:
-  app_focus_service_subscribe(app_focus_handler);
 
   // Misc. variable initialization:
   g_narration_window = NULL;
@@ -2557,7 +2529,6 @@ void deinit(void)
   text_layer_destroy(g_message_box_text_layer);
   window_destroy(g_message_box_window);
   window_destroy(g_graphics_window);
-  app_focus_service_unsubscribe();
   free(g_maze);
   free(g_player);
 }
