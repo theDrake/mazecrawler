@@ -216,6 +216,7 @@ void update_status_bar(GContext *ctx);
 void update_compass(void);
 void show_message_box(void);
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed);
+void app_focus_handler(const bool in_focus);
 static void graphics_window_appear(Window *window);
 static void graphics_window_disappear(Window *window);
 static void graphics_window_load(Window *window);
