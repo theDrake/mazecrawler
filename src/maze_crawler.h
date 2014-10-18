@@ -184,15 +184,15 @@ static const GPathInfo COMPASS_PATH_INFO = {
 
 void show_narration(void);
 void show_window(Window *const window);
-void player_init(void);
+void init_player(void);
 void reposition_player(void);
 bool move_player(const int16_t direction);
 bool shift_position(GPoint *const position, const int16_t direction);
 bool check_for_maze_completion(void);
 bool save_game_data(void);
 bool load_game_data(void);
-void wall_coords_init(void);
-void maze_init(void);
+void init_wall_coords(void);
+void init_maze(void);
 int16_t set_maze_starting_direction(void);
 void draw_scene(Layer *layer, GContext *ctx);
 void draw_floor_and_ceiling(GContext *ctx);

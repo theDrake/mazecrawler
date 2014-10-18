@@ -192,7 +192,7 @@ void show_window(Window *const window)
 }
 
 /******************************************************************************
-   Function: player_init
+   Function: init_player
 
 Description: Initializes the global player struct.
 
@@ -200,7 +200,7 @@ Description: Initializes the global player struct.
 
     Outputs: None.
 ******************************************************************************/
-void player_init(void)
+void init_player(void)
 {
   int16_t i;
 
@@ -592,7 +592,7 @@ bool check_for_maze_completion(void)
     }
 
     // Set up the next maze:
-    maze_init();
+    init_maze();
 
     return true;
   }
@@ -636,13 +636,13 @@ bool load_game_data(void)
 
     return true;
   }
-  player_init();
+  init_player();
 
   return false;
 }
 
 /******************************************************************************
-   Function: wall_coords_init
+   Function: init_wall_coords
 
 Description: Initializes the global "back_wall_coords" array so that it
              contains the top-left and bottom-right coordinates for every
@@ -654,7 +654,7 @@ Description: Initializes the global "back_wall_coords" array so that it
 
     Outputs: None.
 ******************************************************************************/
-void wall_coords_init(void)
+void init_wall_coords(void)
 {
   int16_t i, j, wall_width;
   const float perspective_modifier = 2.0; // Helps determine FOV, etc.
@@ -709,7 +709,7 @@ void wall_coords_init(void)
 }
 
 /******************************************************************************
-   Function: maze_init
+   Function: init_maze
 
 Description: Initializes the global maze struct by setting its width and height
              according to the current maze size value then setting entrance and
@@ -721,7 +721,7 @@ Description: Initializes the global maze struct by setting its width and height
 
     Outputs: None.
 ******************************************************************************/
-void maze_init(void)
+void init_maze(void)
 {
   int16_t i, j, maze_carver_direction;
   GPoint exit, maze_carver_position;
@@ -911,7 +911,7 @@ void draw_floor_and_ceiling(GContext *ctx)
 {
   int16_t x, y, max_y, shading_offset;
 
-  x = 2;
+  x     = 2;
   max_y = g_back_wall_coords[MAX_VISIBILITY_DEPTH - x]
                             [STRAIGHT_AHEAD]
                             [TOP_LEFT].y;
@@ -967,19 +967,19 @@ bool draw_cell_contents(GContext *ctx,
   GPoint cell_coords2;
   bool back_wall_drawn, left_wall_drawn, right_wall_drawn;
 
-  if (is_solid(cell_coords)             ||
-      depth < 0                         ||
-      depth >= MAX_VISIBILITY_DEPTH - 1 ||
-      position < 0                      ||
-      position > STRAIGHT_AHEAD * 2)
+  if (is_solid(cell_coords)                ||
+      depth    <  0                        ||
+      depth    >= MAX_VISIBILITY_DEPTH - 1 ||
+      position <  0                        ||
+      position >  STRAIGHT_AHEAD * 2)
   {
     return false;
   }
 
   // Back wall:
-  left = g_back_wall_coords[depth][position][TOP_LEFT].x;
-  right = g_back_wall_coords[depth][position][BOTTOM_RIGHT].x;
-  top = g_back_wall_coords[depth][position][TOP_LEFT].y;
+  left   = g_back_wall_coords[depth][position][TOP_LEFT].x;
+  right  = g_back_wall_coords[depth][position][BOTTOM_RIGHT].x;
+  top    = g_back_wall_coords[depth][position][TOP_LEFT].y;
   bottom = g_back_wall_coords[depth][position][BOTTOM_RIGHT].y;
   if (bottom - top < MIN_WALL_HEIGHT)
   {
@@ -1003,12 +1003,12 @@ bool draw_cell_contents(GContext *ctx,
   right = left;
   if (depth == 0)
   {
-    left = 0;
+    left     = 0;
     y_offset = top;
   }
   else
   {
-    left = g_back_wall_coords[depth - 1][position][TOP_LEFT].x;
+    left     = g_back_wall_coords[depth - 1][position][TOP_LEFT].x;
     y_offset = top - g_back_wall_coords[depth - 1][position][TOP_LEFT].y;
   }
   if (position <= STRAIGHT_AHEAD)
@@ -1891,7 +1891,7 @@ void in_game_menu_select_callback(MenuLayer *menu_layer,
   switch (cell_index->row)
   {
     case 0: // New Maze
-      maze_init();
+      init_maze();
       window_stack_pop(NOT_ANIMATED);
       break;
     case 1: // Stats
@@ -2519,7 +2519,7 @@ void init(void)
   {
     g_new_achievement_unlocked[i] = false;
   }
-  wall_coords_init();
+  init_wall_coords();
   g_compass_path = gpath_create(&COMPASS_PATH_INFO);
   gpath_move_to(g_compass_path, GPoint(HALF_SCREEN_WIDTH,
                                        GRAPHICS_FRAME_HEIGHT +
@@ -2534,7 +2534,7 @@ void init(void)
     g_current_narration = INTRO_NARRATION;
     show_narration();
   }
-  maze_init();
+  init_maze();
 }
 
 /******************************************************************************
