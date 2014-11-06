@@ -1068,9 +1068,9 @@ bool draw_cell_contents(GContext *ctx,
                                       1))))
   {
     graphics_draw_line(ctx,
-                       g_back_wall_coords[depth][position][0],
-                       GPoint(g_back_wall_coords[depth][position][0].x,
-                              g_back_wall_coords[depth][position][1].y));
+                       g_back_wall_coords[depth][position][TOP_LEFT],
+                       GPoint(g_back_wall_coords[depth][position][TOP_LEFT].x,
+                         g_back_wall_coords[depth][position][BOTTOM_RIGHT].y));
   }
   if ((back_wall_drawn && (right_wall_drawn ||
        !is_solid(get_cell_to_the_right(cell_coords2,
@@ -1082,9 +1082,9 @@ bool draw_cell_contents(GContext *ctx,
                                        1))))
   {
     graphics_draw_line(ctx,
-                       g_back_wall_coords[depth][position][1],
-                       GPoint(g_back_wall_coords[depth][position][1].x,
-                              g_back_wall_coords[depth][position][0].y));
+                    g_back_wall_coords[depth][position][BOTTOM_RIGHT],
+                    GPoint(g_back_wall_coords[depth][position][BOTTOM_RIGHT].x,
+                           g_back_wall_coords[depth][position][TOP_LEFT].y));
   }
 
   // Entrance/exit markers:
@@ -1200,18 +1200,18 @@ bool draw_entrance(GContext *ctx, const int16_t depth, const int16_t position)
   int16_t h_radius, v_radius; // Horizontal and vertical radii for an ellipse.
 
   h_radius = ELLIPSE_RADIUS_RATIO *
-               (g_back_wall_coords[depth][position][1].x -
-                g_back_wall_coords[depth][position][0].x);
+               (g_back_wall_coords[depth][position][BOTTOM_RIGHT].x -
+                g_back_wall_coords[depth][position][TOP_LEFT].x);
   if (depth == 0)
   {
     v_radius = ELLIPSE_RADIUS_RATIO *
-                 g_back_wall_coords[depth][position][0].y;
+                 g_back_wall_coords[depth][position][TOP_LEFT].y;
   }
   else
   {
     v_radius = ELLIPSE_RADIUS_RATIO *
-                 (g_back_wall_coords[depth][position][0].y -
-                  g_back_wall_coords[depth - 1][position][0].y);
+                 (g_back_wall_coords[depth][position][TOP_LEFT].y -
+                  g_back_wall_coords[depth - 1][position][TOP_LEFT].y);
   }
 
   return fill_ellipse(ctx,
@@ -1240,19 +1240,19 @@ bool draw_exit(GContext *ctx, const int16_t depth, const int16_t position)
   int16_t h_radius, v_radius; // Horizontal and vertical radii for an ellipse.
 
   h_radius = ELLIPSE_RADIUS_RATIO *
-               (g_back_wall_coords[depth][position][1].x -
-                g_back_wall_coords[depth][position][0].x);
+               (g_back_wall_coords[depth][position][BOTTOM_RIGHT].x -
+                g_back_wall_coords[depth][position][TOP_LEFT].x);
   if (depth == 0)
   {
     v_radius = ELLIPSE_RADIUS_RATIO *
                  (GRAPHICS_FRAME_HEIGHT -
-                  g_back_wall_coords[depth][position][1].y);
+                  g_back_wall_coords[depth][position][BOTTOM_RIGHT].y);
   }
   else
   {
     v_radius = ELLIPSE_RADIUS_RATIO *
-                 (g_back_wall_coords[depth - 1][position][1].y -
-                  g_back_wall_coords[depth][position][1].y);
+                 (g_back_wall_coords[depth - 1][position][BOTTOM_RIGHT].y -
+                  g_back_wall_coords[depth][position][BOTTOM_RIGHT].y);
   }
 
   return fill_ellipse(ctx,
