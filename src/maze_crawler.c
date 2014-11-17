@@ -3,10 +3,9 @@
 
      Author: David C. Drake (http://davidcdrake.com)
 
-Description: Function definitions for MazeCrawler, a 3D, first-person, maze-
-             navigation game developed for the Pebble smartwatch (SDK 2).
-             Copyright 2014, David C. Drake. More information available online:
-             http://davidcdrake.com/mazecrawler
+Description: Function definitions for MazeCrawler, a first-person 3D maze-
+             navigation game developed for the Pebble smartwatch (SDK 2). More
+             information available online: http://davidcdrake.com/mazecrawler
 ******************************************************************************/
 
 #include "maze_crawler.h"
@@ -56,8 +55,8 @@ void show_narration(void)
     case CONTROLS_NARRATION:
       switch (g_narration_page_num)
       {
-        case 0:
-          strcpy(narration_str, "        CONTROLS\nForward: \"Up\"\nBackward:"
+        case 0: // Total chars: 79
+          strcpy(narration_str, "       CONTROLS\nForward: \"Up\"\nBackward:"
                                 " \"Down\"\nLeft: \"Up\" x 2\nRight: \"Down\" "
                                 "x 2");
           break;
@@ -74,16 +73,17 @@ void show_narration(void)
           strcpy(narration_str, "MazeCrawler was designed and programmed by "
                                 "David C. Drake:\n\ndavidcdrake.com");
           break;
-        default:
-          strcpy(narration_str, "Thanks for playing, and special thanks to "
-                                "Team Pebble for creating these fun devices!");
+        default: // Total chars: 108
+          strcpy(narration_str, "Thanks for playing! And special thanks to "
+                                "Team Pebble for creating these wonderfully "
+                                "fun and useful devices!");
           break;
       }
       break;
     case STATS_NARRATION:
       switch (g_narration_page_num)
       {
-        case 0: // This may reach 62 characters.
+        case 0: // Max. total chars: 62
           strcpy(narration_str, "Mazes Completed:\n  ");
           if (g_player->level == MAX_SMALL_INT_VALUE &&
               g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT])

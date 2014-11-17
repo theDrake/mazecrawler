@@ -3,10 +3,9 @@
 
      Author: David C. Drake (http://davidcdrake.com)
 
-Description: Header file for MazeCrawler, a 3D, first-person, maze-navigation
-             game developed for the Pebble smartwatch (SDK 2). Copyright 2014,
-             David C. Drake. More information available online:
-             http://davidcdrake.com/mazecrawler
+Description: Header file for MazeCrawler, a first-person 3D maze-navigation
+             game developed for the Pebble smartwatch (SDK 2). More information
+             available online: http://davidcdrake.com/mazecrawler
 ******************************************************************************/
 
 #ifndef MAZE_CRAWLER_H_
@@ -23,7 +22,7 @@ Description: Header file for MazeCrawler, a 3D, first-person, maze-navigation
 #define TIME_STR_LEN               5
 #define ACHIEVEMENT_NAME_STR_LEN   15
 #define ACHIEVEMENT_DESC_STR_LEN   50
-#define NARRATION_STR_LEN          85
+#define NARRATION_STR_LEN          110
 #define SCREEN_WIDTH               144
 #define SCREEN_HEIGHT              168
 #define HALF_SCREEN_WIDTH          (SCREEN_WIDTH / 2)
