@@ -75,6 +75,7 @@ Description: Header file for MazeCrawler, a 3D, first-person, maze-navigation
 #define MAX_SECONDS                3599 // 59:59 (just under an hour)
 #define MAIN_MENU_NUM_ROWS         4
 #define IN_GAME_MENU_NUM_ROWS      4
+#define INTRO_NARRATION_NUM_PAGES  4
 #define STORAGE_KEY                8417
 #define ANIMATED                   true
 #define NOT_ANIMATED               false
