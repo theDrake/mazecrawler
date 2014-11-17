@@ -33,8 +33,7 @@ void show_narration(void)
   }
 
   // Determine whether the current narration is finished:
-  if ((g_current_narration == INTRO_NARRATION && g_narration_page_num > 3) ||
-      (g_current_narration < STATS_NARRATION && g_narration_page_num > 1))
+  if (g_current_narration < STATS_NARRATION && g_narration_page_num > 1)
   {
     if (window_stack_get_top_window() == g_narration_window)
     {
@@ -44,37 +43,23 @@ void show_narration(void)
 
     return;
   }
+  else if (g_current_narration == INTRO_NARRATION &&
+           g_narration_page_num == INTRO_NARRATION_NUM_PAGES)
+  {
+    g_current_narration  = CONTROLS_NARRATION;
+    g_narration_page_num = 0;
+  }
 
   // Determine what text should be displayed:
   switch (g_current_narration)
   {
-    case INTRO_NARRATION:
-      switch (g_narration_page_num)
-      {
-        case 0:
-          strcpy(narration_str, "You have fallen into a vast network of mazes."
-                                " Each maze has an exit...");
-          break;
-        case 1:
-          strcpy(narration_str, "...but each exit leads down to yet another, "
-                                "deeper level of the labyrinth.");
-          break;
-        case 2:
-          strcpy(narration_str, "Will you ever escape, or are you doomed to "
-                                "roam these halls to the end of your days?");
-          break;
-        default:
-          strcpy(narration_str, "You know not, yet here you are, brave "
-                                "explorer, and you must try!");
-          break;
-      }
-      break;
     case CONTROLS_NARRATION:
       switch (g_narration_page_num)
       {
         case 0:
-          strcpy(narration_str, "Forward: \"Up\"\nBackward: \"Down\"\n\n"
-                                "Left: \"Up\" x 2\nRight: \"Down\" x 2");
+          strcpy(narration_str, "        CONTROLS\nForward: \"Up\"\nBackward:"
+                                " \"Down\"\nLeft: \"Up\" x 2\nRight: \"Down\" "
+                                "x 2");
           break;
         default:
           strcpy(narration_str, "More information available online:\n\n"
@@ -90,12 +75,12 @@ void show_narration(void)
                                 "David C. Drake:\n\ndavidcdrake.com");
           break;
         default:
-          strcpy(narration_str, "Thanks for playing, and special thanks to all"
-                                " those who helped make this possible!");
+          strcpy(narration_str, "Thanks for playing, and special thanks to "
+                                "Team Pebble for creating these fun devices!");
           break;
       }
       break;
-    default: // case STATS_NARRATION:
+    case STATS_NARRATION:
       switch (g_narration_page_num)
       {
         case 0: // This may reach 62 characters.
@@ -147,6 +132,27 @@ void show_narration(void)
 
             return;
           }
+          break;
+      }
+      break;
+    default: // case INTRO_NARRATION:
+      switch (g_narration_page_num)
+      {
+        case 0:
+          strcpy(narration_str, "You have fallen into a vast network of mazes."
+                                " Each maze has an exit...");
+          break;
+        case 1:
+          strcpy(narration_str, "...but each exit leads down to yet another, "
+                                "deeper level of the labyrinth.");
+          break;
+        case 2:
+          strcpy(narration_str, "Will you ever escape, or are you doomed to "
+                                "roam these halls to the end of your days?");
+          break;
+        default:
+          strcpy(narration_str, "You know not, yet here you are, brave "
+                                "explorer, and you must try!");
           break;
       }
       break;
@@ -1681,19 +1687,18 @@ void message_box_click_config_provider(void *context)
 }
 
 /******************************************************************************
-   Function: narration_select_single_click
+   Function: narration_single_click
 
-Description: The narration window's single-click handler for the "select"
-             button. Either the next page of narration text will be displayed
-             or the narration window will be closed.
+Description: The narration window's single-click handler for all buttons.
+             Either the next page of narration text will be displayed or the
+             narration window will be closed.
 
      Inputs: recognizer - The click recognizer.
              context    - Pointer to the associated context.
 
     Outputs: None.
 ******************************************************************************/
-void narration_select_single_click(ClickRecognizerRef recognizer,
-                                   void *context)
+void narration_single_click(ClickRecognizerRef recognizer, void *context)
 {
   g_narration_page_num++;
   show_narration();
@@ -1710,8 +1715,10 @@ Description: Button-click configurations for the narration window.
 ******************************************************************************/
 void narration_click_config_provider(void *context)
 {
-  window_single_click_subscribe(BUTTON_ID_SELECT,
-                                narration_select_single_click);
+  window_single_click_subscribe(BUTTON_ID_SELECT, narration_single_click);
+  window_single_click_subscribe(BUTTON_ID_UP, narration_single_click);
+  window_single_click_subscribe(BUTTON_ID_DOWN, narration_single_click);
+  window_single_click_subscribe(BUTTON_ID_BACK, narration_single_click);
 }
 
 /******************************************************************************

@@ -60,7 +60,7 @@ Description: Header file for MazeCrawler, a 3D, first-person, maze-navigation
 #define RANDOM_POINT_WEST          GPoint(rand() % (g_maze->width / 4), rand() % g_maze->height)
 #define NINETY_DEGREES             (TRIG_MAX_ANGLE / 4)
 #define DEFAULT_ROTATION_RATE      (TRIG_MAX_ANGLE / 30) // 12 degrees per rotation event
-#define ELLIPSE_RADIUS_RATIO       0.4 // (vertical radius) / (horizontal radius)
+#define ELLIPSE_RADIUS_RATIO       0.4
 #define CLICK_REPEAT_INTERVAL      300 // milliseconds
 #define MULTI_CLICK_MIN            2
 #define MULTI_CLICK_MAX            2 // We only care about double-clicks.
@@ -232,6 +232,8 @@ void graphics_click_config_provider(void *context);
 void message_box_select_single_click(ClickRecognizerRef recognizer,
                                      void *context);
 void message_box_click_config_provider(void *context);
+void narration_single_click(ClickRecognizerRef recognizer, void *context);
+void narration_click_config_provider(void *context);
 static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer,
                                            uint16_t section_index,
                                            void *data);
