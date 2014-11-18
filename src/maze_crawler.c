@@ -139,7 +139,7 @@ void show_narration(void)
       switch (g_narration_page_num)
       {
         case 0:
-          strcpy(narration_str, "/nYou have fallen into a vast network of "
+          strcpy(narration_str, "\nYou have fallen into a vast network of "
                                 "mazes. Each maze has an exit...");
           break;
         case 1:
