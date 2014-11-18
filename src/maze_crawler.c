@@ -61,7 +61,7 @@ void show_narration(void)
                                 "x 2");
           break;
         default:
-          strcpy(narration_str, "\nMore information available online:\n\n"
+          strcpy(narration_str, "More information available online:\n\n"
                                 "davidcdrake.com/\n           mazecrawler");
           break;
       }
@@ -139,19 +139,19 @@ void show_narration(void)
       switch (g_narration_page_num)
       {
         case 0:
-          strcpy(narration_str, "\nYou have fallen into a vast network of "
-                                "mazes. Each maze has an exit...");
+          strcpy(narration_str, "You have fallen into a vast network of mazes."
+                                " Each maze has an exit...");
           break;
         case 1:
-          strcpy(narration_str, "\n...but each exit leads down to yet another,"
-                                " deeper level of the labyrinth.");
+          strcpy(narration_str, "...but each exit leads down to yet another, "
+                                "deeper level of the labyrinth.");
           break;
         case 2:
-          strcpy(narration_str, "\nWill you ever escape, or are you doomed to "
+          strcpy(narration_str, "Will you ever escape, or are you doomed to "
                                 "roam these halls to the end of your days?");
           break;
         default:
-          strcpy(narration_str, "\nYou know not, yet here you are, brave "
+          strcpy(narration_str, "You know not, yet here you are, brave "
                                 "explorer, and you must try!");
           break;
       }
