@@ -55,9 +55,9 @@ void show_narration(void)
     case CONTROLS_NARRATION:
       switch (g_narration_page_num)
       {
-        case 0: // Total chars: 79
-          strcpy(narration_str, "       CONTROLS\nForward: \"Up\"\nBackward:"
-                                " \"Down\"\nLeft: \"Up\" x 2\nRight: \"Down\" "
+        case 0: // Total chars: 75
+          strcpy(narration_str, "       CONTROLS\nForward: \"Up\"\nBack: "
+                                "\"Down\"\nLeft: \"Up\" x 2\nRight: \"Down\" "
                                 "x 2");
           break;
         default:
