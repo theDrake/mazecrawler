@@ -84,17 +84,13 @@ void show_narration(void)
       switch (g_narration_page_num)
       {
         case 0: // Max. total chars: 62
-          strcpy(narration_str, "Mazes Completed:\n  ");
-          if (g_player->level == MAX_SMALL_INT_VALUE &&
-              g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT])
-          {
-            strcat(narration_str, "9999");
-          }
-          else
-          {
-            strcat_int(narration_str, g_player->level - 1);
-          }
-          strcat(narration_str, "\nBest Time:\n  ");
+          snprintf(narration_str,
+                   NARRATION_STR_LEN + 1,
+                   "Mazes Completed:\n  %d\nBest Time:\n  ",
+                   (g_player->level == MAX_SMALL_INT_VALUE &&
+                    g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT]) ?
+                      9999                                                 :
+                      g_player->level - 1);
           if (g_player->level == 1)
           {
             strcat(narration_str, "--:--");
@@ -103,13 +99,14 @@ void show_narration(void)
           {
             strcat_time(narration_str, g_player->best_time);
           }
-          strcat(narration_str, "\nPoints:\n  ");
-          strcat_int(narration_str, g_player->points);
+          snprintf(narration_str + strlen(narration_str),
+                   NARRATION_STR_LEN - strlen(narration_str) + 1,
+                   "\nPoints:\n  %d",
+                   (int) g_player->points);
           break;
         default:
-          while (g_narration_page_num  - 1 < NUM_ACHIEVEMENTS &&
-                 g_player->achievement_unlocked[g_narration_page_num - 1] ==
-                   false)
+          while (g_narration_page_num - 1 < NUM_ACHIEVEMENTS &&
+                 !g_player->achievement_unlocked[g_narration_page_num - 1])
           {
             g_narration_page_num++;
           }
@@ -235,8 +232,8 @@ void update_status_bar(GContext *ctx)
   static char level_str[LEVEL_STR_LEN + 1], time_str[TIME_STR_LEN + 1];
 
   // Display the current level number:
-  strcpy(level_str, "L. ");
-  strcat_int(level_str, g_player->level);
+  strcpy(level_str, "");
+  snprintf(level_str, LEVEL_STR_LEN + 1, "L. %d", (int) g_player->level);
   text_layer_set_text(g_level_text_layer, level_str);
 
   // Display the amount of time spent in the current maze:
@@ -418,100 +415,102 @@ bool check_for_maze_completion(void)
     switch(rand() % 30)
     {
       case 0:
-        strcpy(g_message_str, "A-maze-ing!\n");
+        strcpy(g_message_str, "A-maze-ing");
         break;
       case 1:
-        strcpy(g_message_str, "Awesome!\n");
+        strcpy(g_message_str, "Awesome");
         break;
       case 2:
-        strcpy(g_message_str, "Brilliant!\n");
+        strcpy(g_message_str, "Brilliant");
         break;
       case 3:
-        strcpy(g_message_str, "Congrats!\n");
+        strcpy(g_message_str, "Congrats");
         break;
       case 4:
-        strcpy(g_message_str, "Excellent!\n");
+        strcpy(g_message_str, "Excellent");
         break;
       case 5:
-        strcpy(g_message_str, "Fantastic!\n");
+        strcpy(g_message_str, "Fantastic");
         break;
       case 6:
-        strcpy(g_message_str, "Good job!\n");
+        strcpy(g_message_str, "Good job");
         break;
       case 7:
-        strcpy(g_message_str, "Great work!\n");
+        strcpy(g_message_str, "Great work");
         break;
       case 8:
-        strcpy(g_message_str, "Groovy!\n");
+        strcpy(g_message_str, "Groovy");
         break;
       case 9:
-        strcpy(g_message_str, "Huzzah!\n");
+        strcpy(g_message_str, "Huzzah");
         break;
       case 10:
-        strcpy(g_message_str, "Hurrah!\n");
+        strcpy(g_message_str, "Hurrah");
         break;
       case 11:
-        strcpy(g_message_str, "Hooray!\n");
+        strcpy(g_message_str, "Hooray");
         break;
       case 12:
-        strcpy(g_message_str, "Impressive!\n");
+        strcpy(g_message_str, "Impressive");
         break;
       case 13:
-        strcpy(g_message_str, "Magnificent!\n");
+        strcpy(g_message_str, "Magnificent");
         break;
       case 14:
-        strcpy(g_message_str, "Marvelous!\n");
+        strcpy(g_message_str, "Marvelous");
         break;
       case 15:
-        strcpy(g_message_str, "Outstanding!\n");
+        strcpy(g_message_str, "Outstanding");
         break;
       case 16:
-        strcpy(g_message_str, "Peachy!\n");
+        strcpy(g_message_str, "Peachy");
         break;
       case 17:
-        strcpy(g_message_str, "Phenomenal!\n");
+        strcpy(g_message_str, "Phenomenal");
         break;
       case 18:
-        strcpy(g_message_str, "Spectacular!\n");
+        strcpy(g_message_str, "Spectacular");
         break;
       case 19:
-        strcpy(g_message_str, "Splendid!\n");
+        strcpy(g_message_str, "Splendid");
         break;
       case 20:
-        strcpy(g_message_str, "Stellar!\n");
+        strcpy(g_message_str, "Stellar");
         break;
       case 21:
-        strcpy(g_message_str, "Stupendous!\n");
+        strcpy(g_message_str, "Stupendous");
         break;
       case 22:
-        strcpy(g_message_str, "Superb!\n");
+        strcpy(g_message_str, "Superb");
         break;
       case 23:
-        strcpy(g_message_str, "Terrific!\n");
+        strcpy(g_message_str, "Terrific");
         break;
       case 24:
-        strcpy(g_message_str, "Well done!\n");
+        strcpy(g_message_str, "Well done");
         break;
       case 25:
-        strcpy(g_message_str, "Wahoo!\n");
+        strcpy(g_message_str, "Wahoo");
         break;
       case 26:
-        strcpy(g_message_str, "Whoopee!\n");
+        strcpy(g_message_str, "Whoopee");
         break;
       case 27:
-        strcpy(g_message_str, "Wonderful!\n");
+        strcpy(g_message_str, "Wonderful");
         break;
       case 28:
-        strcpy(g_message_str, "Wowzers!\n");
+        strcpy(g_message_str, "Wowzers");
         break;
       default: // case 29:
-        strcpy(g_message_str, "Yippee!\n");
+        strcpy(g_message_str, "Yippee");
         break;
     }
-    strcat(g_message_str, "\nTime: ");
+    strcat(g_message_str, "!\n\nTime: ");
     strcat_time(g_message_str, g_maze->seconds);
-    strcat(g_message_str, "\nPoints: ");
-    strcat_int(g_message_str, points_earned);
+    snprintf(g_message_str + strlen(g_message_str),
+             MESSAGE_STR_LEN - strlen(g_message_str) + 1,
+             "\nPoints: %d",
+             (int) points_earned);
     show_message_box();
 
     // Update stats, check for a new best time, and check for achievements:
@@ -530,7 +529,7 @@ bool check_for_maze_completion(void)
     if (g_maze->seconds < g_player->best_time)
     {
       g_player->best_time = g_maze->seconds;
-      g_new_best_time = g_player->best_time;
+      g_new_best_time     = g_player->best_time;
     }
     if (g_maze->seconds < 30 &&
         !g_player->achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT])
@@ -2307,98 +2306,27 @@ int16_t get_opposite_direction(const int16_t direction)
 }
 
 /******************************************************************************
-   Function: strcat_int
+   Function: strcat_time
 
-Description: Concatenates a "large" integer value onto the end of a string. The
-             absolute value of the integer may not exceed MAX_LARGE_INT_VALUE
-             (if it does, MAX_LARGE_INT_VALUE will be used in its place). If
-             the integer is negative, a minus sign will be included.
+Description: Concatenates a given amount of time to the end of a given string
+             in "MM:SS" format.
 
      Inputs: dest_str - Pointer to the destination string.
-             integer  - Integer value to be converted to characters and
-                        appended to the string.
+             seconds  - Number of seconds in the time of interest.
 
     Outputs: None.
 ******************************************************************************/
-void strcat_int(char *const dest_str, int32_t integer)
+void strcat_time(char *const dest_str, int16_t seconds)
 {
-  int16_t i, j;
-  static char int_str[MAX_LARGE_INT_DIGITS + 1];
-  bool negative = false;
-
-  int_str[0] = '\0';
-  if (integer < 0)
+  if (seconds > MAX_SECONDS)
   {
-    negative = true;
-    integer  *= -1;
+    seconds = MAX_SECONDS;
   }
-  if (integer > MAX_LARGE_INT_VALUE)
-  {
-    integer = MAX_LARGE_INT_VALUE;
-  }
-  if (integer == 0)
-  {
-    strcpy(int_str, "0");
-  }
-  else
-  {
-    for (i = 0; integer != 0; integer /= 10)
-    {
-      j            = integer % 10;
-      int_str[i++] = '0' + j;
-    }
-    int_str[i] = '\0';
-  }
-
-  i = strlen(dest_str) + strlen(int_str);
-  if (negative)
-  {
-    ++i;
-  }
-  dest_str[i--] = '\0';
-  j             = 0;
-  while (int_str[j] != '\0')
-  {
-    dest_str[i--] = int_str[j++];
-  }
-  if (negative)
-  {
-    dest_str[i--] = '-';
-  }
-}
-
-/******************************************************************************
-   Function: strcat_time
-
-Description: Concatenates the amount of time spent in the current maze to the
-             end of a given string in "MM:SS" format.
-
-     Inputs: dest_str      - Pointer to the destination string.
-             total_seconds - Total number of seconds in the time of interest.
-
-    Outputs: Returns "true" if the concatenation is successful.
-******************************************************************************/
-void strcat_time(char *const dest_str, int16_t total_seconds)
-{
-  int16_t minutes, remaining_seconds;
-
-  if (total_seconds > MAX_SECONDS)
-  {
-    total_seconds = MAX_SECONDS;
-  }
-  minutes           = total_seconds / 60;
-  remaining_seconds = total_seconds % 60;
-  if (minutes < 10)
-  {
-    strcat_int(dest_str, 0);
-  }
-  strcat_int(dest_str, minutes);
-  strcat(dest_str, ":");
-  if (remaining_seconds < 10)
-  {
-    strcat_int(dest_str, 0);
-  }
-  strcat_int(dest_str, remaining_seconds);
+  snprintf(dest_str + strlen(dest_str),
+           6,
+           "%.2d:%.2d",
+           seconds / 60,
+           seconds % 60);
 }
 
 /******************************************************************************
