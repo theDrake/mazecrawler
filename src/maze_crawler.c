@@ -101,8 +101,8 @@ void show_narration(void)
           }
           snprintf(narration_str + strlen(narration_str),
                    NARRATION_STR_LEN - strlen(narration_str) + 1,
-                   "\nPoints:\n  %d",
-                   (int) g_player->points);
+                   "\nPoints:\n  %ld",
+                   g_player->points);
           break;
         default:
           while (g_narration_page_num - 1 < NUM_ACHIEVEMENTS &&
@@ -233,7 +233,7 @@ void update_status_bar(GContext *ctx)
 
   // Display the current level number:
   strcpy(level_str, "");
-  snprintf(level_str, LEVEL_STR_LEN + 1, "L. %d", (int) g_player->level);
+  snprintf(level_str, LEVEL_STR_LEN + 1, "L. %d", g_player->level);
   text_layer_set_text(g_level_text_layer, level_str);
 
   // Display the amount of time spent in the current maze:
@@ -509,8 +509,8 @@ bool check_for_maze_completion(void)
     strcat_time(g_message_str, g_maze->seconds);
     snprintf(g_message_str + strlen(g_message_str),
              MESSAGE_STR_LEN - strlen(g_message_str) + 1,
-             "\nPoints: %d",
-             (int) points_earned);
+             "\nPoints: %ld",
+             points_earned);
     show_message_box();
 
     // Update stats, check for a new best time, and check for achievements:
