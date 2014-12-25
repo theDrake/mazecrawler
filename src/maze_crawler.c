@@ -32,7 +32,7 @@ void show_narration(void)
   }
 
   // Determine whether the current narration is finished:
-  if (g_current_narration < STATS_NARRATION && g_narration_page_num > 1)
+  if (g_current_narration < STATS_NARRATION && g_narration_page_num > 2)
   {
     if (window_stack_get_top_window() == g_narration_window)
     {
@@ -60,9 +60,14 @@ void show_narration(void)
                                 "\"Down\"\nLeft: \"Up\" x 2\nRight: \"Down\" "
                                 "x 2");
           break;
-        default:
+        case 1:
           strcpy(narration_str, "More information available online:\n\n"
                                 "davidcdrake.com/\n           mazecrawler");
+          break;
+        default: // Total chars: 120
+          strcpy(narration_str, "I'm also pleased to announce the release of "
+                                "the PebbleQuest RPG, available here:\n"
+                                "davidcdrake.com/\n           pebblequest");
           break;
       }
       break;
@@ -73,10 +78,15 @@ void show_narration(void)
           strcpy(narration_str, "MazeCrawler was designed and programmed by "
                                 "David C. Drake:\n\ndavidcdrake.com");
           break;
-        default: // Total chars: 108
+        case 1: // Total chars: 108
           strcpy(narration_str, "Thanks for playing! And special thanks to "
                                 "Team Pebble for creating these wonderful, "
                                 "fun, and useful devices!");
+          break;
+        default: // Total chars: 117
+          strcpy(narration_str, "Be sure to check out PebbleQuest, a fantasy "
+                                "RPG available through my website:\n"
+                                "davidcdrake.com/\n           pebblequest");
           break;
       }
       break;
