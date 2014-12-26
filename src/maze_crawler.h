@@ -22,7 +22,7 @@ Description: Header file for MazeCrawler, a first-person 3D maze-navigation
 #define TIME_STR_LEN               5
 #define ACHIEVEMENT_NAME_STR_LEN   15
 #define ACHIEVEMENT_DESC_STR_LEN   50
-#define NARRATION_STR_LEN          120
+#define NARRATION_STR_LEN          110
 #define SCREEN_WIDTH               144
 #define SCREEN_HEIGHT              168
 #define HALF_SCREEN_WIDTH          (SCREEN_WIDTH / 2)

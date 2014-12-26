@@ -64,9 +64,9 @@ void show_narration(void)
           strcpy(narration_str, "More information available online:\n\n"
                                 "davidcdrake.com/\n           mazecrawler");
           break;
-        default: // Total chars: 120
-          strcpy(narration_str, "I'm also pleased to announce the release of "
-                                "the PebbleQuest RPG, available here:\n"
+        default: // Total chars: 104
+          strcpy(narration_str, "And by the way, be sure to check out my "
+                                "PebbleQuest fantasy RPG:\n"
                                 "davidcdrake.com/\n           pebblequest");
           break;
       }
@@ -83,9 +83,9 @@ void show_narration(void)
                                 "Team Pebble for creating these wonderful, "
                                 "fun, and useful devices!");
           break;
-        default: // Total chars: 117
-          strcpy(narration_str, "Be sure to check out PebbleQuest, a fantasy "
-                                "RPG available through my website:\n"
+        default: // Total chars: 104
+          strcpy(narration_str, "And by the way, be sure to check out my "
+                                "PebbleQuest fantasy RPG:\n"
                                 "davidcdrake.com/\n           pebblequest");
           break;
       }
