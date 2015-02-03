@@ -80,44 +80,52 @@ Description: Header file for MazeCrawler, a first-person 3D maze-navigation
 #define NOT_ANIMATED               false
 
 /******************************************************************************
-  Enumerations (replaced with #defines to save memory)
+  Enumerations
 ******************************************************************************/
 
+// Achievements:
+enum {
+  MAX_POINTS_ACHIEVEMENT,
+  UNDER_THIRTY_SECONDS_ACHIEVEMENT,
+  UNDER_TEN_SECONDS_ACHIEVEMENT,
+  ONE_HOUR_ACHIEVEMENT,
+  FIRST_LEVEL_ACHIEVEMENT,
+  LEVEL_10_ACHIEVEMENT,
+  LEVEL_50_ACHIEVEMENT,
+  LEVEL_100_ACHIEVEMENT,
+  LEVEL_500_ACHIEVEMENT,
+  LEVEL_1000_ACHIEVEMENT,
+  LEVEL_5000_ACHIEVEMENT,
+  MAX_LEVEL_ACHIEVEMENT,
+  NUM_ACHIEVEMENTS
+};
+
 // Narration types:
-#define CONTROLS_NARRATION  0
-#define GAME_INFO_NARRATION 1
-#define STATS_NARRATION     2
-#define INTRO_NARRATION     3
-#define NUM_NARRATION_TYPES 4
+enum {
+  CONTROLS_NARRATION,
+  GAME_INFO_NARRATION,
+  STATS_NARRATION,
+  INTRO_NARRATION,
+  NUM_NARRATION_TYPES
+};
 
 // Cell types:
-#define SOLID          0
-#define EMPTY          1
-#define ENTRANCE       2
-#define EXIT           3
-#define NUM_CELL_TYPES 4
+enum {
+  SOLID,
+  EMPTY,
+  ENTRANCE,
+  EXIT,
+  NUM_CELL_TYPES
+};
 
 // Directions:
-#define NORTH          0
-#define SOUTH          1
-#define EAST           2
-#define WEST           3
-#define NUM_DIRECTIONS 4
-
-// Achievements:
-#define MAX_POINTS_ACHIEVEMENT           0
-#define UNDER_THIRTY_SECONDS_ACHIEVEMENT 1
-#define UNDER_TEN_SECONDS_ACHIEVEMENT    2
-#define ONE_HOUR_ACHIEVEMENT             3
-#define FIRST_LEVEL_ACHIEVEMENT          4
-#define LEVEL_10_ACHIEVEMENT             5
-#define LEVEL_50_ACHIEVEMENT             6
-#define LEVEL_100_ACHIEVEMENT            7
-#define LEVEL_500_ACHIEVEMENT            8
-#define LEVEL_1000_ACHIEVEMENT           9
-#define LEVEL_5000_ACHIEVEMENT           10
-#define MAX_LEVEL_ACHIEVEMENT            11
-#define NUM_ACHIEVEMENTS                 12
+enum {
+  NORTH,
+  SOUTH,
+  EAST,
+  WEST,
+  NUM_DIRECTIONS
+};
 
 /******************************************************************************
   Structures
@@ -163,7 +171,9 @@ char g_message_str[MESSAGE_STR_LEN + 1],
      g_narration_str[NARRATION_STR_LEN + 1];
 maze_t *g_maze;
 player_t *g_player;
-GPoint g_back_wall_coords[MAX_VISIBILITY_DEPTH - 1][(STRAIGHT_AHEAD * 2) + 1][2];
+GPoint g_back_wall_coords[MAX_VISIBILITY_DEPTH - 1]
+                         [(STRAIGHT_AHEAD * 2) + 1]
+                         [2];
 int16_t g_new_best_time,
         g_current_narration,
         g_narration_page_num;
@@ -227,7 +237,8 @@ void graphics_up_multi_click(ClickRecognizerRef recognizer, void *context);
 void graphics_down_single_repeating_click(ClickRecognizerRef recognizer,
                                           void *context);
 void graphics_down_multi_click(ClickRecognizerRef recognizer, void *context);
-void graphics_select_single_click(ClickRecognizerRef recognizer, void *context);
+void graphics_select_single_click(ClickRecognizerRef recognizer,
+                                  void *context);
 void graphics_click_config_provider(void *context);
 void message_box_select_single_click(ClickRecognizerRef recognizer,
                                      void *context);
