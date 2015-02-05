@@ -84,7 +84,7 @@ void show_narration(void)
                                 "fun, and useful devices!");
           break;
         default:
-          strcpy(narration_str, "Also, be sure to check out my PebbleQuest "
+          strcpy(narration_str, "Be sure to also check out my PebbleQuest "
                                 "RPG:\n\n"
                                 "davidcdrake.com/\n           pebblequest");
           break;
