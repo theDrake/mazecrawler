@@ -14,7 +14,55 @@ Description: Header file for MazeCrawler, a first-person 3D maze-navigation
 #include <pebble.h>
 
 /******************************************************************************
-  Constants
+  Enumerations
+******************************************************************************/
+
+// Achievements:
+enum {
+  MAX_POINTS_ACHIEVEMENT,
+  UNDER_THIRTY_SECONDS_ACHIEVEMENT,
+  UNDER_TEN_SECONDS_ACHIEVEMENT,
+  ONE_HOUR_ACHIEVEMENT,
+  FIRST_LEVEL_ACHIEVEMENT,
+  LEVEL_10_ACHIEVEMENT,
+  LEVEL_50_ACHIEVEMENT,
+  LEVEL_100_ACHIEVEMENT,
+  LEVEL_500_ACHIEVEMENT,
+  LEVEL_1000_ACHIEVEMENT,
+  LEVEL_5000_ACHIEVEMENT,
+  MAX_LEVEL_ACHIEVEMENT,
+  NUM_ACHIEVEMENTS
+};
+
+// Narration types:
+enum {
+  CONTROLS_NARRATION,
+  GAME_INFO_NARRATION,
+  STATS_NARRATION,
+  INTRO_NARRATION,
+  NUM_NARRATION_TYPES
+};
+
+// Cell types:
+enum {
+  SOLID,
+  EMPTY,
+  ENTRANCE,
+  EXIT,
+  NUM_CELL_TYPES
+};
+
+// Directions:
+enum {
+  NORTH,
+  SOUTH,
+  EAST,
+  WEST,
+  NUM_DIRECTIONS
+};
+
+/******************************************************************************
+  Other Constants
 ******************************************************************************/
 
 #define MESSAGE_STR_LEN            50
@@ -79,52 +127,12 @@ Description: Header file for MazeCrawler, a first-person 3D maze-navigation
 #define ANIMATED                   true
 #define NOT_ANIMATED               false
 
-/******************************************************************************
-  Enumerations
-******************************************************************************/
-
-// Achievements:
-enum {
-  MAX_POINTS_ACHIEVEMENT,
-  UNDER_THIRTY_SECONDS_ACHIEVEMENT,
-  UNDER_TEN_SECONDS_ACHIEVEMENT,
-  ONE_HOUR_ACHIEVEMENT,
-  FIRST_LEVEL_ACHIEVEMENT,
-  LEVEL_10_ACHIEVEMENT,
-  LEVEL_50_ACHIEVEMENT,
-  LEVEL_100_ACHIEVEMENT,
-  LEVEL_500_ACHIEVEMENT,
-  LEVEL_1000_ACHIEVEMENT,
-  LEVEL_5000_ACHIEVEMENT,
-  MAX_LEVEL_ACHIEVEMENT,
-  NUM_ACHIEVEMENTS
-};
-
-// Narration types:
-enum {
-  CONTROLS_NARRATION,
-  GAME_INFO_NARRATION,
-  STATS_NARRATION,
-  INTRO_NARRATION,
-  NUM_NARRATION_TYPES
-};
-
-// Cell types:
-enum {
-  SOLID,
-  EMPTY,
-  ENTRANCE,
-  EXIT,
-  NUM_CELL_TYPES
-};
-
-// Directions:
-enum {
-  NORTH,
-  SOUTH,
-  EAST,
-  WEST,
-  NUM_DIRECTIONS
+static const GPathInfo COMPASS_PATH_INFO = {
+  .num_points = 4,
+  .points = (GPoint []) {{-3, -3},
+                         {3, -3},
+                         {0, 6},
+                         {-3, -3}}
 };
 
 /******************************************************************************
@@ -180,13 +188,6 @@ int16_t g_new_best_time,
 bool g_game_paused,
      g_new_achievement_unlocked[NUM_ACHIEVEMENTS];
 GPath *g_compass_path;
-static const GPathInfo COMPASS_PATH_INFO = {
-  .num_points = 4,
-  .points = (GPoint []) {{-3, -3},
-                         {3, -3},
-                         {0, 6},
-                         {-3, -3}}
-};
 
 /******************************************************************************
   Function Declarations
