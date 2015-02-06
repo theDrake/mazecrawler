@@ -54,6 +54,7 @@ void show_narration(void)
   {
     snprintf(narration_str,
              NARRATION_STR_LEN + 1,
+             "%s",
              g_narration_strings[g_current_narration][g_narration_page_num]);
   }
   else // STATS_NARRATION
