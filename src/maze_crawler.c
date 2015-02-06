@@ -32,7 +32,7 @@ void show_narration(void)
   }
 
   // Determine whether the current narration is finished:
-  if (g_current_narration < STATS_NARRATION && g_narration_page_num > 2)
+  if (g_current_narration < INTRO_NARRATION && g_narration_page_num > 2)
   {
     if (window_stack_get_top_window() == g_narration_window)
     {
@@ -50,129 +50,68 @@ void show_narration(void)
   }
 
   // Determine what text should be displayed:
-  switch (g_current_narration)
+  if (g_current_narration < STATS_NARRATION)
   {
-    case CONTROLS_NARRATION:
-      switch (g_narration_page_num)
-      {
-        case 0: // Total chars: 75
-          strcpy(narration_str, "       CONTROLS\nForward: \"Up\"\nBack: "
-                                "\"Down\"\nLeft: \"Up\" x 2\nRight: \"Down\" "
-                                "x 2");
-          break;
-        case 1:
-          strcpy(narration_str, "More information available online:\n\n"
-                                "davidcdrake.com/\n           mazecrawler");
-          break;
-        default:
-          strcpy(narration_str, "Also, be sure to check out my PebbleQuest "
-                                "RPG:\n\n"
-                                "davidcdrake.com/\n           pebblequest");
-          break;
-      }
-      break;
-    case GAME_INFO_NARRATION:
-      switch (g_narration_page_num)
-      {
-        case 0:
-          strcpy(narration_str, "MazeCrawler was designed and programmed by "
-                                "David C. Drake:\n\ndavidcdrake.com");
-          break;
-        case 1: // Total chars: 108
-          strcpy(narration_str, "Thanks for playing! And special thanks to "
-                                "Team Pebble for creating these wonderful, "
-                                "fun, and useful devices!");
-          break;
-        default:
-          strcpy(narration_str, "Be sure to also check out my PebbleQuest "
-                                "RPG:\n\n"
-                                "davidcdrake.com/\n           pebblequest");
-          break;
-      }
-      break;
-    case STATS_NARRATION:
-      switch (g_narration_page_num)
-      {
-        case 0: // Max. total chars: 62
+    snprintf(narration_str,
+             NARRATION_STR_LEN + 1,
+             g_narration_strings[g_current_narration][g_narration_page_num]);
+  }
+  else // STATS_NARRATION
+  {
+    switch (g_narration_page_num)
+    {
+      case 0: // Max. total chars: 62
+        snprintf(narration_str,
+                 NARRATION_STR_LEN + 1,
+                 "Mazes Completed:\n  %d\nBest Time:\n  ",
+                 (g_player->level == MAX_SMALL_INT_VALUE &&
+                  g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT]) ?
+                    9999                                                 :
+                    g_player->level - 1);
+        if (g_player->level == 1)
+        {
+          strcat(narration_str, "--:--");
+        }
+        else
+        {
+          strcat_time(narration_str, g_player->best_time);
+        }
+        snprintf(narration_str + strlen(narration_str),
+                 NARRATION_STR_LEN - strlen(narration_str) + 1,
+                 "\nPoints:\n  %ld",
+                 g_player->points);
+        break;
+      default:
+        while (g_narration_page_num - 1 < NUM_ACHIEVEMENTS &&
+               !g_player->achievement_unlocked[g_narration_page_num - 1])
+        {
+          g_narration_page_num++;
+        }
+        if (g_narration_page_num - 1 < NUM_ACHIEVEMENTS)
+        {
           snprintf(narration_str,
-                   NARRATION_STR_LEN + 1,
-                   "Mazes Completed:\n  %d\nBest Time:\n  ",
-                   (g_player->level == MAX_SMALL_INT_VALUE &&
-                    g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT]) ?
-                      9999                                                 :
-                      g_player->level - 1);
-          if (g_player->level == 1)
+                   NARRATION_STR_LEN,
+                   "Achievements:\n  \"%s\": %s",
+                   g_achievement_names[g_narration_page_num - 1],
+                   g_achievement_descriptions[g_narration_page_num - 1]);
+        }
+        else
+        {
+          if (window_stack_get_top_window() == g_narration_window)
           {
-            strcat(narration_str, "--:--");
+            window_stack_pop(NOT_ANIMATED);
           }
-          else
-          {
-            strcat_time(narration_str, g_player->best_time);
-          }
-          snprintf(narration_str + strlen(narration_str),
-                   NARRATION_STR_LEN - strlen(narration_str) + 1,
-                   "\nPoints:\n  %ld",
-                   g_player->points);
-          break;
-        default:
-          while (g_narration_page_num - 1 < NUM_ACHIEVEMENTS &&
-                 !g_player->achievement_unlocked[g_narration_page_num - 1])
-          {
-            g_narration_page_num++;
-          }
-          if (g_narration_page_num - 1 < NUM_ACHIEVEMENTS)
-          {
-            strcpy(narration_str, "Achievements:\n  \"");
-            strcat(narration_str,
-                   get_achievement_name(g_narration_page_num - 1));
-            strcat(narration_str, "\": ");
-            strcat(narration_str,
-                   get_achievement_description(g_narration_page_num - 1));
-          }
-          else
-          {
-            if (window_stack_get_top_window() == g_narration_window)
-            {
-              window_stack_pop(NOT_ANIMATED);
-            }
-            deinit_narration();
+          deinit_narration();
 
-            return;
-          }
-          break;
-      }
-      break;
-    default: // case INTRO_NARRATION:
-      switch (g_narration_page_num)
-      {
-        case 0:
-          strcpy(narration_str, "You have fallen into a vast network of mazes."
-                                " Each maze has an exit...");
-          break;
-        case 1:
-          strcpy(narration_str, "...but each exit leads down to yet another, "
-                                "deeper level of the labyrinth.");
-          break;
-        case 2:
-          strcpy(narration_str, "Will you ever escape, or are you doomed to "
-                                "roam these halls to the end of your days?");
-          break;
-        default:
-          strcpy(narration_str, "You know not, yet here you are, brave "
-                                "explorer, and you must try!");
-          break;
-      }
-      break;
+          return;
+        }
+        break;
+    }
   }
 
   // Finally, display the current narration text:
   text_layer_set_text(g_narration_text_layer, narration_str);
   show_window(g_narration_window);
-
-  // Add text one character at a time via the narration timer:
-  /*g_narration_timer = app_timer_register(NARRATION_TIMER_DURATION,
-                                         narration_timer_callback,
-                                         NULL);*/
 }
 
 /******************************************************************************
@@ -1379,9 +1318,10 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
     }
     else if ((new_achievement_index = get_new_achievement_index()) > -1)
     {
-      strcpy(g_message_str, "Achievement Unlocked!\n\n\"");
-      strcat(g_message_str, get_achievement_name(new_achievement_index));
-      strcat(g_message_str, "\"");
+      snprintf(g_message_str,
+               MESSAGE_STR_LEN,
+               "Achievement Unlocked!\n\n\"%s\"",
+               g_achievement_names[new_achievement_index]);
       show_message_box();
       g_new_achievement_unlocked[new_achievement_index] = false;
     }
@@ -1923,120 +1863,6 @@ void in_game_menu_select_callback(MenuLayer *menu_layer,
       show_narration();
       break;
   }
-}
-
-/******************************************************************************
-   Function: get_achievement_name
-
-Description: Given the integer ID of an achievement, returns that achievement's
-             name as a string.
-
-     Inputs: achievement_num - Value representing the achievement of interest.
-
-    Outputs: Pointer to the name of the achievement.
-******************************************************************************/
-char *get_achievement_name(const int16_t achievement_num)
-{
-  static char name_str[ACHIEVEMENT_NAME_STR_LEN + 1];
-
-  switch(achievement_num)
-  {
-    case FIRST_LEVEL_ACHIEVEMENT:
-      strcpy(name_str, "Novice");
-      break;
-    case LEVEL_10_ACHIEVEMENT:
-      strcpy(name_str, "Apprentice");
-      break;
-    case LEVEL_50_ACHIEVEMENT:
-      strcpy(name_str, "Journeyman");
-      break;
-    case LEVEL_100_ACHIEVEMENT:
-      strcpy(name_str, "Master");
-      break;
-    case LEVEL_500_ACHIEVEMENT:
-      strcpy(name_str, "Dedicated");
-      break;
-    case LEVEL_1000_ACHIEVEMENT:
-      strcpy(name_str, "Devoted");
-      break;
-    case LEVEL_5000_ACHIEVEMENT:
-      strcpy(name_str, "Obsessed");
-      break;
-    case MAX_LEVEL_ACHIEVEMENT:
-      strcpy(name_str, "Fanatical");
-      break;
-    case MAX_POINTS_ACHIEVEMENT:
-      strcpy(name_str, "Addicted");
-      break;
-    case UNDER_THIRTY_SECONDS_ACHIEVEMENT:
-      strcpy(name_str, "Speedy");
-      break;
-    case UNDER_TEN_SECONDS_ACHIEVEMENT:
-      strcpy(name_str, "Super Speedy");
-      break;
-    default: // case ONE_HOUR_ACHIEVEMENT:
-      strcpy(name_str, "Fell Asleep");
-      break;
-  }
-
-  return name_str;
-}
-
-/******************************************************************************
-   Function: get_achievement_description
-
-Description: Given the integer ID of an achievement, returns that achievement's
-             past-tense description as a string.
-
-     Inputs: achievement_num - Value representing the achievement of interest.
-
-    Outputs: Pointer to the description of the achievement.
-******************************************************************************/
-char *get_achievement_description(const int16_t achievement_num)
-{
-  static char description_str[ACHIEVEMENT_DESC_STR_LEN + 1];
-
-  switch(achievement_num)
-  {
-    case FIRST_LEVEL_ACHIEVEMENT:
-      strcpy(description_str, "Completed your first maze!");
-      break;
-    case LEVEL_10_ACHIEVEMENT:
-      strcpy(description_str, "Reached level 10!");
-      break;
-    case LEVEL_50_ACHIEVEMENT:
-      strcpy(description_str, "Reached level 50!");
-      break;
-    case LEVEL_100_ACHIEVEMENT:
-      strcpy(description_str, "Reached level 100!");
-      break;
-    case LEVEL_500_ACHIEVEMENT:
-      strcpy(description_str, "Reached level 500!");
-      break;
-    case LEVEL_1000_ACHIEVEMENT:
-      strcpy(description_str, "Reached level 1000!");
-      break;
-    case LEVEL_5000_ACHIEVEMENT:
-      strcpy(description_str, "Reached level 5000!");
-      break;
-    case MAX_LEVEL_ACHIEVEMENT:
-      strcpy(description_str, "Completed level 9999!");
-      break;
-    case MAX_POINTS_ACHIEVEMENT:
-      strcpy(description_str, "Reached the max. number of points!");
-      break;
-    case UNDER_THIRTY_SECONDS_ACHIEVEMENT:
-      strcpy(description_str, "Completed a maze in < 30 seconds!");
-      break;
-    case UNDER_TEN_SECONDS_ACHIEVEMENT:
-      strcpy(description_str, "Completed a maze in < 10 seconds!");
-      break;
-    default: // case ONE_HOUR_ACHIEVEMENT:
-      strcpy(description_str, "In a maze for one hour!");
-      break;
-  }
-
-  return description_str;
 }
 
 /******************************************************************************

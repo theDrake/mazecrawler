@@ -38,8 +38,8 @@ enum {
 enum {
   CONTROLS_NARRATION,
   GAME_INFO_NARRATION,
-  STATS_NARRATION,
   INTRO_NARRATION,
+  STATS_NARRATION,
   NUM_NARRATION_TYPES
 };
 
@@ -133,6 +133,57 @@ static const GPathInfo COMPASS_PATH_INFO = {
                          {3, -3},
                          {0, 6},
                          {-3, -3}}
+};
+
+static const char *const g_narration_strings[3][4] = {
+  {
+    "       CONTROLS\nForward: \"Up\"\nBack: \"Down\"\nLeft: \"Up\" x 2\nRight: \"Down\" x 2",
+    "More information available online:\n\ndavidcdrake.com/\n           mazecrawler",
+    "Be sure to also check out my PebbleQuest RPG:\n\ndavidcdrake.com/\n           pebblequest",
+    ""
+  },
+  {
+    "MazeCrawler was designed and programmed by David C. Drake:\n\ndavidcdrake.com",
+    "Thanks for playing! And special thanks to Team Pebble for creating these wonderful, fun, and useful devices!",
+    "Be sure to also check out my PebbleQuest RPG:\n\ndavidcdrake.com/\n           pebblequest",
+    ""
+  },
+  {
+    "You have fallen into a vast network of mazes. Each maze has an exit...",
+    "...but each exit leads down to yet another, deeper level of the labyrinth.",
+    "Will you ever escape, or are you doomed to roam these halls to the end of your days?",
+    "You know not, yet here you are, brave explorer, and you must try!"
+  }
+};
+
+static const char *const g_achievement_names[] = {
+  "Novice",
+  "Apprentice",
+  "Journeyman",
+  "Master",
+  "Dedicated",
+  "Devoted",
+  "Obsessed",
+  "Fanatical",
+  "Addicted",
+  "Speedy",
+  "Super Speedy",
+  "Fell Asleep"
+};
+
+static const char *const g_achievement_descriptions[] = {
+  "Completed your first maze!",
+  "Reached level 10!",
+  "Reached level 50!",
+  "Reached level 100!",
+  "Reached level 500!",
+  "Reached level 1000!",
+  "Reached level 5000!",
+  "Completed level 9999!",
+  "Reached the max. number of points!",
+  "Completed a maze in < 30 seconds!",
+  "Completed a maze in < 10 seconds!",
+  "In a maze for one hour!"
 };
 
 /******************************************************************************
@@ -263,8 +314,6 @@ static void in_game_menu_draw_row_callback(GContext* ctx,
 void in_game_menu_select_callback(MenuLayer *menu_layer,
                                   MenuIndex *cell_index,
                                   void *data);
-char *get_achievement_name(const int16_t achievement_num);
-char *get_achievement_description(const int16_t achievement_num);
 int16_t get_num_achievements_unlocked(void);
 int16_t get_new_achievement_index(void);
 GPoint get_floor_center_point(const int16_t depth, const int16_t position);
