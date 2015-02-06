@@ -157,6 +157,10 @@ static const char *const g_narration_strings[3][4] = {
 };
 
 static const char *const g_achievement_names[] = {
+  "Addicted",
+  "Speedy",
+  "Super Speedy",
+  "Fell Asleep",
   "Novice",
   "Apprentice",
   "Journeyman",
@@ -164,14 +168,14 @@ static const char *const g_achievement_names[] = {
   "Dedicated",
   "Devoted",
   "Obsessed",
-  "Fanatical",
-  "Addicted",
-  "Speedy",
-  "Super Speedy",
-  "Fell Asleep"
+  "Fanatical"
 };
 
 static const char *const g_achievement_descriptions[] = {
+  "Reached the max. number of points!",
+  "Completed a maze in < 30 seconds!",
+  "Completed a maze in < 10 seconds!",
+  "In a maze for one hour!",
   "Completed your first maze!",
   "Reached level 10!",
   "Reached level 50!",
@@ -179,11 +183,7 @@ static const char *const g_achievement_descriptions[] = {
   "Reached level 500!",
   "Reached level 1000!",
   "Reached level 5000!",
-  "Completed level 9999!",
-  "Reached the max. number of points!",
-  "Completed a maze in < 30 seconds!",
-  "Completed a maze in < 10 seconds!",
-  "In a maze for one hour!"
+  "Completed level 9999!"
 };
 
 /******************************************************************************
