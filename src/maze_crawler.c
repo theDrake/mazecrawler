@@ -32,7 +32,7 @@ void show_narration(void)
   }
 
   // Determine whether the current narration is finished:
-  if (g_current_narration < INTRO_NARRATION && g_narration_page_num > 2)
+  if (g_current_narration < INTRO_NARRATION && g_narration_page_num > 1)
   {
     if (window_stack_get_top_window() == g_narration_window)
     {

@@ -139,21 +139,21 @@ static const char *const g_narration_strings[3][4] = {
   {
     "       CONTROLS\nForward: \"Up\"\nBack: \"Down\"\nLeft: \"Up\" x 2\nRight: \"Down\" x 2",
     "More information available online:\n\ndavidcdrake.com/\n           mazecrawler",
-    "Be sure to also check out my PebbleQuest RPG:\n\ndavidcdrake.com/\n           pebblequest",
-    ""
+    "",
+    "",
   },
   {
     "MazeCrawler was designed and programmed by David C. Drake:\n\ndavidcdrake.com",
     "Thanks for playing! And special thanks to Team Pebble for creating these wonderful, fun, and useful devices!",
-    "Be sure to also check out my PebbleQuest RPG:\n\ndavidcdrake.com/\n           pebblequest",
-    ""
+    "",
+    "",
   },
   {
     "You have fallen into a vast network of mazes. Each maze has an exit...",
     "...but each exit leads down to yet another, deeper level of the labyrinth.",
     "Will you ever escape, or are you doomed to roam these halls to the end of your days?",
-    "You know not, yet here you are, brave explorer, and you must try!"
-  }
+    "You know not, yet here you are, brave explorer, and you must try!",
+  },
 };
 
 static const char *const g_achievement_names[] = {
@@ -168,7 +168,7 @@ static const char *const g_achievement_names[] = {
   "Dedicated",
   "Devoted",
   "Obsessed",
-  "Fanatical"
+  "Fanatical",
 };
 
 static const char *const g_achievement_descriptions[] = {
@@ -183,7 +183,7 @@ static const char *const g_achievement_descriptions[] = {
   "Reached level 500!",
   "Reached level 1000!",
   "Reached level 5000!",
-  "Completed level 9999!"
+  "Completed level 9999!",
 };
 
 /******************************************************************************
