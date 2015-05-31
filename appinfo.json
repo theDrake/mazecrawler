@@ -9,10 +9,14 @@
     "resources": {
         "media": []
     },
+    "sdkVersion": "3",
     "shortName": "MazeCrawler",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
     "uuid": "0d03bd47-b5d2-4644-b746-b056b5492383",
-    "versionCode": 1,
-    "versionLabel": "1.6",
+    "versionLabel": "2.0",
     "watchapp": {
         "watchface": false
     }
