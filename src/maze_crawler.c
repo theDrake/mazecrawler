@@ -4,7 +4,7 @@
      Author: David C. Drake (http://davidcdrake.com)
 
 Description: Function definitions for MazeCrawler, a first-person 3D maze-
-             navigation game developed for the Pebble smartwatch (SDK 2). More
+             navigation game developed for the Pebble smartwatch (SDK 3). More
              information available online: http://davidcdrake.com/mazecrawler
 ******************************************************************************/
 
@@ -687,6 +687,14 @@ void init_maze(void)
   g_maze->height = rand() % (MAX_MAZE_HEIGHT - MIN_MAZE_HEIGHT + 1) +
                      MIN_MAZE_HEIGHT;
 
+  // Determine the non-black background color (always white on Aplite watches):
+#ifdef PBL_COLOR
+  g_current_background_color = g_background_colors[g_player->level %
+                                                     NUM_BACKGROUND_COLORS];
+#else
+  g_current_background_color = GColorWhite;
+#endif
+
   // Set all cells to "solid":
   for (i = 0; i < g_maze->width; ++i)
   {
@@ -877,7 +885,7 @@ void draw_floor_and_ceiling(GContext *ctx)
                               [STRAIGHT_AHEAD]
                               [TOP_LEFT].y;
   }
-  graphics_context_set_stroke_color(ctx, GColorWhite);
+  graphics_context_set_stroke_color(ctx, g_current_background_color);
   for (y = 0; y < max_y; ++y)
   {
     // Determine horizontal distance between points:
@@ -1110,7 +1118,7 @@ bool draw_wall(GContext *ctx,
       if ((j + (int16_t) ((i - upper_left.x) * dy_over_dx) +
           (i % 2 == 0 ? 0 : half_shading_offset)) % shading_offset == 0)
       {
-        graphics_context_set_stroke_color(ctx, GColorWhite);
+        graphics_context_set_stroke_color(ctx, g_current_background_color);
       }
       else
       {
@@ -1227,7 +1235,7 @@ Description: Draws a filled ellipse according to given specifications.
                         graphics frame).
              h_radius - Horizontal radius.
              v_radius - Vertical radius.
-             color    - Desired color ("GColorBlack" or "GColorWhite").
+             color    - Desired color.
 
     Outputs: Returns "true" if the ellipse is successfully drawn on the screen
              (i.e., the ellipse isn't located entirely off-screen).
@@ -2228,6 +2236,19 @@ void init(void)
 
   g_game_paused = true;
   srand(time(0));
+
+#ifdef PBL_COLOR
+  g_background_colors[0] = GColorDarkCandyAppleRed;
+  g_background_colors[1] = GColorWindsorTan;
+  g_background_colors[2] = GColorLightGray;
+  g_background_colors[3] = GColorRoseVale;
+  g_background_colors[4] = GColorCeleste;
+  g_background_colors[5] = GColorLimerick;
+  g_background_colors[6] = GColorCadetBlue;
+  g_background_colors[7] = GColorChromeYellow;
+  g_background_colors[8] = GColorMayGreen;
+  g_background_colors[9] = GColorBrass;
+#endif
 
   // Graphics window initialization:
   g_graphics_window = window_create();

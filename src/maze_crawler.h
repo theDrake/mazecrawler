@@ -4,7 +4,7 @@
      Author: David C. Drake (http://davidcdrake.com)
 
 Description: Header file for MazeCrawler, a first-person 3D maze-navigation
-             game developed for the Pebble smartwatch (SDK 2). More information
+             game developed for the Pebble smartwatch (SDK 3). More information
              available online: http://davidcdrake.com/mazecrawler
 ******************************************************************************/
 
@@ -239,6 +239,12 @@ int16_t g_new_best_time,
 bool g_game_paused,
      g_new_achievement_unlocked[NUM_ACHIEVEMENTS];
 GPath *g_compass_path;
+GColor g_current_background_color;
+
+#ifdef PBL_COLOR
+#define NUM_BACKGROUND_COLORS 10
+GColor g_background_colors[NUM_BACKGROUND_COLORS];
+#endif
 
 /******************************************************************************
   Function Declarations
