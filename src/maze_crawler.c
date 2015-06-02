@@ -2422,7 +2422,9 @@ Description: Deinitializes the MazeCrawler Pebble game.
 void deinit(void)
 {
   save_game_data();
+#ifdef PBL_COLOR
   status_bar_layer_destroy(g_status_bar);
+#endif
   deinit_narration();
   menu_layer_destroy(g_main_menu);
   window_destroy(g_main_menu_window);
