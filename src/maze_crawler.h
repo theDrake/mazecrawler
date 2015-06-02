@@ -253,10 +253,7 @@ GColor g_current_background_color;
 #ifdef PBL_COLOR
 #define NUM_BACKGROUND_COLORS 10
 GColor g_background_colors[NUM_BACKGROUND_COLORS];
-static StatusBarLayer *g_main_menu_status_bar,
-                      *g_in_game_menu_status_bar,
-                      *g_narration_status_bar,
-                      *g_graphics_status_bar;
+static StatusBarLayer *g_status_bar;
 #endif
 
 /******************************************************************************
