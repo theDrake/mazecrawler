@@ -74,25 +74,34 @@ enum {
 #define SCREEN_WIDTH               144
 #define SCREEN_HEIGHT              168
 #define HALF_SCREEN_WIDTH          (SCREEN_WIDTH / 2)
-#define HALF_SCREEN_HEIGHT         (SCREEN_HEIGHT / 2 - STATUS_BAR_HEIGHT * 0.75)
 #define STATUS_BAR_HEIGHT          16 // Applies to top and bottom status bars.
+#define STATUS_BAR_PADDING         4
 #define FIRST_WALL_OFFSET          STATUS_BAR_HEIGHT
 #define MIN_WALL_HEIGHT            STATUS_BAR_HEIGHT
 #define GRAPHICS_FRAME_HEIGHT      (SCREEN_HEIGHT - 2 * STATUS_BAR_HEIGHT)
 #define GRAPHICS_FRAME_WIDTH       SCREEN_WIDTH
+
+#ifdef PBL_COLOR
+#define FULL_SCREEN_FRAME          GRect(0, STATUS_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT - STATUS_BAR_HEIGHT)
+#define GRAPHICS_FRAME             GRect(0, STATUS_BAR_HEIGHT, SCREEN_WIDTH, GRAPHICS_FRAME_HEIGHT)
+#define LEVEL_TEXT_LAYER_FRAME     GRect(STATUS_BAR_PADDING, STATUS_BAR_HEIGHT + GRAPHICS_FRAME_HEIGHT, HALF_SCREEN_WIDTH, STATUS_BAR_HEIGHT)
+#define TIME_TEXT_LAYER_FRAME      GRect(HALF_SCREEN_WIDTH, STATUS_BAR_HEIGHT + GRAPHICS_FRAME_HEIGHT, HALF_SCREEN_WIDTH - STATUS_BAR_PADDING, STATUS_BAR_HEIGHT)
+#define MESSAGE_BOX_FRAME          GRect(10, STATUS_BAR_HEIGHT + 15, SCREEN_WIDTH - 20, GRAPHICS_FRAME_HEIGHT - 30)
+#define NARRATION_TEXT_LAYER_FRAME GRect(2, STATUS_BAR_HEIGHT, SCREEN_WIDTH - 4, SCREEN_HEIGHT)
+#else
 #define FULL_SCREEN_FRAME          GRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - STATUS_BAR_HEIGHT)
 #define GRAPHICS_FRAME             GRect(0, 0, SCREEN_WIDTH, GRAPHICS_FRAME_HEIGHT)
 #define LEVEL_TEXT_LAYER_FRAME     GRect(STATUS_BAR_PADDING, GRAPHICS_FRAME_HEIGHT, HALF_SCREEN_WIDTH, STATUS_BAR_HEIGHT)
 #define TIME_TEXT_LAYER_FRAME      GRect(HALF_SCREEN_WIDTH, GRAPHICS_FRAME_HEIGHT, HALF_SCREEN_WIDTH - STATUS_BAR_PADDING, STATUS_BAR_HEIGHT)
 #define MESSAGE_BOX_FRAME          GRect(10, 15, SCREEN_WIDTH - 20, GRAPHICS_FRAME_HEIGHT - 30)
 #define NARRATION_TEXT_LAYER_FRAME GRect(2, 0, SCREEN_WIDTH - 4, SCREEN_HEIGHT)
-#define SCROLL_HEIGHT_OFFSET       10 // Ensures descenders (e.g., 'y') are fully visible.
+#endif
+
 #define STATUS_BAR_FONT            fonts_get_system_font(FONT_KEY_GOTHIC_14)
 #define MESSAGE_BOX_FONT           fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD)
 #define NARRATION_FONT             fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD)
 #define NO_CORNER_RADIUS           0
 #define COMPASS_RADIUS             5
-#define STATUS_BAR_PADDING         4
 #define MIN_MAZE_WIDTH             10 // Min. no. of cells per side.
 #define MIN_MAZE_HEIGHT            MIN_MAZE_WIDTH
 #define MAX_MAZE_WIDTH             20 // Max. no. of cells per side.
@@ -244,6 +253,10 @@ GColor g_current_background_color;
 #ifdef PBL_COLOR
 #define NUM_BACKGROUND_COLORS 10
 GColor g_background_colors[NUM_BACKGROUND_COLORS];
+static StatusBarLayer *g_main_menu_status_bar,
+                      *g_in_game_menu_status_bar,
+                      *g_narration_status_bar,
+                      *g_graphics_status_bar;
 #endif
 
 /******************************************************************************
