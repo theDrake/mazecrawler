@@ -2329,6 +2329,7 @@ void init(void)
 
   // Main menu initialization:
   g_main_menu_window = window_create();
+  window_set_background_color(g_main_menu_window, GColorClear);
   g_main_menu        = menu_layer_create(FULL_SCREEN_FRAME);
   menu_layer_set_callbacks(g_main_menu, NULL, (MenuLayerCallbacks)
   {
@@ -2339,9 +2340,15 @@ void init(void)
   menu_layer_set_click_config_onto_window(g_main_menu, g_main_menu_window);
   layer_add_child(window_get_root_layer(g_main_menu_window),
                   menu_layer_get_layer(g_main_menu));
+#ifdef PBL_COLOR
+  g_status_bar = status_bar_layer_create();
+  layer_add_child(window_get_root_layer(g_main_menu_window),
+                  status_bar_layer_get_layer(g_status_bar));
+#endif
 
   // In-game menu initialization:
   g_in_game_menu_window = window_create();
+  window_set_background_color(g_in_game_menu_window, GColorClear);
   g_in_game_menu        = menu_layer_create(FULL_SCREEN_FRAME);
   menu_layer_set_callbacks(g_in_game_menu, NULL, (MenuLayerCallbacks)
   {
@@ -2367,13 +2374,6 @@ void init(void)
                                 GTextAlignmentCenter);
   layer_add_child(window_get_root_layer(g_message_box_window),
                   text_layer_get_layer(g_message_box_text_layer));
-
-  // Status bar initialization (Basalt watches only):
-#ifdef PBL_COLOR
-  g_status_bar = status_bar_layer_create();
-  layer_add_child(window_get_root_layer(g_graphics_window),
-                  status_bar_layer_get_layer(g_status_bar));
-#endif
 
   // Focus service subscription:
   app_focus_service_subscribe(app_focus_handler);
