@@ -2315,6 +2315,9 @@ void init(void)
     .disappear = graphics_window_disappear,
   });
 #ifdef PBL_COLOR
+  g_graphics_status_bar = status_bar_layer_create();
+  layer_add_child(window_get_root_layer(g_graphics_window),
+                  status_bar_layer_get_layer(g_graphics_status_bar));
   g_background_colors[0] = GColorDarkCandyAppleRed;
   g_background_colors[1] = GColorWindsorTan;
   g_background_colors[2] = GColorLightGray;
@@ -2329,7 +2332,6 @@ void init(void)
 
   // Main menu initialization:
   g_main_menu_window = window_create();
-  window_set_background_color(g_main_menu_window, GColorClear);
   g_main_menu        = menu_layer_create(FULL_SCREEN_FRAME);
   menu_layer_set_callbacks(g_main_menu, NULL, (MenuLayerCallbacks)
   {
@@ -2341,9 +2343,9 @@ void init(void)
   layer_add_child(window_get_root_layer(g_main_menu_window),
                   menu_layer_get_layer(g_main_menu));
 #ifdef PBL_COLOR
-  g_status_bar = status_bar_layer_create();
+  g_main_menu_status_bar = status_bar_layer_create();
   layer_add_child(window_get_root_layer(g_main_menu_window),
-                  status_bar_layer_get_layer(g_status_bar));
+                  status_bar_layer_get_layer(g_main_menu_status_bar));
 #endif
 
   // In-game menu initialization:
@@ -2423,7 +2425,8 @@ void deinit(void)
 {
   save_game_data();
 #ifdef PBL_COLOR
-  status_bar_layer_destroy(g_status_bar);
+  status_bar_layer_destroy(g_main_menu_status_bar);
+  status_bar_layer_destroy(g_graphics_status_bar);
 #endif
   deinit_narration();
   menu_layer_destroy(g_main_menu);
