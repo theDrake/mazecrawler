@@ -2266,6 +2266,11 @@ void init_narration(void)
     layer_add_child(window_get_root_layer(g_narration_window),
                     text_layer_get_layer(g_narration_text_layer));
     g_narration_page_num = 0;
+#ifdef PBL_COLOR
+    g_narration_status_bar = status_bar_layer_create();
+    layer_add_child(window_get_root_layer(g_narration_window),
+                    status_bar_layer_get_layer(g_narration_status_bar));
+#endif
   }
 }
 
@@ -2350,7 +2355,6 @@ void init(void)
 
   // In-game menu initialization:
   g_in_game_menu_window = window_create();
-  window_set_background_color(g_in_game_menu_window, GColorClear);
   g_in_game_menu        = menu_layer_create(FULL_SCREEN_FRAME);
   menu_layer_set_callbacks(g_in_game_menu, NULL, (MenuLayerCallbacks)
   {
@@ -2362,6 +2366,11 @@ void init(void)
                                           g_in_game_menu_window);
   layer_add_child(window_get_root_layer(g_in_game_menu_window),
                   menu_layer_get_layer(g_in_game_menu));
+#ifdef PBL_COLOR
+  g_in_game_menu_status_bar = status_bar_layer_create();
+  layer_add_child(window_get_root_layer(g_in_game_menu_window),
+                  status_bar_layer_get_layer(g_in_game_menu_status_bar));
+#endif
 
   // Message box window intialization:
   g_message_box_window = window_create();
@@ -2426,6 +2435,8 @@ void deinit(void)
   save_game_data();
 #ifdef PBL_COLOR
   status_bar_layer_destroy(g_main_menu_status_bar);
+  status_bar_layer_destroy(g_in_game_menu_status_bar);
+  status_bar_layer_destroy(g_narration_status_bar);
   status_bar_layer_destroy(g_graphics_status_bar);
 #endif
   deinit_narration();
