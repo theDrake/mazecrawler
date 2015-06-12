@@ -78,7 +78,7 @@ enum {
 #define STATUS_BAR_PADDING         4
 #define FIRST_WALL_OFFSET          STATUS_BAR_HEIGHT
 #define MIN_WALL_HEIGHT            STATUS_BAR_HEIGHT
-#define GRAPHICS_FRAME_HEIGHT      (SCREEN_HEIGHT - STATUS_BAR_HEIGHT)
+#define GRAPHICS_FRAME_HEIGHT      (SCREEN_HEIGHT - 2 * STATUS_BAR_HEIGHT)
 #define GRAPHICS_FRAME_WIDTH       SCREEN_WIDTH
 
 #ifdef PBL_COLOR
@@ -253,10 +253,10 @@ GColor g_current_background_color;
 #ifdef PBL_COLOR
 #define NUM_BACKGROUND_COLORS 10
 GColor g_background_colors[NUM_BACKGROUND_COLORS];
-static StatusBarLayer *g_main_menu_status_bar,
-                      *g_in_game_menu_status_bar,
-                      *g_narration_status_bar,
-                      *g_graphics_status_bar;
+StatusBarLayer *g_main_menu_status_bar,
+               *g_in_game_menu_status_bar,
+               *g_narration_status_bar,
+               *g_graphics_status_bar;
 #endif
 
 /******************************************************************************
