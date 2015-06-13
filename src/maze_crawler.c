@@ -689,6 +689,10 @@ void init_maze(void)
   int16_t i, j, maze_carver_direction;
   GPoint exit, maze_carver_position;
 
+#ifdef PBL_COLOR
+  g_current_color_scheme = g_player->level % NUM_BACKGROUND_COLOR_SCHEMES;
+#endif
+
   // Determine width and height:
   g_maze->width  = rand() % (MAX_MAZE_WIDTH - MIN_MAZE_WIDTH + 1) +
                      MIN_MAZE_WIDTH;
@@ -873,12 +877,28 @@ Description: Draws the floor and ceiling.
 void draw_floor_and_ceiling(GContext *ctx)
 {
 #ifdef PBL_COLOR
-/*  int16_t x, y;
+  int16_t depth;
 
-  graphics_fill_rect(ctx,
-                     GRect(),
-                     NO_CORNER_RADIUS,
-                     GCornerNone);*/
+  graphics_context_set_fill_color(g_background_colors[g_current_color_scheme]
+                                                     [depth]);
+  for (depth = NUM_BACKGROUND_COLORS_PER_SCHEME; depth >= 0; --depth)
+  {
+    graphics_fill_rect(ctx,
+                       GRect(0,
+                             0,
+                             GRAPHICS_FRAME_WIDTH,
+                             g_back_wall_coords[depth][0][TOP_LEFT].y +
+                               STATUS_BAR_HEIGHT),
+                       NO_CORNER_RADIUS,
+                       GCornerNone);
+    graphics_fill_rect(ctx,
+                       GRect(0,
+                             GRAPHICS_FRAME_HEIGHT + STATUS_BAR_HEIGHT,
+                             GRAPHICS_FRAME_WIDTH,
+                             g_back_wall_coords[depth][0][TOP_LEFT].y * -1),
+                       NO_CORNER_RADIUS,
+                       GCornerNone);
+  }
 #else
   int16_t x, y, max_y, shading_offset;
 
