@@ -882,17 +882,9 @@ void draw_floor_and_ceiling(GContext *ctx)
 #else
   int16_t x, y, max_y, shading_offset;
 
-  x     = 2;
-  max_y = g_back_wall_coords[MAX_VISIBILITY_DEPTH - x]
+  max_y = g_back_wall_coords[MAX_VISIBILITY_DEPTH - 2]
                             [STRAIGHT_AHEAD]
                             [TOP_LEFT].y;
-  while (max_y > GRAPHICS_FRAME_HEIGHT / 2 - MIN_WALL_HEIGHT / 2 &&
-         x <= MAX_VISIBILITY_DEPTH)
-  {
-    max_y = g_back_wall_coords[MAX_VISIBILITY_DEPTH - ++x]
-                              [STRAIGHT_AHEAD]
-                              [TOP_LEFT].y;
-  }
   graphics_context_set_stroke_color(ctx, GColorWhite);
   for (y = 0; y < max_y; ++y)
   {
