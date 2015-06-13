@@ -697,8 +697,7 @@ void init_maze(void)
 
   // Determine the non-black background color (always white on Aplite watches):
 #ifdef PBL_COLOR
-  g_current_background_color = g_background_colors[g_player->level %
-                                                     NUM_BACKGROUND_COLORS];
+  g_current_background_color = g_player->level % NUM_BACKGROUND_COLOR_SCHEMES;
 #else
   g_current_background_color = GColorWhite;
 #endif
@@ -880,6 +879,8 @@ Description: Draws the floor and ceiling.
 ******************************************************************************/
 void draw_floor_and_ceiling(GContext *ctx)
 {
+#ifdef PBL_COLOR
+#else
   int16_t x, y, max_y, shading_offset;
 
   x     = 2;
@@ -908,16 +909,11 @@ void draw_floor_and_ceiling(GContext *ctx)
          x += shading_offset)
     {
       // Draw one point on the ceiling and one on the floor:
-#ifdef PBL_COLOR
-      graphics_draw_pixel(ctx, GPoint(x, y + STATUS_BAR_HEIGHT));
-      graphics_draw_pixel(ctx, GPoint(x, GRAPHICS_FRAME_HEIGHT - y +
-                                           STATUS_BAR_HEIGHT));
-#else
       graphics_draw_pixel(ctx, GPoint(x, y));
       graphics_draw_pixel(ctx, GPoint(x, GRAPHICS_FRAME_HEIGHT - y));
-#endif
     }
   }
+#endif
 }
 
 /******************************************************************************
@@ -2323,16 +2319,48 @@ void init(void)
   g_graphics_status_bar = status_bar_layer_create();
   layer_add_child(window_get_root_layer(g_graphics_window),
                   status_bar_layer_get_layer(g_graphics_status_bar));
-  g_background_colors[0] = GColorDarkCandyAppleRed;
-  g_background_colors[1] = GColorWindsorTan;
-  g_background_colors[2] = GColorLightGray;
-  g_background_colors[3] = GColorRoseVale;
-  g_background_colors[4] = GColorCeleste;
-  g_background_colors[5] = GColorLimerick;
-  g_background_colors[6] = GColorCadetBlue;
-  g_background_colors[7] = GColorChromeYellow;
-  g_background_colors[8] = GColorMayGreen;
-  g_background_colors[9] = GColorBrass;
+  g_background_colors = {
+      // Blue scheme:
+    {
+      GColorPictonBlue,
+      GColorVeryLightBlue,
+      GColorBlueMoon,
+      GColorBlue,
+      GColorDukeBlue,
+    },
+      // Red/orange scheme:
+    {
+      GColorRajah,
+      GColorWindsorTan,
+      GColorRoseVale,
+      GColorDarkCandyAppleRed,
+      GColorBulgarianRose,
+    },
+      // Blue/green scheme:
+    {
+      GColorMediumSpringGreen,
+      GColorCadetBlue,
+      GColorTiffanyBlue,
+      GColorMidnightGreen,
+      GColorDarkGreen,
+    },
+      // Purple scheme:
+    {
+      GColorLavenderIndigo,
+      GColorVividViolet,
+      GColorPurple,
+      GColorIndigo,
+      GColorImperialPurple,
+    },
+      // Green/yellow scheme:
+    {
+      GColorChromeYellow,
+      GColorBrass,
+      GColorLimerick,
+      GColorArmyGreen,
+      GColorDarkGreen,
+    },
+  };
 #endif
 
   // Main menu initialization:
