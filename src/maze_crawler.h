@@ -248,7 +248,6 @@ int16_t g_new_best_time,
 bool g_game_paused,
      g_new_achievement_unlocked[NUM_ACHIEVEMENTS];
 GPath *g_compass_path;
-GColor g_current_background_color;
 
 #ifdef PBL_COLOR
 #define NUM_BACKGROUND_COLOR_SCHEMES     5

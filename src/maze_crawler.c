@@ -695,13 +695,6 @@ void init_maze(void)
   g_maze->height = rand() % (MAX_MAZE_HEIGHT - MIN_MAZE_HEIGHT + 1) +
                      MIN_MAZE_HEIGHT;
 
-  // Determine the non-black background color (always white on Aplite watches):
-#ifdef PBL_COLOR
-  g_current_background_color = g_player->level % NUM_BACKGROUND_COLOR_SCHEMES;
-#else
-  g_current_background_color = GColorWhite;
-#endif
-
   // Set all cells to "solid":
   for (i = 0; i < g_maze->width; ++i)
   {
@@ -880,6 +873,12 @@ Description: Draws the floor and ceiling.
 void draw_floor_and_ceiling(GContext *ctx)
 {
 #ifdef PBL_COLOR
+/*  int16_t x, y;
+
+  graphics_fill_rect(ctx,
+                     GRect(),
+                     NO_CORNER_RADIUS,
+                     GCornerNone);*/
 #else
   int16_t x, y, max_y, shading_offset;
 
@@ -894,7 +893,7 @@ void draw_floor_and_ceiling(GContext *ctx)
                               [STRAIGHT_AHEAD]
                               [TOP_LEFT].y;
   }
-  graphics_context_set_stroke_color(ctx, g_current_background_color);
+  graphics_context_set_stroke_color(ctx, GColorWhite);
   for (y = 0; y < max_y; ++y)
   {
     // Determine horizontal distance between points:
@@ -1147,7 +1146,7 @@ bool draw_wall(GContext *ctx,
       if ((j + (int16_t) ((i - upper_left.x) * dy_over_dx) +
           (i % 2 == 0 ? 0 : half_shading_offset)) % shading_offset == 0)
       {
-        graphics_context_set_stroke_color(ctx, g_current_background_color);
+        graphics_context_set_stroke_color(ctx, GColorWhite);
       }
       else
       {
@@ -2319,48 +2318,41 @@ void init(void)
   g_graphics_status_bar = status_bar_layer_create();
   layer_add_child(window_get_root_layer(g_graphics_window),
                   status_bar_layer_get_layer(g_graphics_status_bar));
-  g_background_colors = {
-      // Blue scheme:
-    {
-      GColorPictonBlue,
-      GColorVeryLightBlue,
-      GColorBlueMoon,
-      GColorBlue,
-      GColorDukeBlue,
-    },
-      // Red/orange scheme:
-    {
-      GColorRajah,
-      GColorWindsorTan,
-      GColorRoseVale,
-      GColorDarkCandyAppleRed,
-      GColorBulgarianRose,
-    },
-      // Blue/green scheme:
-    {
-      GColorMediumSpringGreen,
-      GColorCadetBlue,
-      GColorTiffanyBlue,
-      GColorMidnightGreen,
-      GColorDarkGreen,
-    },
-      // Purple scheme:
-    {
-      GColorLavenderIndigo,
-      GColorVividViolet,
-      GColorPurple,
-      GColorIndigo,
-      GColorImperialPurple,
-    },
-      // Green/yellow scheme:
-    {
-      GColorChromeYellow,
-      GColorBrass,
-      GColorLimerick,
-      GColorArmyGreen,
-      GColorDarkGreen,
-    },
-  };
+
+  // Blue background color scheme:
+  g_background_colors[0][0] = GColorPictonBlue;
+  g_background_colors[0][1] = GColorVeryLightBlue;
+  g_background_colors[0][2] = GColorBlueMoon;
+  g_background_colors[0][3] = GColorBlue;
+  g_background_colors[0][4] = GColorDukeBlue;
+
+  // Red/orange background color scheme:
+  g_background_colors[1][0] = GColorRajah;
+  g_background_colors[1][1] = GColorWindsorTan;
+  g_background_colors[1][2] = GColorRoseVale;
+  g_background_colors[1][3] = GColorDarkCandyAppleRed;
+  g_background_colors[1][4] = GColorBulgarianRose;
+
+  // Blue/green background color scheme:
+  g_background_colors[2][0] = GColorMediumSpringGreen;
+  g_background_colors[2][1] = GColorCadetBlue;
+  g_background_colors[2][2] = GColorTiffanyBlue;
+  g_background_colors[2][3] = GColorMidnightGreen;
+  g_background_colors[2][4] = GColorDarkGreen;
+
+  // Purple background color scheme:
+  g_background_colors[3][0] = GColorLavenderIndigo;
+  g_background_colors[3][1] = GColorVividViolet;
+  g_background_colors[3][2] = GColorPurple;
+  g_background_colors[3][3] = GColorIndigo;
+  g_background_colors[3][4] = GColorImperialPurple;
+
+  // Green/yellow background color scheme:
+  g_background_colors[4][0] = GColorChromeYellow;
+  g_background_colors[4][1] = GColorBrass;
+  g_background_colors[4][2] = GColorLimerick;
+  g_background_colors[4][3] = GColorArmyGreen;
+  g_background_colors[4][4] = GColorDarkGreen;
 #endif
 
   // Main menu initialization:
