@@ -252,9 +252,9 @@ GPath *g_compass_path;
 #ifdef PBL_COLOR
 #define NUM_BACKGROUND_COLOR_SCHEMES     5
 #define NUM_BACKGROUND_COLORS_PER_SCHEME 5
-GColor g_current_color_scheme,
-       g_background_colors[NUM_BACKGROUND_COLOR_SCHEMES]
+GColor g_background_colors[NUM_BACKGROUND_COLOR_SCHEMES]
                           [NUM_BACKGROUND_COLORS_PER_SCHEME];
+int8_t g_current_color_scheme;
 StatusBarLayer *g_main_menu_status_bar,
                *g_in_game_menu_status_bar,
                *g_narration_status_bar,
