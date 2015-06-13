@@ -879,11 +879,11 @@ void draw_floor_and_ceiling(GContext *ctx)
 #ifdef PBL_COLOR
   int16_t depth;
 
-  graphics_context_set_fill_color(ctx,
-                                  g_background_colors[g_current_color_scheme]
-                                                     [depth]);
   for (depth = NUM_BACKGROUND_COLORS_PER_SCHEME; depth >= 0; --depth)
   {
+    graphics_context_set_fill_color(ctx,
+                                    g_background_colors[g_current_color_scheme]
+                                                       [depth]);
     graphics_fill_rect(ctx,
                        GRect(0,
                              0,
