@@ -877,36 +877,17 @@ Description: Draws the floor and ceiling.
 void draw_floor_and_ceiling(GContext *ctx)
 {
 #ifdef PBL_COLOR
-  int16_t depth;
-
-  for (depth = NUM_BACKGROUND_COLORS_PER_SCHEME; depth >= 0; --depth)
-  {
-    graphics_context_set_fill_color(ctx,
-                                    g_background_colors[g_current_color_scheme]
-                                                       [depth]);
-    graphics_fill_rect(ctx,
-                       GRect(0,
-                             0,
-                             GRAPHICS_FRAME_WIDTH,
-                             g_back_wall_coords[depth][0][TOP_LEFT].y +
-                               STATUS_BAR_HEIGHT),
-                       NO_CORNER_RADIUS,
-                       GCornerNone);
-    graphics_fill_rect(ctx,
-                       GRect(0,
-                             GRAPHICS_FRAME_HEIGHT + STATUS_BAR_HEIGHT,
-                             GRAPHICS_FRAME_WIDTH,
-                             g_back_wall_coords[depth][0][TOP_LEFT].y * -1),
-                       NO_CORNER_RADIUS,
-                       GCornerNone);
-  }
-#else
+  int16_t depth = 0;
+#endif
   int16_t x, y, max_y, shading_offset;
 
-  max_y = g_back_wall_coords[MAX_VISIBILITY_DEPTH - 2]
-                            [STRAIGHT_AHEAD]
-                            [TOP_LEFT].y;
+  max_y = g_back_wall_coords[MAX_VISIBILITY_DEPTH - 2][0][TOP_LEFT].y;
+#ifdef PBL_COLOR
+  graphics_context_set_stroke_color(ctx,
+                           g_background_colors[g_current_color_scheme][depth]);
+#else
   graphics_context_set_stroke_color(ctx, GColorWhite);
+#endif
   for (y = 0; y < max_y; ++y)
   {
     // Determine horizontal distance between points:
@@ -916,16 +897,29 @@ void draw_floor_and_ceiling(GContext *ctx)
     {
       shading_offset++;
     }
+#ifdef PBL_COLOR
+    if (y > g_back_wall_coords[depth][0][TOP_LEFT].y)
+    {
+      depth++;
+      graphics_context_set_stroke_color(ctx,
+                           g_background_colors[g_current_color_scheme][depth]);
+    }
+#endif
     for (x = y % 2 ? 0 : (shading_offset / 2) + (shading_offset % 2);
          x < GRAPHICS_FRAME_WIDTH;
          x += shading_offset)
     {
       // Draw one point on the ceiling and one on the floor:
+#ifdef PBL_COLOR
+      graphics_draw_pixel(ctx, GPoint(x, y + STATUS_BAR_HEIGHT));
+      graphics_draw_pixel(ctx, GPoint(x, GRAPHICS_FRAME_HEIGHT - y +
+                                           STATUS_BAR_HEIGHT));
+#else
       graphics_draw_pixel(ctx, GPoint(x, y));
       graphics_draw_pixel(ctx, GPoint(x, GRAPHICS_FRAME_HEIGHT - y));
+#endif
     }
   }
-#endif
 }
 
 /******************************************************************************
