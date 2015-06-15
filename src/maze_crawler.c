@@ -876,16 +876,10 @@ Description: Draws the floor and ceiling.
 ******************************************************************************/
 void draw_floor_and_ceiling(GContext *ctx)
 {
-#ifdef PBL_COLOR
-  int16_t depth = 0;
-#endif
   int16_t x, y, max_y, shading_offset;
 
   max_y = g_back_wall_coords[MAX_VISIBILITY_DEPTH - 2][0][TOP_LEFT].y;
-#ifdef PBL_COLOR
-  graphics_context_set_stroke_color(ctx,
-                           g_background_colors[g_current_color_scheme][depth]);
-#else
+#ifdef PBL_BW
   graphics_context_set_stroke_color(ctx, GColorWhite);
 #endif
   for (y = 0; y < max_y; ++y)
@@ -898,12 +892,11 @@ void draw_floor_and_ceiling(GContext *ctx)
       shading_offset++;
     }
 #ifdef PBL_COLOR
-    if (y > g_back_wall_coords[depth][0][TOP_LEFT].y)
-    {
-      depth++;
-      graphics_context_set_stroke_color(ctx,
-                           g_background_colors[g_current_color_scheme][depth]);
-    }
+    graphics_context_set_stroke_color(ctx,
+      g_background_colors[g_current_color_scheme]
+                         [shading_offset > NUM_BACKGROUND_COLORS_PER_SCHEME ?
+                            NUM_BACKGROUND_COLORS_PER_SCHEME - 1            :
+                            shading_offset - 1]);
 #endif
     for (x = y % 2 ? 0 : (shading_offset / 2) + (shading_offset % 2);
          x < GRAPHICS_FRAME_WIDTH;
@@ -1153,7 +1146,16 @@ bool draw_wall(GContext *ctx,
       if ((j + (int16_t) ((i - upper_left.x) * dy_over_dx) +
           (i % 2 == 0 ? 0 : half_shading_offset)) % shading_offset == 0)
       {
+#ifdef PBL_COLOR
+        graphics_context_set_stroke_color(ctx,
+          g_background_colors[g_current_color_scheme]
+                             [shading_offset >
+                                NUM_BACKGROUND_COLORS_PER_SCHEME       ?
+                                  NUM_BACKGROUND_COLORS_PER_SCHEME - 1 :
+                                  shading_offset - 1]);
+#else
         graphics_context_set_stroke_color(ctx, GColorWhite);
+#endif
       }
       else
       {
