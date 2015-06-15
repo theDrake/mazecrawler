@@ -251,7 +251,7 @@ GPath *g_compass_path;
 
 #ifdef PBL_COLOR
 #define NUM_BACKGROUND_COLOR_SCHEMES     5
-#define NUM_BACKGROUND_COLORS_PER_SCHEME 5
+#define NUM_BACKGROUND_COLORS_PER_SCHEME 10
 GColor g_background_colors[NUM_BACKGROUND_COLOR_SCHEMES]
                           [NUM_BACKGROUND_COLORS_PER_SCHEME];
 int8_t g_current_color_scheme;
