@@ -1113,6 +1113,7 @@ bool draw_wall(GContext *ctx,
 {
   int16_t i, j, dx, dy, shading_offset, half_shading_offset;
   float dy_over_dx;
+  GColor primary_color = GColorWhite;
 
   if (upper_left.x >= GRAPHICS_FRAME_WIDTH || upper_right.x < 0)
   {
@@ -1125,11 +1126,9 @@ bool draw_wall(GContext *ctx,
   dy_over_dx = (float) dy / dx;              // Negative for right-side walls.
   for (i = upper_left.x; i <= upper_right.x && i < GRAPHICS_FRAME_WIDTH; ++i)
   {
-    // Calculate a new shading offset for each "x" value:
+    // Determine vertical distance between points:
     shading_offset = 1 + ((upper_left.y + (i - upper_left.x) * dy_over_dx) /
                           MAX_VISIBILITY_DEPTH);
-
-    // Round up, if applicable:
     if ((int16_t) (upper_left.y + (i - upper_left.x) * dy_over_dx) %
           MAX_VISIBILITY_DEPTH >=
             MAX_VISIBILITY_DEPTH / 2 + MAX_VISIBILITY_DEPTH % 2)
@@ -1137,6 +1136,12 @@ bool draw_wall(GContext *ctx,
       shading_offset++;
     }
     half_shading_offset = (shading_offset / 2) + (shading_offset % 2);
+#ifdef PBL_COLOR
+    primary_color = g_background_colors[g_current_color_scheme]
+                      [shading_offset > NUM_BACKGROUND_COLORS_PER_SCHEME ?
+                         NUM_BACKGROUND_COLORS_PER_SCHEME - 1            :
+                         shading_offset - 1]);
+#endif
 
     // Now, draw points from top to bottom:
     for (j = upper_left.y + (i - upper_left.x) * dy_over_dx;
@@ -1146,16 +1151,7 @@ bool draw_wall(GContext *ctx,
       if ((j + (int16_t) ((i - upper_left.x) * dy_over_dx) +
           (i % 2 == 0 ? 0 : half_shading_offset)) % shading_offset == 0)
       {
-#ifdef PBL_COLOR
-        graphics_context_set_stroke_color(ctx,
-          g_background_colors[g_current_color_scheme]
-                             [shading_offset >
-                                NUM_BACKGROUND_COLORS_PER_SCHEME       ?
-                                  NUM_BACKGROUND_COLORS_PER_SCHEME - 1 :
-                                  shading_offset - 1]);
-#else
-        graphics_context_set_stroke_color(ctx, GColorWhite);
-#endif
+        graphics_context_set_stroke_color(ctx, primary_color);
       }
       else
       {
@@ -2331,52 +2327,78 @@ void init(void)
   // Blue background color scheme:
   g_background_colors[0][0] = GColorPictonBlue;
   g_background_colors[0][1] = GColorPictonBlue;
-  g_background_colors[0][2] = GColorVeryLightBlue;
-  g_background_colors[0][3] = GColorVeryLightBlue;
-  g_background_colors[0][4] = GColorBlueMoon;
-  g_background_colors[0][5] = GColorBlueMoon;
-  g_background_colors[0][6] = GColorBlue;
-  g_background_colors[0][7] = GColorBlue;
-  g_background_colors[0][8] = GColorDukeBlue;
-  g_background_colors[0][9] = GColorDukeBlue;
+  g_background_colors[0][2] = GColorVividCerulean;
+  g_background_colors[0][3] = GColorVividCerulean;
+  g_background_colors[0][4] = GColorVeryLightBlue;
+  g_background_colors[0][5] = GColorVeryLightBlue;
+  g_background_colors[0][6] = GColorBlueMoon;
+  g_background_colors[0][7] = GColorBlueMoon;
+  g_background_colors[0][8] = GColorBlue;
+  g_background_colors[0][9] = GColorBlue;
 
-  // Red/orange background color scheme:
+  // Orange/brown/red background color scheme:
   g_background_colors[1][0] = GColorRajah;
   g_background_colors[1][1] = GColorRajah;
-  g_background_colors[1][2] = GColorWindsorTan;
-  g_background_colors[1][3] = GColorWindsorTan;
-  g_background_colors[1][4] = GColorRoseVale;
-  g_background_colors[1][5] = GColorRoseVale;
-  g_background_colors[1][6] = GColorDarkCandyAppleRed;
-  g_background_colors[1][7] = GColorDarkCandyAppleRed;
+  g_background_colors[1][2] = GColorOrange;
+  g_background_colors[1][3] = GColorOrange;
+  g_background_colors[1][4] = GColorWindsorTan;
+  g_background_colors[1][5] = GColorWindsorTan;
+  g_background_colors[1][6] = GColorRoseVale;
+  g_background_colors[1][7] = GColorRoseVale;
   g_background_colors[1][8] = GColorBulgarianRose;
   g_background_colors[1][9] = GColorBulgarianRose;
 
   // Blue/green background color scheme:
-  g_background_colors[2][0] = GColorMediumSpringGreen;
-  g_background_colors[2][1] = GColorMediumSpringGreen;
-  g_background_colors[2][2] = GColorCadetBlue;
-  g_background_colors[2][3] = GColorCadetBlue;
-  g_background_colors[2][4] = GColorTiffanyBlue;
-  g_background_colors[2][5] = GColorTiffanyBlue;
-  g_background_colors[2][6] = GColorMidnightGreen;
-  g_background_colors[2][7] = GColorMidnightGreen;
-  g_background_colors[2][8] = GColorDarkGreen;
-  g_background_colors[2][9] = GColorDarkGreen;
+  g_background_colors[2][0] = GColorMediumAquamarine;
+  g_background_colors[2][1] = GColorMediumAquamarine;
+  g_background_colors[2][2] = GColorMediumSpringGreen;
+  g_background_colors[2][3] = GColorMediumSpringGreen;
+  g_background_colors[2][4] = GColorCadetBlue;
+  g_background_colors[2][5] = GColorCadetBlue;
+  g_background_colors[2][6] = GColorTiffanyBlue;
+  g_background_colors[2][7] = GColorTiffanyBlue;
+  g_background_colors[2][8] = GColorMidnightGreen;
+  g_background_colors[2][9] = GColorMidnightGreen;
 
-  // Purple background color scheme:
+  // Red background color scheme:
+  g_background_colors[1][0] = GColorMelon;
+  g_background_colors[1][1] = GColorMelon;
+  g_background_colors[1][2] = GColorSunsetOrange;
+  g_background_colors[1][3] = GColorSunsetOrange;
+  g_background_colors[1][4] = GColorFolly;
+  g_background_colors[1][5] = GColorFolly;
+  g_background_colors[1][6] = GColorRed;
+  g_background_colors[1][7] = GColorRed;
+  g_background_colors[1][8] = GColorDarkCandyAppleRed;
+  g_background_colors[1][9] = GColorDarkCandyAppleRed;
+
+  // Green background color scheme:
+  g_background_colors[2][0] = GColorMintGreen;
+  g_background_colors[2][1] = GColorMintGreen;
+  g_background_colors[2][2] = GColorSpringBud;
+  g_background_colors[2][3] = GColorSpringBud;
+  g_background_colors[2][4] = GColorBrightGreen;
+  g_background_colors[2][5] = GColorBrightGreen;
+  g_background_colors[2][6] = GColorGreen;
+  g_background_colors[2][7] = GColorGreen;
+  g_background_colors[2][8] = GColorIslamicGreen;
+  g_background_colors[2][9] = GColorIslamicGreen;
+
+  // Indigo/violet/purple background color scheme:
   g_background_colors[3][0] = GColorLavenderIndigo;
   g_background_colors[3][1] = GColorLavenderIndigo;
-  g_background_colors[3][2] = GColorVividViolet;
-  g_background_colors[3][3] = GColorVividViolet;
-  g_background_colors[3][4] = GColorPurple;
-  g_background_colors[3][5] = GColorPurple;
-  g_background_colors[3][6] = GColorIndigo;
-  g_background_colors[3][7] = GColorIndigo;
-  g_background_colors[3][8] = GColorImperialPurple;
-  g_background_colors[3][9] = GColorImperialPurple;
+  g_background_colors[3][2] = GColorPurpureus;
+  g_background_colors[3][3] = GColorPurpureus;
+  g_background_colors[3][4] = GColorVividViolet;
+  g_background_colors[3][5] = GColorVividViolet;
+  g_background_colors[3][6] = GColorPurple;
+  g_background_colors[3][7] = GColorPurple;
+  g_background_colors[3][8] = GColorIndigo;
+  g_background_colors[3][9] = GColorIndigo;
 
-  // Green/yellow background color scheme:
+  // Yellow/green background color scheme:
+  g_background_colors[4][8] = GColorYellow;
+  g_background_colors[4][9] = GColorYellow;
   g_background_colors[4][0] = GColorChromeYellow;
   g_background_colors[4][1] = GColorChromeYellow;
   g_background_colors[4][2] = GColorBrass;
@@ -2385,8 +2407,18 @@ void init(void)
   g_background_colors[4][5] = GColorLimerick;
   g_background_colors[4][6] = GColorArmyGreen;
   g_background_colors[4][7] = GColorArmyGreen;
-  g_background_colors[4][8] = GColorDarkGreen;
-  g_background_colors[4][9] = GColorDarkGreen;
+
+  // Magenta background color scheme:
+  g_background_colors[3][0] = GColorRichBrilliantLavender;
+  g_background_colors[3][1] = GColorRichBrilliantLavender;
+  g_background_colors[3][2] = GColorShockingPink;
+  g_background_colors[3][3] = GColorShockingPink;
+  g_background_colors[3][4] = GColorMagenta;
+  g_background_colors[3][5] = GColorMagenta;
+  g_background_colors[3][6] = GColorFashionMagenta;
+  g_background_colors[3][7] = GColorFashionMagenta;
+  g_background_colors[3][8] = GColorJazzberryJam;
+  g_background_colors[3][9] = GColorJazzberryJam;
 #endif
 
   // Main menu initialization:
