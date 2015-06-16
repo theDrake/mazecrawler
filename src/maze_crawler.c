@@ -1140,7 +1140,7 @@ bool draw_wall(GContext *ctx,
     primary_color = g_background_colors[g_current_color_scheme]
                       [shading_offset > NUM_BACKGROUND_COLORS_PER_SCHEME ?
                          NUM_BACKGROUND_COLORS_PER_SCHEME - 1            :
-                         shading_offset - 1]);
+                         shading_offset - 1];
 #endif
 
     // Now, draw points from top to bottom:
