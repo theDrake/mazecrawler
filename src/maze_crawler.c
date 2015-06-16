@@ -2361,64 +2361,64 @@ void init(void)
   g_background_colors[2][9] = GColorMidnightGreen;
 
   // Red background color scheme:
-  g_background_colors[1][0] = GColorMelon;
-  g_background_colors[1][1] = GColorMelon;
-  g_background_colors[1][2] = GColorSunsetOrange;
-  g_background_colors[1][3] = GColorSunsetOrange;
-  g_background_colors[1][4] = GColorFolly;
-  g_background_colors[1][5] = GColorFolly;
-  g_background_colors[1][6] = GColorRed;
-  g_background_colors[1][7] = GColorRed;
-  g_background_colors[1][8] = GColorDarkCandyAppleRed;
-  g_background_colors[1][9] = GColorDarkCandyAppleRed;
+  g_background_colors[3][0] = GColorMelon;
+  g_background_colors[3][1] = GColorMelon;
+  g_background_colors[3][2] = GColorSunsetOrange;
+  g_background_colors[3][3] = GColorSunsetOrange;
+  g_background_colors[3][4] = GColorFolly;
+  g_background_colors[3][5] = GColorFolly;
+  g_background_colors[3][6] = GColorRed;
+  g_background_colors[3][7] = GColorRed;
+  g_background_colors[3][8] = GColorDarkCandyAppleRed;
+  g_background_colors[3][9] = GColorDarkCandyAppleRed;
 
   // Green background color scheme:
-  g_background_colors[2][0] = GColorMintGreen;
-  g_background_colors[2][1] = GColorMintGreen;
-  g_background_colors[2][2] = GColorSpringBud;
-  g_background_colors[2][3] = GColorSpringBud;
-  g_background_colors[2][4] = GColorBrightGreen;
-  g_background_colors[2][5] = GColorBrightGreen;
-  g_background_colors[2][6] = GColorGreen;
-  g_background_colors[2][7] = GColorGreen;
-  g_background_colors[2][8] = GColorIslamicGreen;
-  g_background_colors[2][9] = GColorIslamicGreen;
+  g_background_colors[4][0] = GColorMintGreen;
+  g_background_colors[4][1] = GColorMintGreen;
+  g_background_colors[4][2] = GColorSpringBud;
+  g_background_colors[4][3] = GColorSpringBud;
+  g_background_colors[4][4] = GColorBrightGreen;
+  g_background_colors[4][5] = GColorBrightGreen;
+  g_background_colors[4][6] = GColorGreen;
+  g_background_colors[4][7] = GColorGreen;
+  g_background_colors[4][8] = GColorIslamicGreen;
+  g_background_colors[4][9] = GColorIslamicGreen;
 
   // Indigo/violet/purple background color scheme:
-  g_background_colors[3][0] = GColorLavenderIndigo;
-  g_background_colors[3][1] = GColorLavenderIndigo;
-  g_background_colors[3][2] = GColorPurpureus;
-  g_background_colors[3][3] = GColorPurpureus;
-  g_background_colors[3][4] = GColorVividViolet;
-  g_background_colors[3][5] = GColorVividViolet;
-  g_background_colors[3][6] = GColorPurple;
-  g_background_colors[3][7] = GColorPurple;
-  g_background_colors[3][8] = GColorIndigo;
-  g_background_colors[3][9] = GColorIndigo;
+  g_background_colors[5][0] = GColorLavenderIndigo;
+  g_background_colors[5][1] = GColorLavenderIndigo;
+  g_background_colors[5][2] = GColorPurpureus;
+  g_background_colors[5][3] = GColorPurpureus;
+  g_background_colors[5][4] = GColorVividViolet;
+  g_background_colors[5][5] = GColorVividViolet;
+  g_background_colors[5][6] = GColorPurple;
+  g_background_colors[5][7] = GColorPurple;
+  g_background_colors[5][8] = GColorIndigo;
+  g_background_colors[5][9] = GColorIndigo;
 
   // Yellow/green background color scheme:
-  g_background_colors[4][8] = GColorYellow;
-  g_background_colors[4][9] = GColorYellow;
-  g_background_colors[4][0] = GColorChromeYellow;
-  g_background_colors[4][1] = GColorChromeYellow;
-  g_background_colors[4][2] = GColorBrass;
-  g_background_colors[4][3] = GColorBrass;
-  g_background_colors[4][4] = GColorLimerick;
-  g_background_colors[4][5] = GColorLimerick;
-  g_background_colors[4][6] = GColorArmyGreen;
-  g_background_colors[4][7] = GColorArmyGreen;
+  g_background_colors[6][0] = GColorYellow;
+  g_background_colors[6][1] = GColorYellow;
+  g_background_colors[6][2] = GColorChromeYellow;
+  g_background_colors[6][3] = GColorChromeYellow;
+  g_background_colors[6][4] = GColorBrass;
+  g_background_colors[6][5] = GColorBrass;
+  g_background_colors[6][6] = GColorLimerick;
+  g_background_colors[6][7] = GColorLimerick;
+  g_background_colors[6][8] = GColorArmyGreen;
+  g_background_colors[6][9] = GColorArmyGreen;
 
   // Magenta background color scheme:
-  g_background_colors[3][0] = GColorRichBrilliantLavender;
-  g_background_colors[3][1] = GColorRichBrilliantLavender;
-  g_background_colors[3][2] = GColorShockingPink;
-  g_background_colors[3][3] = GColorShockingPink;
-  g_background_colors[3][4] = GColorMagenta;
-  g_background_colors[3][5] = GColorMagenta;
-  g_background_colors[3][6] = GColorFashionMagenta;
-  g_background_colors[3][7] = GColorFashionMagenta;
-  g_background_colors[3][8] = GColorJazzberryJam;
-  g_background_colors[3][9] = GColorJazzberryJam;
+  g_background_colors[7][0] = GColorRichBrilliantLavender;
+  g_background_colors[7][1] = GColorRichBrilliantLavender;
+  g_background_colors[7][2] = GColorShockingPink;
+  g_background_colors[7][3] = GColorShockingPink;
+  g_background_colors[7][4] = GColorMagenta;
+  g_background_colors[7][5] = GColorMagenta;
+  g_background_colors[7][6] = GColorFashionMagenta;
+  g_background_colors[7][7] = GColorFashionMagenta;
+  g_background_colors[7][8] = GColorJazzberryJam;
+  g_background_colors[7][9] = GColorJazzberryJam;
 #endif
 
   // Main menu initialization:
