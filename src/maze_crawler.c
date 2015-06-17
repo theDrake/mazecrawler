@@ -2326,16 +2326,16 @@ void init(void)
                   status_bar_layer_get_layer(g_graphics_status_bar));
 
   // Blue background color scheme:
-  g_background_colors[0][0] = GColorPictonBlue;
-  g_background_colors[0][1] = GColorPictonBlue;
-  g_background_colors[0][2] = GColorVividCerulean;
-  g_background_colors[0][3] = GColorVividCerulean;
-  g_background_colors[0][4] = GColorVeryLightBlue;
-  g_background_colors[0][5] = GColorVeryLightBlue;
-  g_background_colors[0][6] = GColorBlueMoon;
-  g_background_colors[0][7] = GColorBlueMoon;
-  g_background_colors[0][8] = GColorBlue;
-  g_background_colors[0][9] = GColorBlue;
+  g_background_colors[0][0] = GColorCeleste;
+  g_background_colors[0][1] = GColorCeleste;
+  g_background_colors[0][2] = GColorElectricBlue;
+  g_background_colors[0][3] = GColorElectricBlue;
+  g_background_colors[0][4] = GColorPictonBlue;
+  g_background_colors[0][5] = GColorPictonBlue;
+  g_background_colors[0][6] = GColorVividCerulean;
+  g_background_colors[0][7] = GColorVividCerulean;
+  g_background_colors[0][8] = GColorVeryLightBlue;
+  g_background_colors[0][9] = GColorVeryLightBlue;
 
   // Orange/brown/red background color scheme:
   g_background_colors[1][0] = GColorIcterine;
@@ -2346,8 +2346,8 @@ void init(void)
   g_background_colors[1][5] = GColorOrange;
   g_background_colors[1][6] = GColorWindsorTan;
   g_background_colors[1][7] = GColorWindsorTan;
-  g_background_colors[1][8] = GColorRoseVale;
-  g_background_colors[1][9] = GColorRoseVale;
+  g_background_colors[1][8] = GColorBulgarianRose;
+  g_background_colors[1][9] = GColorBulgarianRose;
 
   // Blue/green background color scheme:
   g_background_colors[2][0] = GColorMediumAquamarine;
@@ -2386,16 +2386,16 @@ void init(void)
   g_background_colors[4][9] = GColorIslamicGreen;
 
   // Indigo/violet/purple background color scheme:
-  g_background_colors[5][0] = GColorLavenderIndigo;
-  g_background_colors[5][1] = GColorLavenderIndigo;
-  g_background_colors[5][2] = GColorVividViolet;
-  g_background_colors[5][3] = GColorVividViolet;
-  g_background_colors[5][4] = GColorPurpureus;
-  g_background_colors[5][5] = GColorPurpureus;
+  g_background_colors[5][0] = GColorBabyBlueEyes;
+  g_background_colors[5][1] = GColorBabyBlueEyes;
+  g_background_colors[5][2] = GColorLavenderIndigo;
+  g_background_colors[5][3] = GColorLavenderIndigo;
+  g_background_colors[5][4] = GColorVividViolet;
+  g_background_colors[5][5] = GColorVividViolet;
   g_background_colors[5][6] = GColorPurple;
   g_background_colors[5][7] = GColorPurple;
-  g_background_colors[5][8] = GColorIndigo;
-  g_background_colors[5][9] = GColorIndigo;
+  g_background_colors[5][8] = GColorImperialPurple;
+  g_background_colors[5][9] = GColorImperialPurple;
 
   // Yellow/green background color scheme:
   g_background_colors[6][0] = GColorYellow;
