@@ -690,7 +690,8 @@ void init_maze(void)
   GPoint exit, maze_carver_position;
 
 #ifdef PBL_COLOR
-  g_current_color_scheme = g_player->level % NUM_BACKGROUND_COLOR_SCHEMES;
+  g_floor_color_scheme = rand() % NUM_BACKGROUND_COLOR_SCHEMES;
+  g_wall_color_scheme  = rand() % NUM_BACKGROUND_COLOR_SCHEMES;
 #endif
 
   // Determine width and height:
@@ -893,7 +894,7 @@ void draw_floor_and_ceiling(GContext *ctx)
     }
 #ifdef PBL_COLOR
     graphics_context_set_stroke_color(ctx,
-      g_background_colors[g_current_color_scheme]
+      g_background_colors[g_floor_color_scheme]
                          [shading_offset > NUM_BACKGROUND_COLORS_PER_SCHEME ?
                             NUM_BACKGROUND_COLORS_PER_SCHEME - 1            :
                             shading_offset - 1]);
@@ -1137,7 +1138,7 @@ bool draw_wall(GContext *ctx,
     }
     half_shading_offset = (shading_offset / 2) + (shading_offset % 2);
 #ifdef PBL_COLOR
-    primary_color = g_background_colors[g_current_color_scheme]
+    primary_color = g_background_colors[g_wall_color_scheme]
                       [shading_offset > NUM_BACKGROUND_COLORS_PER_SCHEME ?
                          NUM_BACKGROUND_COLORS_PER_SCHEME - 1            :
                          shading_offset - 1];
@@ -2337,16 +2338,16 @@ void init(void)
   g_background_colors[0][9] = GColorBlue;
 
   // Orange/brown/red background color scheme:
-  g_background_colors[1][0] = GColorRajah;
-  g_background_colors[1][1] = GColorRajah;
-  g_background_colors[1][2] = GColorOrange;
-  g_background_colors[1][3] = GColorOrange;
-  g_background_colors[1][4] = GColorWindsorTan;
-  g_background_colors[1][5] = GColorWindsorTan;
-  g_background_colors[1][6] = GColorRoseVale;
-  g_background_colors[1][7] = GColorRoseVale;
-  g_background_colors[1][8] = GColorBulgarianRose;
-  g_background_colors[1][9] = GColorBulgarianRose;
+  g_background_colors[1][0] = GColorIcterine;
+  g_background_colors[1][1] = GColorIcterine;
+  g_background_colors[1][2] = GColorRajah;
+  g_background_colors[1][3] = GColorRajah;
+  g_background_colors[1][4] = GColorOrange;
+  g_background_colors[1][5] = GColorOrange;
+  g_background_colors[1][6] = GColorWindsorTan;
+  g_background_colors[1][7] = GColorWindsorTan;
+  g_background_colors[1][8] = GColorRoseVale;
+  g_background_colors[1][9] = GColorRoseVale;
 
   // Blue/green background color scheme:
   g_background_colors[2][0] = GColorMediumAquamarine;
@@ -2387,10 +2388,10 @@ void init(void)
   // Indigo/violet/purple background color scheme:
   g_background_colors[5][0] = GColorLavenderIndigo;
   g_background_colors[5][1] = GColorLavenderIndigo;
-  g_background_colors[5][2] = GColorPurpureus;
-  g_background_colors[5][3] = GColorPurpureus;
-  g_background_colors[5][4] = GColorVividViolet;
-  g_background_colors[5][5] = GColorVividViolet;
+  g_background_colors[5][2] = GColorVividViolet;
+  g_background_colors[5][3] = GColorVividViolet;
+  g_background_colors[5][4] = GColorPurpureus;
+  g_background_colors[5][5] = GColorPurpureus;
   g_background_colors[5][6] = GColorPurple;
   g_background_colors[5][7] = GColorPurple;
   g_background_colors[5][8] = GColorIndigo;

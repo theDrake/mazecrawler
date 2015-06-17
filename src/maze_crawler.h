@@ -254,7 +254,8 @@ GPath *g_compass_path;
 #define NUM_BACKGROUND_COLORS_PER_SCHEME 10
 GColor g_background_colors[NUM_BACKGROUND_COLOR_SCHEMES]
                           [NUM_BACKGROUND_COLORS_PER_SCHEME];
-int8_t g_current_color_scheme;
+int8_t g_floor_color_scheme,
+       g_wall_color_scheme;
 StatusBarLayer *g_main_menu_status_bar,
                *g_in_game_menu_status_bar,
                *g_narration_status_bar,
