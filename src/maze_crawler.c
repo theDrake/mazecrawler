@@ -1418,58 +1418,6 @@ static void graphics_window_disappear(Window *window)
 }
 
 /******************************************************************************
-   Function: graphics_window_load
-
-Description: Handles the graphics window's loading process.
-
-     Inputs: window - Pointer to the graphics window.
-
-    Outputs: None.
-******************************************************************************/
-static void graphics_window_load(Window *window)
-{
-  window_set_click_config_provider(window,
-                                   (ClickConfigProvider)
-                                   graphics_click_config_provider);
-  layer_set_update_proc(window_get_root_layer(window), draw_scene);
-
-  // Initialize the status bar's text layers:
-  g_level_text_layer = text_layer_create(LEVEL_TEXT_LAYER_FRAME);
-  text_layer_set_background_color(g_level_text_layer, GColorClear);
-  text_layer_set_text_color(g_level_text_layer, GColorWhite);
-  text_layer_set_font(g_level_text_layer, STATUS_BAR_FONT);
-  text_layer_set_text_alignment(g_level_text_layer, GTextAlignmentLeft);
-  layer_add_child(window_get_root_layer(window),
-                  text_layer_get_layer(g_level_text_layer));
-  g_time_text_layer = text_layer_create(TIME_TEXT_LAYER_FRAME);
-  text_layer_set_background_color(g_time_text_layer, GColorClear);
-  text_layer_set_text_color(g_time_text_layer, GColorWhite);
-  text_layer_set_font(g_time_text_layer, STATUS_BAR_FONT);
-  text_layer_set_text_alignment(g_time_text_layer, GTextAlignmentRight);
-  layer_add_child(window_get_root_layer(window),
-                  text_layer_get_layer(g_time_text_layer));
-
-  // Subscribe to the tick timer:
-  tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
-}
-
-/******************************************************************************
-   Function: graphics_window_unload
-
-Description: Handles the graphics window's unloading process.
-
-     Inputs: window - Pointer to the graphics window.
-
-    Outputs: None.
-******************************************************************************/
-static void graphics_window_unload(Window *window)
-{
-  tick_timer_service_unsubscribe();
-  text_layer_destroy(g_level_text_layer);
-  text_layer_destroy(g_time_text_layer);
-}
-
-/******************************************************************************
    Function: graphics_up_single_repeating_click
 
 Description: The graphics window's single-click handler for the Pebble's "up"
@@ -2274,11 +2222,27 @@ void init(void)
   window_set_background_color(g_graphics_window, GColorBlack);
   window_set_window_handlers(g_graphics_window, (WindowHandlers)
   {
-    .load      = graphics_window_load,
-    .unload    = graphics_window_unload,
     .appear    = graphics_window_appear,
     .disappear = graphics_window_disappear,
   });
+  window_set_click_config_provider(g_graphics_window,
+                                   (ClickConfigProvider)
+                                   graphics_click_config_provider);
+  layer_set_update_proc(window_get_root_layer(g_graphics_window), draw_scene);
+  g_level_text_layer = text_layer_create(LEVEL_TEXT_LAYER_FRAME);
+  text_layer_set_background_color(g_level_text_layer, GColorClear);
+  text_layer_set_text_color(g_level_text_layer, GColorWhite);
+  text_layer_set_font(g_level_text_layer, STATUS_BAR_FONT);
+  text_layer_set_text_alignment(g_level_text_layer, GTextAlignmentLeft);
+  layer_add_child(window_get_root_layer(g_graphics_window),
+                  text_layer_get_layer(g_level_text_layer));
+  g_time_text_layer = text_layer_create(TIME_TEXT_LAYER_FRAME);
+  text_layer_set_background_color(g_time_text_layer, GColorClear);
+  text_layer_set_text_color(g_time_text_layer, GColorWhite);
+  text_layer_set_font(g_time_text_layer, STATUS_BAR_FONT);
+  text_layer_set_text_alignment(g_time_text_layer, GTextAlignmentRight);
+  layer_add_child(window_get_root_layer(g_graphics_window),
+                  text_layer_get_layer(g_time_text_layer));
 #ifdef PBL_COLOR
   g_graphics_status_bar = status_bar_layer_create();
   layer_add_child(window_get_root_layer(g_graphics_window),
@@ -2432,9 +2396,6 @@ void init(void)
   layer_add_child(window_get_root_layer(g_message_box_window),
                   text_layer_get_layer(g_message_box_text_layer));
 
-  // Focus service subscription:
-  app_focus_service_subscribe(app_focus_handler);
-
   // Misc. variable initialization:
   g_narration_window = NULL;
   g_new_best_time    = -1;
@@ -2478,6 +2439,10 @@ void init(void)
     g_current_narration = INTRO_NARRATION;
     show_narration();
   }
+
+  // Subscribe to relevant services:
+  app_focus_service_subscribe(app_focus_handler);
+  tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
 }
 
 /******************************************************************************
@@ -2494,6 +2459,7 @@ void deinit(void)
   persist_write_data(STORAGE_KEY, g_player, sizeof(player_t));
   persist_write_data(STORAGE_KEY + 1, g_maze, sizeof(maze_t));
   app_focus_service_unsubscribe();
+  tick_timer_service_unsubscribe();
 #ifdef PBL_COLOR
   status_bar_layer_destroy(g_main_menu_status_bar);
   status_bar_layer_destroy(g_in_game_menu_status_bar);
@@ -2507,6 +2473,8 @@ void deinit(void)
   window_destroy(g_in_game_menu_window);
   text_layer_destroy(g_message_box_text_layer);
   window_destroy(g_message_box_window);
+  text_layer_destroy(g_level_text_layer);
+  text_layer_destroy(g_time_text_layer);
   window_destroy(g_graphics_window);
   free(g_maze);
   free(g_player);
