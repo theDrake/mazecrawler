@@ -201,11 +201,15 @@ static const char *const g_achievement_descriptions[] = {
 
 typedef struct Maze
 {
-  int16_t cells[MAX_MAZE_WIDTH][MAX_MAZE_HEIGHT],
-          width,
-          height,
-          seconds,
-          starting_direction;
+  int8_t cells[MAX_MAZE_WIDTH][MAX_MAZE_HEIGHT],
+         width,
+         height,
+#ifdef PBL_COLOR
+         floor_color_scheme,
+         wall_color_scheme,
+#endif
+         starting_direction;
+  int16_t seconds;
   GPoint entrance;
 } __attribute__((__packed__)) maze_t;
 
@@ -254,8 +258,6 @@ GPath *g_compass_path;
 #define NUM_BACKGROUND_COLORS_PER_SCHEME 10
 GColor g_background_colors[NUM_BACKGROUND_COLOR_SCHEMES]
                           [NUM_BACKGROUND_COLORS_PER_SCHEME];
-int8_t g_floor_color_scheme,
-       g_wall_color_scheme;
 StatusBarLayer *g_main_menu_status_bar,
                *g_in_game_menu_status_bar,
                *g_narration_status_bar,
@@ -273,8 +275,6 @@ void reposition_player(void);
 bool move_player(const int16_t direction);
 bool shift_position(GPoint *const position, const int16_t direction);
 bool check_for_maze_completion(void);
-bool save_game_data(void);
-bool load_game_data(void);
 void init_wall_coords(void);
 void init_maze(void);
 int16_t set_maze_starting_direction(void);

@@ -564,47 +564,6 @@ bool check_for_maze_completion(void)
 }
 
 /******************************************************************************
-   Function: save_game_data
-
-Description: Saves game data to the Pebble's persistent storage.
-
-     Inputs: None.
-
-    Outputs: Returns "true" if the player struct was saved successfully.
-******************************************************************************/
-bool save_game_data(void)
-{
-  int16_t num_bytes_stored = persist_write_data(STORAGE_KEY,
-                                                g_player,
-                                                sizeof(*g_player));
-
-  return num_bytes_stored == sizeof(*g_player);
-}
-
-/******************************************************************************
-   Function: load_game_data
-
-Description: Loads game data from the Pebble's persistent storage. For any data
-             not found, default data are generated.
-
-     Inputs: None.
-
-    Outputs: Returns "true" if all data sought were found.
-******************************************************************************/
-bool load_game_data(void)
-{
-  if (persist_exists(STORAGE_KEY))
-  {
-    persist_read_data(STORAGE_KEY, g_player, sizeof(player_t));
-
-    return true;
-  }
-  init_player();
-
-  return false;
-}
-
-/******************************************************************************
    Function: init_wall_coords
 
 Description: Initializes the global "back_wall_coords" array so that it
@@ -690,8 +649,8 @@ void init_maze(void)
   GPoint exit, maze_carver_position;
 
 #ifdef PBL_COLOR
-  g_floor_color_scheme = rand() % NUM_BACKGROUND_COLOR_SCHEMES;
-  g_wall_color_scheme  = rand() % NUM_BACKGROUND_COLOR_SCHEMES;
+  g_maze->floor_color_scheme = rand() % NUM_BACKGROUND_COLOR_SCHEMES;
+  g_maze->wall_color_scheme  = rand() % NUM_BACKGROUND_COLOR_SCHEMES;
 #endif
 
   // Determine width and height:
@@ -894,7 +853,7 @@ void draw_floor_and_ceiling(GContext *ctx)
     }
 #ifdef PBL_COLOR
     graphics_context_set_stroke_color(ctx,
-      g_background_colors[g_floor_color_scheme]
+      g_background_colors[g_maze->floor_color_scheme]
                          [shading_offset > NUM_BACKGROUND_COLORS_PER_SCHEME ?
                             NUM_BACKGROUND_COLORS_PER_SCHEME - 1            :
                             shading_offset - 1]);
@@ -1138,7 +1097,7 @@ bool draw_wall(GContext *ctx,
     }
     half_shading_offset = (shading_offset / 2) + (shading_offset % 2);
 #ifdef PBL_COLOR
-    primary_color = g_background_colors[g_wall_color_scheme]
+    primary_color = g_background_colors[g_maze->wall_color_scheme]
                       [shading_offset > NUM_BACKGROUND_COLORS_PER_SCHEME ?
                          NUM_BACKGROUND_COLORS_PER_SCHEME - 1            :
                          shading_offset - 1];
@@ -2385,7 +2344,7 @@ void init(void)
   g_background_colors[4][8] = GColorIslamicGreen;
   g_background_colors[4][9] = GColorIslamicGreen;
 
-  // Indigo/violet/purple background color scheme:
+  // Purple background color scheme:
   g_background_colors[5][0] = GColorBabyBlueEyes;
   g_background_colors[5][1] = GColorBabyBlueEyes;
   g_background_colors[5][2] = GColorLavenderIndigo;
@@ -2495,17 +2454,30 @@ void init(void)
                                        GRAPHICS_FRAME_HEIGHT +
                                          STATUS_BAR_HEIGHT / 2));
 #endif
+
+  // Load/init data and present main menu (after intro text, if applicable):
+  window_stack_push(g_main_menu_window, ANIMATED);
   g_player = malloc(sizeof(player_t));
   g_maze   = malloc(sizeof(maze_t));
-
-  // Present the main menu (and the intro narration, if applicable):
-  window_stack_push(g_main_menu_window, ANIMATED);
-  if (!load_game_data())
+  if (persist_exists(STORAGE_KEY))
   {
+    persist_read_data(STORAGE_KEY, g_player, sizeof(player_t));
+    if (persist_exists(STORAGE_KEY + 1))
+    {
+      persist_read_data(STORAGE_KEY + 1, g_maze, sizeof(maze_t));
+    }
+    else
+    {
+      init_maze();
+    }
+  }
+  else
+  {
+    init_player();
+    init_maze();
     g_current_narration = INTRO_NARRATION;
     show_narration();
   }
-  init_maze();
 }
 
 /******************************************************************************
@@ -2519,7 +2491,9 @@ Description: Deinitializes the MazeCrawler Pebble game.
 ******************************************************************************/
 void deinit(void)
 {
-  save_game_data();
+  persist_write_data(STORAGE_KEY, g_player, sizeof(player_t));
+  persist_write_data(STORAGE_KEY + 1, g_maze, sizeof(maze_t));
+  app_focus_service_unsubscribe();
 #ifdef PBL_COLOR
   status_bar_layer_destroy(g_main_menu_status_bar);
   status_bar_layer_destroy(g_in_game_menu_status_bar);
@@ -2534,7 +2508,6 @@ void deinit(void)
   text_layer_destroy(g_message_box_text_layer);
   window_destroy(g_message_box_window);
   window_destroy(g_graphics_window);
-  app_focus_service_unsubscribe();
   free(g_maze);
   free(g_player);
 }
