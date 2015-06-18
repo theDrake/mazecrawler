@@ -2388,8 +2388,13 @@ void init(void)
   window_set_click_config_provider(g_message_box_window,
                                    message_box_click_config_provider);
   g_message_box_text_layer = text_layer_create(MESSAGE_BOX_FRAME);
+#ifdef PBL_COLOR
+  text_layer_set_background_color(g_message_box_text_layer, GColorDukeBlue);
+  text_layer_set_text_color(g_message_box_text_layer, GColorRajah);
+#else
   text_layer_set_background_color(g_message_box_text_layer, GColorBlack);
   text_layer_set_text_color(g_message_box_text_layer, GColorWhite);
+#endif
   text_layer_set_font(g_message_box_text_layer, MESSAGE_BOX_FONT);
   text_layer_set_text_alignment(g_message_box_text_layer,
                                 GTextAlignmentCenter);
@@ -2426,6 +2431,7 @@ void init(void)
     if (persist_exists(STORAGE_KEY + 1))
     {
       persist_read_data(STORAGE_KEY + 1, g_maze, sizeof(maze_t));
+      update_compass();
     }
     else
     {

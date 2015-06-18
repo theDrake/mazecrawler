@@ -104,7 +104,7 @@ enum {
 #define COMPASS_RADIUS             5
 #define MIN_MAZE_WIDTH             10 // Min. no. of cells per side.
 #define MIN_MAZE_HEIGHT            MIN_MAZE_WIDTH
-#define MAX_MAZE_WIDTH             20 // Max. no. of cells per side.
+#define MAX_MAZE_WIDTH             15 // Max. no. of cells per side.
 #define MAX_MAZE_HEIGHT            MAX_MAZE_WIDTH
 #define MAX_VISIBILITY_DEPTH       6 // Helps determine no. of cells visible in a given line of sight.
 #define STRAIGHT_AHEAD             (MAX_VISIBILITY_DEPTH - 1) // Index value for "g_back_wall_coords".
