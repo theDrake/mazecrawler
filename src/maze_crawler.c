@@ -862,7 +862,7 @@ void draw_floor_and_ceiling(GContext *ctx)
          x < GRAPHICS_FRAME_WIDTH;
          x += shading_offset)
     {
-      // Draw one point on the ceiling and one on the floor:
+      // Draw one point on the ceiling and another on the floor:
 #ifdef PBL_COLOR
       graphics_draw_pixel(ctx, GPoint(x, y + STATUS_BAR_HEIGHT));
       graphics_draw_pixel(ctx, GPoint(x, GRAPHICS_FRAME_HEIGHT - y +
@@ -1090,8 +1090,8 @@ bool draw_wall(GContext *ctx,
     shading_offset = 1 + ((upper_left.y + (i - upper_left.x) * dy_over_dx) /
                           MAX_VISIBILITY_DEPTH);
     if ((int16_t) (upper_left.y + (i - upper_left.x) * dy_over_dx) %
-          MAX_VISIBILITY_DEPTH >=
-            MAX_VISIBILITY_DEPTH / 2 + MAX_VISIBILITY_DEPTH % 2)
+        MAX_VISIBILITY_DEPTH >= MAX_VISIBILITY_DEPTH / 2 +
+        MAX_VISIBILITY_DEPTH % 2)
     {
       shading_offset++;
     }

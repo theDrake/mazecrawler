@@ -65,76 +65,78 @@ enum {
   Other Constants
 ******************************************************************************/
 
-#define MESSAGE_STR_LEN            50
-#define LEVEL_STR_LEN              7
-#define TIME_STR_LEN               5
-#define ACHIEVEMENT_NAME_STR_LEN   15
-#define ACHIEVEMENT_DESC_STR_LEN   50
-#define NARRATION_STR_LEN          110
-#define SCREEN_WIDTH               144
-#define SCREEN_HEIGHT              168
-#define HALF_SCREEN_WIDTH          (SCREEN_WIDTH / 2)
-#define STATUS_BAR_HEIGHT          16 // Applies to top and bottom status bars.
-#define STATUS_BAR_PADDING         4
-#define FIRST_WALL_OFFSET          STATUS_BAR_HEIGHT
-#define MIN_WALL_HEIGHT            STATUS_BAR_HEIGHT
-#define GRAPHICS_FRAME_HEIGHT      (SCREEN_HEIGHT - 2 * STATUS_BAR_HEIGHT)
-#define GRAPHICS_FRAME_WIDTH       SCREEN_WIDTH
+#define MESSAGE_STR_LEN                  50
+#define LEVEL_STR_LEN                    7
+#define TIME_STR_LEN                     5
+#define ACHIEVEMENT_NAME_STR_LEN         15
+#define ACHIEVEMENT_DESC_STR_LEN         50
+#define NARRATION_STR_LEN                110
+#define SCREEN_WIDTH                     144
+#define SCREEN_HEIGHT                    168
+#define HALF_SCREEN_WIDTH                (SCREEN_WIDTH / 2)
+#define STATUS_BAR_HEIGHT                16 // Applies to top and bottom status bars.
+#define STATUS_BAR_PADDING               4
+#define FIRST_WALL_OFFSET                STATUS_BAR_HEIGHT
+#define MIN_WALL_HEIGHT                  STATUS_BAR_HEIGHT
+#define GRAPHICS_FRAME_HEIGHT            (SCREEN_HEIGHT - 2 * STATUS_BAR_HEIGHT)
+#define GRAPHICS_FRAME_WIDTH             SCREEN_WIDTH
 
 #ifdef PBL_COLOR
-#define FULL_SCREEN_FRAME          GRect(0, STATUS_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT - STATUS_BAR_HEIGHT)
-#define GRAPHICS_FRAME             GRect(0, STATUS_BAR_HEIGHT, SCREEN_WIDTH, GRAPHICS_FRAME_HEIGHT)
-#define LEVEL_TEXT_LAYER_FRAME     GRect(STATUS_BAR_PADDING, STATUS_BAR_HEIGHT + GRAPHICS_FRAME_HEIGHT, HALF_SCREEN_WIDTH, STATUS_BAR_HEIGHT)
-#define TIME_TEXT_LAYER_FRAME      GRect(HALF_SCREEN_WIDTH, STATUS_BAR_HEIGHT + GRAPHICS_FRAME_HEIGHT, HALF_SCREEN_WIDTH - STATUS_BAR_PADDING, STATUS_BAR_HEIGHT)
-#define MESSAGE_BOX_FRAME          GRect(10, STATUS_BAR_HEIGHT + 15, SCREEN_WIDTH - 20, GRAPHICS_FRAME_HEIGHT - 30)
-#define NARRATION_TEXT_LAYER_FRAME GRect(2, STATUS_BAR_HEIGHT, SCREEN_WIDTH - 4, SCREEN_HEIGHT)
+#define FULL_SCREEN_FRAME                GRect(0, STATUS_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT - STATUS_BAR_HEIGHT)
+#define GRAPHICS_FRAME                   GRect(0, STATUS_BAR_HEIGHT, SCREEN_WIDTH, GRAPHICS_FRAME_HEIGHT)
+#define LEVEL_TEXT_LAYER_FRAME           GRect(STATUS_BAR_PADDING, STATUS_BAR_HEIGHT + GRAPHICS_FRAME_HEIGHT, HALF_SCREEN_WIDTH, STATUS_BAR_HEIGHT)
+#define TIME_TEXT_LAYER_FRAME            GRect(HALF_SCREEN_WIDTH, STATUS_BAR_HEIGHT + GRAPHICS_FRAME_HEIGHT, HALF_SCREEN_WIDTH - STATUS_BAR_PADDING, STATUS_BAR_HEIGHT)
+#define MESSAGE_BOX_FRAME                GRect(10, STATUS_BAR_HEIGHT + 15, SCREEN_WIDTH - 20, GRAPHICS_FRAME_HEIGHT - 30)
+#define NARRATION_TEXT_LAYER_FRAME       GRect(2, STATUS_BAR_HEIGHT, SCREEN_WIDTH - 4, SCREEN_HEIGHT)
+#define NUM_BACKGROUND_COLOR_SCHEMES     8
+#define NUM_BACKGROUND_COLORS_PER_SCHEME 10
 #else
-#define FULL_SCREEN_FRAME          GRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - STATUS_BAR_HEIGHT)
-#define GRAPHICS_FRAME             GRect(0, 0, SCREEN_WIDTH, GRAPHICS_FRAME_HEIGHT)
-#define LEVEL_TEXT_LAYER_FRAME     GRect(STATUS_BAR_PADDING, GRAPHICS_FRAME_HEIGHT, HALF_SCREEN_WIDTH, STATUS_BAR_HEIGHT)
-#define TIME_TEXT_LAYER_FRAME      GRect(HALF_SCREEN_WIDTH, GRAPHICS_FRAME_HEIGHT, HALF_SCREEN_WIDTH - STATUS_BAR_PADDING, STATUS_BAR_HEIGHT)
-#define MESSAGE_BOX_FRAME          GRect(10, 15, SCREEN_WIDTH - 20, GRAPHICS_FRAME_HEIGHT - 30)
-#define NARRATION_TEXT_LAYER_FRAME GRect(2, 0, SCREEN_WIDTH - 4, SCREEN_HEIGHT)
+#define FULL_SCREEN_FRAME                GRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - STATUS_BAR_HEIGHT)
+#define GRAPHICS_FRAME                   GRect(0, 0, SCREEN_WIDTH, GRAPHICS_FRAME_HEIGHT)
+#define LEVEL_TEXT_LAYER_FRAME           GRect(STATUS_BAR_PADDING, GRAPHICS_FRAME_HEIGHT, HALF_SCREEN_WIDTH, STATUS_BAR_HEIGHT)
+#define TIME_TEXT_LAYER_FRAME            GRect(HALF_SCREEN_WIDTH, GRAPHICS_FRAME_HEIGHT, HALF_SCREEN_WIDTH - STATUS_BAR_PADDING, STATUS_BAR_HEIGHT)
+#define MESSAGE_BOX_FRAME                GRect(10, 15, SCREEN_WIDTH - 20, GRAPHICS_FRAME_HEIGHT - 30)
+#define NARRATION_TEXT_LAYER_FRAME       GRect(2, 0, SCREEN_WIDTH - 4, SCREEN_HEIGHT)
 #endif
 
-#define STATUS_BAR_FONT            fonts_get_system_font(FONT_KEY_GOTHIC_14)
-#define MESSAGE_BOX_FONT           fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD)
-#define NARRATION_FONT             fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD)
-#define NO_CORNER_RADIUS           0
-#define COMPASS_RADIUS             5
-#define MIN_MAZE_WIDTH             10 // Min. no. of cells per side.
-#define MIN_MAZE_HEIGHT            MIN_MAZE_WIDTH
-#define MAX_MAZE_WIDTH             15 // Max. no. of cells per side.
-#define MAX_MAZE_HEIGHT            MAX_MAZE_WIDTH
-#define MAX_VISIBILITY_DEPTH       6 // Helps determine no. of cells visible in a given line of sight.
-#define STRAIGHT_AHEAD             (MAX_VISIBILITY_DEPTH - 1) // Index value for "g_back_wall_coords".
-#define TOP_LEFT                   0 // Index value for "g_back_wall_coords".
-#define BOTTOM_RIGHT               1 // Index value for "g_back_wall_coords".
-#define RANDOM_POINT_NORTH         GPoint(rand() % g_maze->width, rand() % (g_maze->height / 4))
-#define RANDOM_POINT_SOUTH         GPoint(rand() % g_maze->width, g_maze->height - (1 + rand() % (g_maze->height / 4)))
-#define RANDOM_POINT_EAST          GPoint(g_maze->width - (1 + rand() % (g_maze->width / 4)), rand() % g_maze->height)
-#define RANDOM_POINT_WEST          GPoint(rand() % (g_maze->width / 4), rand() % g_maze->height)
-#define NINETY_DEGREES             (TRIG_MAX_ANGLE / 4)
-#define DEFAULT_ROTATION_RATE      (TRIG_MAX_ANGLE / 30) // 12 degrees per rotation event
-#define ELLIPSE_RADIUS_RATIO       0.4
-#define CLICK_REPEAT_INTERVAL      300 // milliseconds
-#define MULTI_CLICK_MIN            2
-#define MULTI_CLICK_MAX            2 // We only care about double-clicks.
-#define MULTI_CLICK_TIMEOUT        0
-#define LAST_CLICK_ONLY            true
-#define MAX_SMALL_INT_VALUE        9999
-#define MAX_SMALL_INT_DIGITS       4
-#define MAX_LARGE_INT_VALUE        999999999
-#define MAX_LARGE_INT_DIGITS       9
-#define MAX_LEVEL                  MAX_SMALL_INT_VALUE
-#define MAX_POINTS                 MAX_LARGE_INT_VALUE
-#define MAX_SECONDS                3599 // 59:59 (just under an hour)
-#define MAIN_MENU_NUM_ROWS         4
-#define IN_GAME_MENU_NUM_ROWS      4
-#define INTRO_NARRATION_NUM_PAGES  4
-#define STORAGE_KEY                8417
-#define ANIMATED                   true
-#define NOT_ANIMATED               false
+#define STATUS_BAR_FONT                  fonts_get_system_font(FONT_KEY_GOTHIC_14)
+#define MESSAGE_BOX_FONT                 fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD)
+#define NARRATION_FONT                   fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD)
+#define NO_CORNER_RADIUS                 0
+#define COMPASS_RADIUS                   5
+#define MIN_MAZE_WIDTH                   10 // Min. no. of cells per side.
+#define MIN_MAZE_HEIGHT                  MIN_MAZE_WIDTH
+#define MAX_MAZE_WIDTH                   15 // Max. no. of cells per side.
+#define MAX_MAZE_HEIGHT                  MAX_MAZE_WIDTH
+#define MAX_VISIBILITY_DEPTH             6 // Helps determine no. of cells visible in a given line of sight.
+#define STRAIGHT_AHEAD                   (MAX_VISIBILITY_DEPTH - 1) // Index value for "g_back_wall_coords".
+#define TOP_LEFT                         0 // Index value for "g_back_wall_coords".
+#define BOTTOM_RIGHT                     1 // Index value for "g_back_wall_coords".
+#define RANDOM_POINT_NORTH               GPoint(rand() % g_maze->width, rand() % (g_maze->height / 4))
+#define RANDOM_POINT_SOUTH               GPoint(rand() % g_maze->width, g_maze->height - (1 + rand() % (g_maze->height / 4)))
+#define RANDOM_POINT_EAST                GPoint(g_maze->width - (1 + rand() % (g_maze->width / 4)), rand() % g_maze->height)
+#define RANDOM_POINT_WEST                GPoint(rand() % (g_maze->width / 4), rand() % g_maze->height)
+#define NINETY_DEGREES                   (TRIG_MAX_ANGLE / 4)
+#define DEFAULT_ROTATION_RATE            (TRIG_MAX_ANGLE / 30) // 12 degrees per rotation event
+#define ELLIPSE_RADIUS_RATIO             0.4
+#define CLICK_REPEAT_INTERVAL            300 // milliseconds
+#define MULTI_CLICK_MIN                  2
+#define MULTI_CLICK_MAX                  2 // We only care about double-clicks.
+#define MULTI_CLICK_TIMEOUT              0
+#define LAST_CLICK_ONLY                  true
+#define MAX_SMALL_INT_VALUE              9999
+#define MAX_SMALL_INT_DIGITS             4
+#define MAX_LARGE_INT_VALUE              999999999
+#define MAX_LARGE_INT_DIGITS             9
+#define MAX_LEVEL                        MAX_SMALL_INT_VALUE
+#define MAX_POINTS                       MAX_LARGE_INT_VALUE
+#define MAX_SECONDS                      3599 // 59:59 (just under an hour)
+#define MAIN_MENU_NUM_ROWS               4
+#define IN_GAME_MENU_NUM_ROWS            4
+#define INTRO_NARRATION_NUM_PAGES        4
+#define STORAGE_KEY                      8417
+#define ANIMATED                         true
+#define NOT_ANIMATED                     false
 
 static const GPathInfo COMPASS_PATH_INFO = {
   .num_points = 4,
@@ -254,8 +256,6 @@ bool g_game_paused,
 GPath *g_compass_path;
 
 #ifdef PBL_COLOR
-#define NUM_BACKGROUND_COLOR_SCHEMES     8
-#define NUM_BACKGROUND_COLORS_PER_SCHEME 10
 GColor g_background_colors[NUM_BACKGROUND_COLOR_SCHEMES]
                           [NUM_BACKGROUND_COLORS_PER_SCHEME];
 StatusBarLayer *g_main_menu_status_bar,
