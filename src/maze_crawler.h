@@ -248,9 +248,9 @@ player_t *g_player;
 GPoint g_back_wall_coords[MAX_VISIBILITY_DEPTH - 1]
                          [(STRAIGHT_AHEAD * 2) + 1]
                          [2];
-int16_t g_new_best_time,
-        g_current_narration,
-        g_narration_page_num;
+int8_t g_current_narration,
+       g_narration_page_num;
+int16_t g_new_best_time;
 bool g_game_paused,
      g_new_achievement_unlocked[NUM_ACHIEVEMENTS];
 GPath *g_compass_path;
@@ -272,25 +272,25 @@ void show_narration(void);
 void show_window(Window *const window);
 void init_player(void);
 void reposition_player(void);
-bool move_player(const int16_t direction);
-bool shift_position(GPoint *const position, const int16_t direction);
+bool move_player(const int8_t direction);
+bool shift_position(GPoint *const position, const int8_t direction);
 bool check_for_maze_completion(void);
 void init_wall_coords(void);
 void init_maze(void);
-int16_t set_maze_starting_direction(void);
+int8_t set_maze_starting_direction(void);
 void draw_scene(Layer *layer, GContext *ctx);
 void draw_floor_and_ceiling(GContext *ctx);
 bool draw_cell_contents(GContext *ctx,
                         const GPoint cell_coords,
-                        const int16_t depth,
-                        const int16_t position);
+                        const int8_t depth,
+                        const int8_t position);
 bool draw_wall(GContext *ctx,
                const GPoint upper_left,
                const GPoint lower_left,
                const GPoint upper_right,
                const GPoint lower_right);
-bool draw_entrance(GContext *ctx, const int16_t depth, const int16_t position);
-bool draw_exit(GContext *ctx, const int16_t depth, const int16_t position);
+bool draw_entrance(GContext *ctx, const int8_t depth, const int8_t position);
+bool draw_exit(GContext *ctx, const int8_t depth, const int8_t position);
 bool fill_ellipse(GContext *ctx,
                   const GPoint center,
                   const int16_t h_radius,
@@ -334,23 +334,23 @@ static void in_game_menu_draw_row_callback(GContext* ctx,
 void in_game_menu_select_callback(MenuLayer *menu_layer,
                                   MenuIndex *cell_index,
                                   void *data);
-int16_t get_num_achievements_unlocked(void);
-int16_t get_new_achievement_index(void);
-GPoint get_floor_center_point(const int16_t depth, const int16_t position);
-GPoint get_ceiling_center_point(const int16_t depth, const int16_t position);
+int8_t get_num_achievements_unlocked(void);
+int8_t get_new_achievement_index(void);
+GPoint get_floor_center_point(const int8_t depth, const int8_t position);
+GPoint get_ceiling_center_point(const int8_t depth, const int8_t position);
 GPoint get_cell_farther_away(const GPoint reference_point,
-                             const int16_t direction,
-                             const int16_t distance);
+                             const int8_t direction,
+                             const int8_t distance);
 GPoint get_cell_to_the_left(const GPoint reference_point,
-                            const int16_t reference_direction,
-                            const int16_t distance);
+                            const int8_t reference_direction,
+                            const int8_t distance);
 GPoint get_cell_to_the_right(const GPoint reference_point,
-                             const int16_t reference_direction,
-                             const int16_t distance);
-int16_t get_cell_type(GPoint cell_coords);
+                             const int8_t reference_direction,
+                             const int8_t distance);
+int8_t get_cell_type(GPoint cell_coords);
 bool out_of_bounds(const GPoint cell_coords);
 bool is_solid(const GPoint cell_coords);
-int16_t get_opposite_direction(const int16_t direction);
+int8_t get_opposite_direction(const int8_t direction);
 void strcat_time(char *const dest_str, int16_t seconds);
 void init_narration(void);
 void deinit_narration(void);

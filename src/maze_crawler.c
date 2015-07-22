@@ -155,7 +155,7 @@ Description: Initializes the global player struct.
 ******************************************************************************/
 void init_player(void)
 {
-  int16_t i;
+  int8_t i;
 
   g_player->position  = GPoint(0, 0);
   g_player->direction = rand() % NUM_DIRECTIONS;
@@ -267,7 +267,7 @@ Description: Attempts to move the player one cell forward in a given direction
 
     Outputs: Returns "true" if the player successfully moved.
 ******************************************************************************/
-bool move_player(const int16_t direction)
+bool move_player(const int8_t direction)
 {
   if (shift_position(&(g_player->position), direction))
   {
@@ -296,7 +296,7 @@ Description: Attempts to shift a given set of position coordinates one cell
 
     Outputs: Returns "true" if the character successfully moved.
 ******************************************************************************/
-bool shift_position(GPoint *const position, const int16_t direction)
+bool shift_position(GPoint *const position, const int8_t direction)
 {
   GPoint destination;
 
@@ -578,7 +578,7 @@ Description: Initializes the global "back_wall_coords" array so that it
 ******************************************************************************/
 void init_wall_coords(void)
 {
-  int16_t i, j, wall_width;
+  uint8_t i, j, wall_width;
   const float perspective_modifier = 2.0; // Helps determine FOV, etc.
 
   for (i = 0; i < MAX_VISIBILITY_DEPTH - 1; ++i)
@@ -645,7 +645,7 @@ Description: Initializes the global maze struct by setting its width and height
 ******************************************************************************/
 void init_maze(void)
 {
-  int16_t i, j, maze_carver_direction;
+  int8_t i, j, maze_carver_direction;
   GPoint exit, maze_carver_position;
 
 #ifdef PBL_COLOR
@@ -746,9 +746,9 @@ Description: Finds a viable starting direction (i.e., not facing a wall) for
 
     Outputs: Value representing the selected starting direction.
 ******************************************************************************/
-int16_t set_maze_starting_direction(void)
+int8_t set_maze_starting_direction(void)
 {
-  int16_t i;
+  int8_t i;
   bool checked_direction[NUM_DIRECTIONS];
 
   for (i = 0; i < NUM_DIRECTIONS; ++i)
@@ -783,7 +783,7 @@ Description: Draws a (simplistic) 3D scene based on the player's current
 ******************************************************************************/
 void draw_scene(Layer *layer, GContext *ctx)
 {
-  int16_t i, depth;
+  int8_t i, depth;
   GPoint cell_coords, cell_coords2;
 
   // First, draw a black background:
@@ -836,7 +836,7 @@ Description: Draws the floor and ceiling.
 ******************************************************************************/
 void draw_floor_and_ceiling(GContext *ctx)
 {
-  int16_t x, y, max_y, shading_offset;
+  uint8_t x, y, max_y, shading_offset;
 
   max_y = g_back_wall_coords[MAX_VISIBILITY_DEPTH - 2][0][TOP_LEFT].y;
 #ifdef PBL_BW
@@ -846,8 +846,8 @@ void draw_floor_and_ceiling(GContext *ctx)
   {
     // Determine horizontal distance between points:
     shading_offset = 1 + y / MAX_VISIBILITY_DEPTH;
-    if (y % MAX_VISIBILITY_DEPTH >=
-          MAX_VISIBILITY_DEPTH / 2 + MAX_VISIBILITY_DEPTH % 2)
+    if (y % MAX_VISIBILITY_DEPTH >= MAX_VISIBILITY_DEPTH / 2 +
+                                    MAX_VISIBILITY_DEPTH % 2)
     {
       shading_offset++;
     }
@@ -891,8 +891,8 @@ Description: Draws walls and other contents for a given cell.
 ******************************************************************************/
 bool draw_cell_contents(GContext *ctx,
                         const GPoint cell_coords,
-                        const int16_t depth,
-                        const int16_t position)
+                        const int8_t depth,
+                        const int8_t position)
 {
   int16_t left, right, top, bottom, y_offset;
   GPoint cell_coords2;
@@ -1071,19 +1071,11 @@ bool draw_wall(GContext *ctx,
                const GPoint upper_right,
                const GPoint lower_right)
 {
-  int16_t i, j, dx, dy, shading_offset, half_shading_offset;
-  float dy_over_dx;
+  int16_t i, j, shading_offset, half_shading_offset;
+  float dy_over_dx     = (float) (upper_right.y - upper_left.y) /
+                                 (upper_right.x - upper_left.x);
   GColor primary_color = GColorWhite;
 
-  if (upper_left.x >= GRAPHICS_FRAME_WIDTH || upper_right.x < 0)
-  {
-    return false;
-  }
-
-  // Use "dy" to handle slanted side walls (it's zero for back walls):
-  dx         = upper_right.x - upper_left.x;
-  dy         = upper_right.y - upper_left.y; // Negative for right-side walls.
-  dy_over_dx = (float) dy / dx;              // Negative for right-side walls.
   for (i = upper_left.x; i <= upper_right.x && i < GRAPHICS_FRAME_WIDTH; ++i)
   {
     // Determine vertical distance between points:
@@ -1091,7 +1083,7 @@ bool draw_wall(GContext *ctx,
                           MAX_VISIBILITY_DEPTH);
     if ((int16_t) (upper_left.y + (i - upper_left.x) * dy_over_dx) %
         MAX_VISIBILITY_DEPTH >= MAX_VISIBILITY_DEPTH / 2 +
-        MAX_VISIBILITY_DEPTH % 2)
+                                MAX_VISIBILITY_DEPTH % 2)
     {
       shading_offset++;
     }
@@ -1172,9 +1164,9 @@ Description: Draws an entrance graphic on the ceiling of a given cell location.
     Outputs: "True" if the entrance is successfully drawn on the screen (i.e.,
              the entrance isn't located entirely off-screen).
 ******************************************************************************/
-bool draw_entrance(GContext *ctx, const int16_t depth, const int16_t position)
+bool draw_entrance(GContext *ctx, const int8_t depth, const int8_t position)
 {
-  int16_t h_radius, v_radius; // Horizontal and vertical radii for an ellipse.
+  uint8_t h_radius, v_radius; // Horizontal and vertical radii for an ellipse.
 
   h_radius = ELLIPSE_RADIUS_RATIO *
                (g_back_wall_coords[depth][position][BOTTOM_RIGHT].x -
@@ -1212,9 +1204,9 @@ Description: Draws an exit graphic on the floor of a given cell location.
     Outputs: "True" if the exit is successfully drawn on the screen (i.e., the
              exit isn't located entirely off-screen).
 ******************************************************************************/
-bool draw_exit(GContext *ctx, const int16_t depth, const int16_t position)
+bool draw_exit(GContext *ctx, const int8_t depth, const int8_t position)
 {
-  int16_t h_radius, v_radius; // Horizontal and vertical radii for an ellipse.
+  uint8_t h_radius, v_radius; // Horizontal and vertical radii for an ellipse.
 
   h_radius = ELLIPSE_RADIUS_RATIO *
                (g_back_wall_coords[depth][position][BOTTOM_RIGHT].x -
@@ -1256,12 +1248,12 @@ Description: Draws a filled ellipse according to given specifications.
 ******************************************************************************/
 bool fill_ellipse(GContext *ctx,
                   const GPoint center,
-                  const int16_t h_radius,
-                  const int16_t v_radius,
+                  const uint8_t h_radius,
+                  const uint8_t v_radius,
                   const GColor color)
 {
-  int32_t theta;
-  int16_t x_offset, y_offset;
+  int16_t theta;
+  uint8_t x_offset, y_offset;
 
   if (center.x + h_radius < 0                     ||
       center.x - h_radius >= GRAPHICS_FRAME_WIDTH ||
@@ -1328,7 +1320,7 @@ Description: Handles changes to the game world every second while in active
 ******************************************************************************/
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
 {
-  int16_t new_achievement_index; // To check for pending achievement messages.
+  int8_t new_achievement_index; // To check for pending achievement messages.
 
   if (!g_game_paused)
   {
@@ -1858,9 +1850,9 @@ Description: Returns the number of achievements the player has unlocked.
 
     Outputs: The number of achievements the player has unlocked.
 ******************************************************************************/
-int16_t get_num_achievements_unlocked(void)
+int8_t get_num_achievements_unlocked(void)
 {
-  int16_t i, count;
+  int8_t i, count;
 
   for (i = 0, count = 0; i < NUM_ACHIEVEMENTS; ++i)
   {
@@ -1883,9 +1875,9 @@ Description: Checks for new unlocked achievements, returning the index of the
 
     Outputs: Index of the first new achievement found or -1 if none are found.
 ******************************************************************************/
-int16_t get_new_achievement_index(void)
+int8_t get_new_achievement_index(void)
 {
-  int16_t i;
+  int8_t i;
 
   for (i = 0; i < NUM_ACHIEVEMENTS; ++i)
   {
@@ -1910,7 +1902,7 @@ Description: Returns the central point, with respect to the graphics layer, of
     Outputs: GPoint coordinates of the floor's central point within the
              designated cell.
 ******************************************************************************/
-GPoint get_floor_center_point(const int16_t depth, const int16_t position)
+GPoint get_floor_center_point(const int8_t depth, const int8_t position)
 {
   int16_t x_midpoint1, x_midpoint2, x, y;
 
@@ -1918,15 +1910,15 @@ GPoint get_floor_center_point(const int16_t depth, const int16_t position)
                        g_back_wall_coords[depth][position][BOTTOM_RIGHT].x);
   if (depth == 0)
   {
-    if (position < STRAIGHT_AHEAD) // To the left of the player.
+    if (position < STRAIGHT_AHEAD)      // Just to the left of the player.
     {
       x_midpoint2 = -0.5 * GRAPHICS_FRAME_WIDTH;
     }
-    else if (position > STRAIGHT_AHEAD) // To the right of the player.
+    else if (position > STRAIGHT_AHEAD) // Just to the right of the player.
     {
       x_midpoint2 = 1.5 * GRAPHICS_FRAME_WIDTH;
     }
-    else // Directly under the player.
+    else                                // Directly under the player.
     {
       x_midpoint2 = x_midpoint1;
     }
@@ -1957,7 +1949,7 @@ Description: Returns the central point, with respect to the graphics layer, of
     Outputs: GPoint coordinates of the ceiling's central point within the
              designated cell.
 ******************************************************************************/
-GPoint get_ceiling_center_point(const int16_t depth, const int16_t position)
+GPoint get_ceiling_center_point(const int8_t depth, const int8_t position)
 {
   GPoint floor_center = get_floor_center_point(depth, position);
 
@@ -1978,8 +1970,8 @@ Description: Given a set of cell coordinates, returns new cell coordinates a
              in.
 ******************************************************************************/
 GPoint get_cell_farther_away(const GPoint reference_point,
-                             const int16_t direction,
-                             const int16_t distance)
+                             const int8_t direction,
+                             const int8_t distance)
 {
   switch(direction)
   {
@@ -2007,8 +1999,8 @@ Description: Given a set of cell coordinates, returns new cell coordinates a
     Outputs: Cell coordinates a given distance to the left of those passed in.
 ******************************************************************************/
 GPoint get_cell_to_the_left(const GPoint reference_point,
-                            const int16_t reference_direction,
-                            const int16_t distance)
+                            const int8_t reference_direction,
+                            const int8_t distance)
 {
   switch(reference_direction)
   {
@@ -2036,8 +2028,8 @@ Description: Given a set of cell coordinates, returns new cell coordinates a
     Outputs: Cell coordinates a given distance to the right of those passed in.
 ******************************************************************************/
 GPoint get_cell_to_the_right(const GPoint reference_point,
-                             const int16_t reference_direction,
-                             const int16_t distance)
+                             const int8_t reference_direction,
+                             const int8_t distance)
 {
   switch(reference_direction)
   {
@@ -2061,7 +2053,7 @@ Description: Given a set of cell coordinates, returns the cell's type.
 
     Outputs: Integer representing the cell's type.
 ******************************************************************************/
-int16_t get_cell_type(GPoint cell_coords)
+int8_t get_cell_type(GPoint cell_coords)
 {
   return g_maze->cells[cell_coords.x][cell_coords.y];
 }
@@ -2110,7 +2102,7 @@ Description: Returns the opposite of a given direction value (i.e., given the
 
     Outputs: Integer representing the opposite of the given direction.
 ******************************************************************************/
-int16_t get_opposite_direction(const int16_t direction)
+int8_t get_opposite_direction(const int8_t direction)
 {
   switch(direction)
   {
@@ -2212,7 +2204,7 @@ Description: Initializes the MazeCrawler Pebble game.
 ******************************************************************************/
 void init(void)
 {
-  int16_t i;
+  int8_t i;
 
   g_game_paused = true;
   srand(time(0));
