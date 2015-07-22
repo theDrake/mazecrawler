@@ -293,8 +293,8 @@ bool draw_entrance(GContext *ctx, const int8_t depth, const int8_t position);
 bool draw_exit(GContext *ctx, const int8_t depth, const int8_t position);
 bool fill_ellipse(GContext *ctx,
                   const GPoint center,
-                  const int16_t h_radius,
-                  const int16_t v_radius,
+                  const uint8_t h_radius,
+                  const uint8_t v_radius,
                   const GColor color);
 void update_status_bar(GContext *ctx);
 void update_compass(void);
