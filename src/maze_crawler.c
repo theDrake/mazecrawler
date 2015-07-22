@@ -1132,7 +1132,7 @@ bool draw_wall(GContext *ctx,
 #endif
 
   // Ad hoc solution to a minor visual issue (remove if no longer relevant):
-  if (dy == 0 && upper_left.y == g_back_wall_coords[1][0][TOP_LEFT].y)
+  if (upper_left.y == g_back_wall_coords[1][0][TOP_LEFT].y)
   {
 #ifdef PBL_COLOR
     graphics_draw_line(ctx,
