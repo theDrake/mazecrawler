@@ -2412,12 +2412,12 @@ void init(void)
   window_stack_push(g_main_menu_window, ANIMATED);
   g_player = malloc(sizeof(player_t));
   g_maze   = malloc(sizeof(maze_t));
-  if (persist_exists(STORAGE_KEY))
+  if (persist_exists(PLAYER_STORAGE_KEY))
   {
-    persist_read_data(STORAGE_KEY, g_player, sizeof(player_t));
-    if (persist_exists(STORAGE_KEY + 1))
+    persist_read_data(PLAYER_STORAGE_KEY, g_player, sizeof(player_t));
+    if (persist_exists(MAZE_STORAGE_KEY))
     {
-      persist_read_data(STORAGE_KEY + 1, g_maze, sizeof(maze_t));
+      persist_read_data(MAZE_STORAGE_KEY, g_maze, sizeof(maze_t));
       update_compass();
     }
     else
@@ -2449,8 +2449,8 @@ Description: Deinitializes the MazeCrawler Pebble game.
 ******************************************************************************/
 void deinit(void)
 {
-  persist_write_data(STORAGE_KEY, g_player, sizeof(player_t));
-  persist_write_data(STORAGE_KEY + 1, g_maze, sizeof(maze_t));
+  persist_write_data(PLAYER_STORAGE_KEY, g_player, sizeof(player_t));
+  persist_write_data(MAZE_STORAGE_KEY, g_maze, sizeof(maze_t));
   app_focus_service_unsubscribe();
   tick_timer_service_unsubscribe();
 #ifdef PBL_COLOR

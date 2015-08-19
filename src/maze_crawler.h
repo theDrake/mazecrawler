@@ -134,7 +134,8 @@ enum {
 #define MAIN_MENU_NUM_ROWS               4
 #define IN_GAME_MENU_NUM_ROWS            4
 #define INTRO_NARRATION_NUM_PAGES        4
-#define STORAGE_KEY                      8417
+#define PLAYER_STORAGE_KEY               8417
+#define MAZE_STORAGE_KEY                 (PLAYER_STORAGE_KEY + 1)
 #define ANIMATED                         true
 #define NOT_ANIMATED                     false
 
