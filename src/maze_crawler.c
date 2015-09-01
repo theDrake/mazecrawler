@@ -636,8 +636,9 @@ void init_wall_coords(void)
 Description: Initializes the global maze struct by setting its width and height
              according to the current maze size value then setting entrance and
              exit points and procedurally carving a path between them. Also
-             sets a starting direction, repositions the player, and sets the
-             number of seconds spent in the maze to zero.
+             sets a starting direction, repositions the player, sets the
+             number of seconds spent in the maze to zero, and saves data to
+             persistent storage as a precaution.
 
      Inputs: None.
 
@@ -733,6 +734,8 @@ void init_maze(void)
   set_maze_starting_direction();
   reposition_player();
   g_maze->seconds = 0;
+  persist_write_data(PLAYER_STORAGE_KEY, g_player, sizeof(player_t));
+  persist_write_data(MAZE_STORAGE_KEY, g_maze, sizeof(maze_t));
 }
 
 /******************************************************************************
