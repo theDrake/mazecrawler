@@ -155,7 +155,7 @@ static const char *const g_narration_strings[3][4] = {
     "",
   },
   {
-    "MazeCrawler was designed and programmed by David C. Drake:\n\ndavidcdrake.com",
+    "MazeCrawler 1.8, designed and programmed by David C. Drake:\n\ndavidcdrake.com",
     "Thanks for playing! And special thanks to Team Pebble for creating these wonderful, fun, and useful devices!",
     "",
     "",
