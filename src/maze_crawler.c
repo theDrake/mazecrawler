@@ -192,14 +192,16 @@ void update_status_bar(GContext *ctx)
   text_layer_set_text(g_time_text_layer, time_str);
 
   // Draw the compass:
-  graphics_context_set_fill_color(ctx, GColorWhite);
 #ifdef PBL_COLOR
+  graphics_context_set_fill_color(ctx, GColorLightGray);
   graphics_fill_circle(ctx,
                        GPoint(HALF_SCREEN_WIDTH,
                               GRAPHICS_FRAME_HEIGHT + STATUS_BAR_HEIGHT +
                                 STATUS_BAR_HEIGHT / 2),
                        COMPASS_RADIUS);
+  graphics_context_set_stroke_color(ctx, GColorDarkGray);
 #else
+  graphics_context_set_fill_color(ctx, GColorWhite);
   graphics_fill_circle(ctx,
                        GPoint(HALF_SCREEN_WIDTH,
                               GRAPHICS_FRAME_HEIGHT + STATUS_BAR_HEIGHT / 2),
