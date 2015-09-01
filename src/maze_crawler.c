@@ -725,7 +725,7 @@ void init_maze(void)
         }
         break;
     }
-    if (rand() % NUM_DIRECTIONS == 0) // 25% chance of turning.
+    if (rand() % 2) // 50% chance of turning.
     {
       maze_carver_direction = rand() % NUM_DIRECTIONS;
     }
