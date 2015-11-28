@@ -142,6 +142,7 @@ void show_window(Window *const window)
       window_stack_pop(NOT_ANIMATED);
     }
   }
+  light_enable_interaction();
 }
 
 /******************************************************************************
@@ -1309,7 +1310,7 @@ Description: Updates and displays the message box.
 void show_message_box(void)
 {
   text_layer_set_text(g_message_box_text_layer, g_message_str);
-  window_stack_push(g_message_box_window, NOT_ANIMATED);
+  show_window(g_message_box_window);
 }
 
 /******************************************************************************
