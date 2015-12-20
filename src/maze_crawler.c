@@ -21,46 +21,36 @@ Description: Displays narration text via the narration window. The type of
 
     Outputs: None.
 ******************************************************************************/
-void show_narration(void)
-{
+void show_narration(void) {
   static char narration_str[NARRATION_STR_LEN + 1];
 
   // Ensure the narration window has been initialized:
-  if (g_narration_window == NULL)
-  {
+  if (g_narration_window == NULL) {
     init_narration();
   }
 
   // Determine whether the current narration is finished:
-  if (g_current_narration < INTRO_NARRATION && g_narration_page_num > 1)
-  {
-    if (window_stack_get_top_window() == g_narration_window)
-    {
+  if (g_current_narration < INTRO_NARRATION && g_narration_page_num > 1) {
+    if (window_stack_get_top_window() == g_narration_window) {
       window_stack_pop(NOT_ANIMATED);
     }
     deinit_narration();
 
     return;
-  }
-  else if (g_current_narration == INTRO_NARRATION &&
-           g_narration_page_num == INTRO_NARRATION_NUM_PAGES)
-  {
+  } else if (g_current_narration == INTRO_NARRATION &&
+             g_narration_page_num == INTRO_NARRATION_NUM_PAGES) {
     g_current_narration  = CONTROLS_NARRATION;
     g_narration_page_num = 0;
   }
 
   // Determine what text should be displayed:
-  if (g_current_narration < STATS_NARRATION)
-  {
+  if (g_current_narration < STATS_NARRATION) {
     snprintf(narration_str,
              NARRATION_STR_LEN + 1,
              "%s",
              g_narration_strings[g_current_narration][g_narration_page_num]);
-  }
-  else // STATS_NARRATION
-  {
-    switch (g_narration_page_num)
-    {
+  } else {  // STATS_NARRATION
+    switch (g_narration_page_num) {
       case 0: // Max. total chars: 62
         snprintf(narration_str,
                  NARRATION_STR_LEN + 1,
@@ -69,12 +59,9 @@ void show_narration(void)
                   g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT]) ?
                     9999                                                 :
                     g_player->level - 1);
-        if (g_player->level == 1)
-        {
+        if (g_player->level == 1) {
           strcat(narration_str, "--:--");
-        }
-        else
-        {
+        } else {
           strcat_time(narration_str, g_player->best_time);
         }
         snprintf(narration_str + strlen(narration_str),
@@ -84,22 +71,17 @@ void show_narration(void)
         break;
       default:
         while (g_narration_page_num - 1 < NUM_ACHIEVEMENTS &&
-               !g_player->achievement_unlocked[g_narration_page_num - 1])
-        {
+               !g_player->achievement_unlocked[g_narration_page_num - 1]) {
           g_narration_page_num++;
         }
-        if (g_narration_page_num - 1 < NUM_ACHIEVEMENTS)
-        {
+        if (g_narration_page_num - 1 < NUM_ACHIEVEMENTS) {
           snprintf(narration_str,
                    NARRATION_STR_LEN,
                    "Achievements:\n  \"%s\": %s",
                    g_achievement_names[g_narration_page_num - 1],
                    g_achievement_descriptions[g_narration_page_num - 1]);
-        }
-        else
-        {
-          if (window_stack_get_top_window() == g_narration_window)
-          {
+        } else {
+          if (window_stack_get_top_window() == g_narration_window) {
             window_stack_pop(NOT_ANIMATED);
           }
           deinit_narration();
@@ -125,20 +107,13 @@ Description: Displays a given window. (Assumes that window has already been
 
     Outputs: None.
 ******************************************************************************/
-void show_window(Window *const window)
-{
-  if (window == NULL)
-  {
+void show_window(Window *const window) {
+  if (window == NULL) {
     return;
-  }
-  else if (!window_stack_contains_window(window))
-  {
+  } else if (!window_stack_contains_window(window)) {
     window_stack_push(window, NOT_ANIMATED);
-  }
-  else
-  {
-    while (window_stack_get_top_window() != window)
-    {
+  } else {
+    while (window_stack_get_top_window() != window) {
       window_stack_pop(NOT_ANIMATED);
     }
   }
@@ -154,8 +129,7 @@ Description: Initializes the global player struct.
 
     Outputs: None.
 ******************************************************************************/
-void init_player(void)
-{
+void init_player(void) {
   int8_t i;
 
   g_player->position  = GPoint(0, 0);
@@ -163,8 +137,7 @@ void init_player(void)
   g_player->level     = 1;
   g_player->points    = 0;
   g_player->best_time = MAX_SECONDS;
-  for (i = 0; i < NUM_ACHIEVEMENTS; ++i)
-  {
+  for (i = 0; i < NUM_ACHIEVEMENTS; ++i) {
     g_player->achievement_unlocked[i] = false;
   }
 }
@@ -178,8 +151,7 @@ Description: Updates the text displayed in the lower status bar.
 
     Outputs: None.
 ******************************************************************************/
-void update_status_bar(GContext *ctx)
-{
+void update_status_bar(GContext *ctx) {
   static char level_str[LEVEL_STR_LEN + 1], time_str[TIME_STR_LEN + 1];
 
   // Display the current level number:
@@ -223,10 +195,8 @@ Description: Updates the rotation angle of the compass needle according to the
 
     Outputs: None.
 ******************************************************************************/
-void update_compass(void)
-{
-  switch(g_player->direction)
-  {
+void update_compass(void) {
+  switch(g_player->direction) {
     case NORTH:
       gpath_rotate_to(g_compass_path, TRIG_MAX_ANGLE / 2);
       break;
@@ -252,8 +222,7 @@ Description: Moves and orients the player to the maze's starting position and
 
     Outputs: None.
 ******************************************************************************/
-void reposition_player(void)
-{
+void reposition_player(void) {
   g_player->position  = g_maze->entrance;
   g_player->direction = g_maze->starting_direction;
   update_compass();
@@ -270,17 +239,14 @@ Description: Attempts to move the player one cell forward in a given direction
 
     Outputs: Returns "true" if the player successfully moved.
 ******************************************************************************/
-bool move_player(const int8_t direction)
-{
-  if (shift_position(&(g_player->position), direction))
-  {
+bool move_player(const int8_t direction) {
+  if (shift_position(&(g_player->position), direction)) {
     layer_mark_dirty(window_get_root_layer(g_graphics_window));
     check_for_maze_completion();
 
     return true;
   }
-  /*else if (g_player->vibrations_on)
-  {
+  /*else if (g_player->vibrations_on) {
     vibes_short_pulse();
   }*/
 
@@ -299,13 +265,11 @@ Description: Attempts to shift a given set of position coordinates one cell
 
     Outputs: Returns "true" if the character successfully moved.
 ******************************************************************************/
-bool shift_position(GPoint *const position, const int8_t direction)
-{
+bool shift_position(GPoint *const position, const int8_t direction) {
   GPoint destination;
 
   // Get destination coordinates:
-  switch (direction)
-  {
+  switch (direction) {
     case NORTH:
       destination = GPoint(position->x, position->y - 1);
       break;
@@ -321,8 +285,7 @@ bool shift_position(GPoint *const position, const int8_t direction)
   }
 
   // Check for a wall/obstacle:
-  if (is_solid(destination))
-  {
+  if (is_solid(destination)) {
     return false;
   }
 
@@ -342,39 +305,31 @@ Description: Determines whether the current maze/level has been completed, then
 
     Outputs: Returns "true" if the maze has been completed.
 ******************************************************************************/
-bool check_for_maze_completion(void)
-{
+bool check_for_maze_completion(void) {
   int32_t points_earned, max_time_bonus;
 
-  if (get_cell_type(g_player->position) == EXIT)
-  {
+  if (get_cell_type(g_player->position) == EXIT) {
     // Compute points earned according to maze size and time elapsed:
     points_earned = (g_maze->width * g_maze->height) / 10 +
                       (((g_maze->width * g_maze->height) % 10 >= 5) ? 1 : 0);
     max_time_bonus = (g_maze->width * g_maze->height) / 2 +
                        (g_maze->width * g_maze->height) % 2;
-    if (g_maze->seconds < max_time_bonus)
-    {
+    if (g_maze->seconds < max_time_bonus) {
       points_earned += max_time_bonus - g_maze->seconds;
     }
     if (g_player->points + points_earned >= MAX_POINTS ||
-        g_player->points + points_earned < g_player->points)
-    {
+        g_player->points + points_earned < g_player->points) {
       g_player->points = MAX_POINTS;
-      if (!g_player->achievement_unlocked[MAX_POINTS_ACHIEVEMENT])
-      {
+      if (!g_player->achievement_unlocked[MAX_POINTS_ACHIEVEMENT]) {
         g_player->achievement_unlocked[MAX_POINTS_ACHIEVEMENT] = true;
         g_new_achievement_unlocked[MAX_POINTS_ACHIEVEMENT]     = true;
       }
-    }
-    else
-    {
+    } else {
       g_player->points += points_earned;
     }
 
     // Build a congratulatory message:
-    switch(rand() % 30)
-    {
+    switch(rand() % 30) {
       case 0:
         strcpy(g_message_str, "A-maze-ing");
         break;
@@ -475,82 +430,67 @@ bool check_for_maze_completion(void)
     show_message_box();
 
     // Update stats, check for a new best time, and check for achievements:
-    if (g_player->level < MAX_LEVEL)
-    {
+    if (g_player->level < MAX_LEVEL) {
       g_player->level++;
-    }
-    else
-    {
-      if(!g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT])
-      {
+    } else {
+      if(!g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT]) {
         g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT] = true;
         g_new_achievement_unlocked[MAX_LEVEL_ACHIEVEMENT]     = true;
       }
     }
-    if (g_maze->seconds < g_player->best_time)
-    {
+    if (g_maze->seconds < g_player->best_time) {
       g_player->best_time = g_maze->seconds;
       g_new_best_time     = g_player->best_time;
     }
     if (g_maze->seconds < 30 &&
-        !g_player->achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT])
-    {
+        !g_player->achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT]) {
       g_player->achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT] = true;
       g_new_achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT]     = true;
     }
     if (g_maze->seconds < 10 &&
-        !g_player->achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT])
-    {
+        !g_player->achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT]) {
       g_player->achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT] = true;
       g_new_achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT]     = true;
     }
-    switch(g_player->level)
-    {
+    switch(g_player->level) {
       case 2:
-        if(!g_player->achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT])
-        {
+        if(!g_player->achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT]) {
           g_player->achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT] = true;
           g_new_achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT]     = true;
         }
         break;
       case 10:
-        if(!g_player->achievement_unlocked[LEVEL_10_ACHIEVEMENT])
-        {
+        if(!g_player->achievement_unlocked[LEVEL_10_ACHIEVEMENT]) {
           g_player->achievement_unlocked[LEVEL_10_ACHIEVEMENT] = true;
           g_new_achievement_unlocked[LEVEL_10_ACHIEVEMENT]     = true;
         }
         break;
       case 50:
-        if(!g_player->achievement_unlocked[LEVEL_50_ACHIEVEMENT])
-        {
+        if(!g_player->achievement_unlocked[LEVEL_50_ACHIEVEMENT]) {
           g_player->achievement_unlocked[LEVEL_50_ACHIEVEMENT] = true;
           g_new_achievement_unlocked[LEVEL_50_ACHIEVEMENT]     = true;
         }
         break;
       case 100:
-        if(!g_player->achievement_unlocked[LEVEL_100_ACHIEVEMENT])
-        {
+        if(!g_player->achievement_unlocked[LEVEL_100_ACHIEVEMENT]) {
           g_player->achievement_unlocked[LEVEL_100_ACHIEVEMENT] = true;
           g_new_achievement_unlocked[LEVEL_100_ACHIEVEMENT]     = true;
         }
         break;
       case 500:
-        if(!g_player->achievement_unlocked[LEVEL_500_ACHIEVEMENT])
-        {
+        if(!g_player->achievement_unlocked[LEVEL_500_ACHIEVEMENT]) {
           g_player->achievement_unlocked[LEVEL_500_ACHIEVEMENT] = true;
           g_new_achievement_unlocked[LEVEL_500_ACHIEVEMENT]     = true;
         }
         break;
       case 1000:
-        if(!g_player->achievement_unlocked[LEVEL_1000_ACHIEVEMENT])
-        {
+        if(!g_player->achievement_unlocked[LEVEL_1000_ACHIEVEMENT]) {
           g_player->achievement_unlocked[LEVEL_1000_ACHIEVEMENT] = true;
           g_new_achievement_unlocked[LEVEL_1000_ACHIEVEMENT]     = true;
         }
         break;
       case 5000:
-        if(!g_player->achievement_unlocked[LEVEL_5000_ACHIEVEMENT])
-        {
+        if(!g_player->achievement_unlocked[LEVEL_5000_ACHIEVEMENT]) {
           g_player->achievement_unlocked[LEVEL_5000_ACHIEVEMENT] = true;
           g_new_achievement_unlocked[LEVEL_5000_ACHIEVEMENT]     = true;
         }
@@ -579,26 +519,21 @@ Description: Initializes the global "back_wall_coords" array so that it
 
     Outputs: None.
 ******************************************************************************/
-void init_wall_coords(void)
-{
+void init_wall_coords(void) {
   uint8_t i, j, wall_width;
   const float perspective_modifier = 2.0; // Helps determine FOV, etc.
 
-  for (i = 0; i < MAX_VISIBILITY_DEPTH - 1; ++i)
-  {
-    for (j = 0; j < (STRAIGHT_AHEAD * 2) + 1; ++j)
-    {
+  for (i = 0; i < MAX_VISIBILITY_DEPTH - 1; ++i) {
+    for (j = 0; j < (STRAIGHT_AHEAD * 2) + 1; ++j) {
       g_back_wall_coords[i][j][TOP_LEFT]     = GPoint(0, 0);
       g_back_wall_coords[i][j][BOTTOM_RIGHT] = GPoint(0, 0);
     }
   }
-  for (i = 0; i < MAX_VISIBILITY_DEPTH - 1; ++i)
-  {
+  for (i = 0; i < MAX_VISIBILITY_DEPTH - 1; ++i) {
     g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT] =
       GPoint(FIRST_WALL_OFFSET - i * perspective_modifier,
              FIRST_WALL_OFFSET - i * perspective_modifier);
-    if (i > 0)
-    {
+    if (i > 0) {
       g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT].x +=
         g_back_wall_coords[i - 1][STRAIGHT_AHEAD][TOP_LEFT].x;
       g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT].y +=
@@ -611,8 +546,7 @@ void init_wall_coords(void)
         g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT].y;
     wall_width = g_back_wall_coords[i][STRAIGHT_AHEAD][BOTTOM_RIGHT].x -
                    g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT].x;
-    for (j = 1; j <= STRAIGHT_AHEAD; ++j)
-    {
+    for (j = 1; j <= STRAIGHT_AHEAD; ++j) {
       g_back_wall_coords[i][STRAIGHT_AHEAD - j][TOP_LEFT]       =
         g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT];
       g_back_wall_coords[i][STRAIGHT_AHEAD - j][TOP_LEFT].x     -= wall_width *
@@ -647,8 +581,7 @@ Description: Initializes the global maze struct by setting its width and height
 
     Outputs: None.
 ******************************************************************************/
-void init_maze(void)
-{
+void init_maze(void) {
   int8_t i, j, maze_carver_direction;
   GPoint exit, maze_carver_position;
 
@@ -664,17 +597,14 @@ void init_maze(void)
                      MIN_MAZE_HEIGHT;
 
   // Set all cells to "solid":
-  for (i = 0; i < g_maze->width; ++i)
-  {
-    for (j = 0; j < g_maze->height; ++j)
-    {
+  for (i = 0; i < g_maze->width; ++i) {
+    for (j = 0; j < g_maze->height; ++j) {
       g_maze->cells[i][j] = SOLID;
     }
   }
 
   // Now, set "entrance" and "exit" points and carve a path between them:
-  switch (rand() % NUM_DIRECTIONS)
-  {
+  switch (rand() % NUM_DIRECTIONS) {
     case NORTH:
       maze_carver_position = RANDOM_POINT_NORTH;
       exit                 = RANDOM_POINT_SOUTH;
@@ -696,41 +626,33 @@ void init_maze(void)
   g_maze->entrance = maze_carver_position;
   g_maze->cells[exit.x][exit.y] = EXIT;
   maze_carver_direction = rand() % NUM_DIRECTIONS;
-  while (!gpoint_equal(&maze_carver_position, &exit))
-  {
-    if (get_cell_type(maze_carver_position) != ENTRANCE)
-    {
+  while (!gpoint_equal(&maze_carver_position, &exit)) {
+    if (get_cell_type(maze_carver_position) != ENTRANCE) {
       g_maze->cells[maze_carver_position.x][maze_carver_position.y] = EMPTY;
     }
-    switch(maze_carver_direction)
-    {
+    switch(maze_carver_direction) {
       case NORTH:
-        if (maze_carver_position.y > 0)
-        {
+        if (maze_carver_position.y > 0) {
           maze_carver_position.y--;
         }
         break;
       case SOUTH:
-        if (maze_carver_position.y < g_maze->height - 1)
-        {
+        if (maze_carver_position.y < g_maze->height - 1) {
           maze_carver_position.y++;
         }
         break;
       case EAST:
-        if (maze_carver_position.x < g_maze->width - 1)
-        {
+        if (maze_carver_position.x < g_maze->width - 1) {
           maze_carver_position.x++;
         }
         break;
       default: // case WEST:
-        if (maze_carver_position.x > 0)
-        {
+        if (maze_carver_position.x > 0) {
           maze_carver_position.x--;
         }
         break;
     }
-    if (rand() % 2) // 50% chance of turning.
-    {
+    if (rand() % 2) {  // 50% chance of turning.
       maze_carver_direction = rand() % NUM_DIRECTIONS;
     }
   }
@@ -752,17 +674,14 @@ Description: Finds a viable starting direction (i.e., not facing a wall) for
 
     Outputs: Value representing the selected starting direction.
 ******************************************************************************/
-int8_t set_maze_starting_direction(void)
-{
+int8_t set_maze_starting_direction(void) {
   int8_t i;
   bool checked_direction[NUM_DIRECTIONS];
 
-  for (i = 0; i < NUM_DIRECTIONS; ++i)
-  {
+  for (i = 0; i < NUM_DIRECTIONS; ++i) {
     checked_direction[i] = false;
   }
-  do
-  {
+  do {
     g_maze->starting_direction = rand() % NUM_DIRECTIONS;
     checked_direction[g_maze->starting_direction] = true;
   }while (is_solid(get_cell_farther_away(g_maze->entrance,
@@ -787,8 +706,7 @@ Description: Draws a (simplistic) 3D scene based on the player's current
 
     Outputs: None.
 ******************************************************************************/
-void draw_scene(Layer *layer, GContext *ctx)
-{
+void draw_scene(Layer *layer, GContext *ctx) {
   int8_t i, depth;
   GPoint cell_coords, cell_coords2;
 
@@ -801,21 +719,18 @@ void draw_scene(Layer *layer, GContext *ctx)
 
   // Next, draw the floor, ceiling, and walls of the maze:
   draw_floor_and_ceiling(ctx);
-  for (depth = MAX_VISIBILITY_DEPTH - 1; depth >= 0; --depth)
-  {
+  for (depth = MAX_VISIBILITY_DEPTH - 1; depth >= 0; --depth) {
     // Draw the walls straight ahead at the current depth:
     cell_coords = get_cell_farther_away(g_player->position,
                                         g_player->direction,
                                         depth);
-    if (out_of_bounds(cell_coords))
-    {
+    if (out_of_bounds(cell_coords)) {
       continue;
     }
     draw_cell_contents(ctx, cell_coords, depth, STRAIGHT_AHEAD);
 
     // Now, draw all cells to the left and right at the same depth:
-    for (i = 1; i <= depth + 1; ++i)
-    {
+    for (i = 1; i <= depth + 1; ++i) {
       cell_coords2 = get_cell_to_the_left(cell_coords,
                                           g_player->direction,
                                           i);
@@ -840,21 +755,18 @@ Description: Draws the floor and ceiling.
 
     Outputs: None.
 ******************************************************************************/
-void draw_floor_and_ceiling(GContext *ctx)
-{
+void draw_floor_and_ceiling(GContext *ctx) {
   uint8_t x, y, max_y, shading_offset;
 
   max_y = g_back_wall_coords[MAX_VISIBILITY_DEPTH - 2][0][TOP_LEFT].y;
 #ifdef PBL_BW
   graphics_context_set_stroke_color(ctx, GColorWhite);
 #endif
-  for (y = 0; y < max_y; ++y)
-  {
+  for (y = 0; y < max_y; ++y) {
     // Determine horizontal distance between points:
     shading_offset = 1 + y / MAX_VISIBILITY_DEPTH;
     if (y % MAX_VISIBILITY_DEPTH >= MAX_VISIBILITY_DEPTH / 2 +
-                                    MAX_VISIBILITY_DEPTH % 2)
-    {
+                                    MAX_VISIBILITY_DEPTH % 2) {
       shading_offset++;
     }
 #ifdef PBL_COLOR
@@ -866,8 +778,7 @@ void draw_floor_and_ceiling(GContext *ctx)
 #endif
     for (x = y % 2 ? 0 : (shading_offset / 2) + (shading_offset % 2);
          x < GRAPHICS_FRAME_WIDTH;
-         x += shading_offset)
-    {
+         x += shading_offset) {
       // Draw one point on the ceiling and another on the floor:
 #ifdef PBL_COLOR
       graphics_draw_pixel(ctx, GPoint(x, y + STATUS_BAR_HEIGHT));
@@ -898,8 +809,7 @@ Description: Draws walls and other contents for a given cell.
 bool draw_cell_contents(GContext *ctx,
                         const GPoint cell_coords,
                         const int8_t depth,
-                        const int8_t position)
-{
+                        const int8_t position) {
   int16_t left, right, top, bottom, y_offset;
   GPoint cell_coords2;
   bool back_wall_drawn, left_wall_drawn, right_wall_drawn;
@@ -908,8 +818,7 @@ bool draw_cell_contents(GContext *ctx,
       depth    <  0                        ||
       depth    >= MAX_VISIBILITY_DEPTH - 1 ||
       position <  0                        ||
-      position >  STRAIGHT_AHEAD * 2)
-  {
+      position >  STRAIGHT_AHEAD * 2) {
     return false;
   }
 
@@ -918,16 +827,14 @@ bool draw_cell_contents(GContext *ctx,
   right  = g_back_wall_coords[depth][position][BOTTOM_RIGHT].x;
   top    = g_back_wall_coords[depth][position][TOP_LEFT].y;
   bottom = g_back_wall_coords[depth][position][BOTTOM_RIGHT].y;
-  if (bottom - top < MIN_WALL_HEIGHT)
-  {
+  if (bottom - top < MIN_WALL_HEIGHT) {
     return false;
   }
   back_wall_drawn = left_wall_drawn = right_wall_drawn = false;
   cell_coords2 = get_cell_farther_away(cell_coords,
                                        g_player->direction,
                                        1);
-  if (is_solid(cell_coords2))
-  {
+  if (is_solid(cell_coords2)) {
     draw_wall(ctx,
               GPoint(left, top),
               GPoint(left, bottom),
@@ -938,23 +845,18 @@ bool draw_cell_contents(GContext *ctx,
 
   // Left wall:
   right = left;
-  if (depth == 0)
-  {
+  if (depth == 0) {
     left     = 0;
     y_offset = top;
-  }
-  else
-  {
+  } else {
     left     = g_back_wall_coords[depth - 1][position][TOP_LEFT].x;
     y_offset = top - g_back_wall_coords[depth - 1][position][TOP_LEFT].y;
   }
-  if (position <= STRAIGHT_AHEAD)
-  {
+  if (position <= STRAIGHT_AHEAD) {
     cell_coords2 = get_cell_to_the_left(cell_coords,
                                         g_player->direction,
                                         1);
-    if (is_solid(cell_coords2))
-    {
+    if (is_solid(cell_coords2)) {
       draw_wall(ctx,
                 GPoint(left, top - y_offset),
                 GPoint(left, bottom + y_offset),
@@ -966,21 +868,16 @@ bool draw_cell_contents(GContext *ctx,
 
   // Right wall:
   left = g_back_wall_coords[depth][position][BOTTOM_RIGHT].x;
-  if (depth == 0)
-  {
+  if (depth == 0) {
     right = GRAPHICS_FRAME_WIDTH - 1;
-  }
-  else
-  {
+  } else {
     right = g_back_wall_coords[depth - 1][position][BOTTOM_RIGHT].x;
   }
-  if (position >= STRAIGHT_AHEAD)
-  {
+  if (position >= STRAIGHT_AHEAD) {
     cell_coords2 = get_cell_to_the_right(cell_coords,
                                          g_player->direction,
                                          1);
-    if (is_solid(cell_coords2))
-    {
+    if (is_solid(cell_coords2)) {
       draw_wall(ctx,
                 GPoint(left, top),
                 GPoint(left, bottom),
@@ -1002,8 +899,7 @@ bool draw_cell_contents(GContext *ctx,
       (left_wall_drawn &&
        !is_solid(get_cell_to_the_left(cell_coords2,
                                       g_player->direction,
-                                      1))))
-  {
+                                      1)))) {
 #ifdef PBL_COLOR
     graphics_draw_line(ctx,
                        GPoint(g_back_wall_coords[depth][position][TOP_LEFT].x,
@@ -1026,8 +922,7 @@ bool draw_cell_contents(GContext *ctx,
       (right_wall_drawn &&
        !is_solid(get_cell_to_the_right(cell_coords2,
                                        g_player->direction,
-                                       1))))
-  {
+                                       1)))) {
 #ifdef PBL_COLOR
     graphics_draw_line(ctx,
                    GPoint(g_back_wall_coords[depth][position][BOTTOM_RIGHT].x,
@@ -1045,12 +940,10 @@ bool draw_cell_contents(GContext *ctx,
   }
 
   // Entrance/exit markers:
-  if (get_cell_type(cell_coords) == ENTRANCE)
-  {
+  if (get_cell_type(cell_coords) == ENTRANCE) {
     draw_entrance(ctx, depth, position);
   }
-  else if (get_cell_type(cell_coords) == EXIT)
-  {
+  else if (get_cell_type(cell_coords) == EXIT) {
     draw_exit(ctx, depth, position);
   }
 
@@ -1075,22 +968,19 @@ bool draw_wall(GContext *ctx,
                const GPoint upper_left,
                const GPoint lower_left,
                const GPoint upper_right,
-               const GPoint lower_right)
-{
+               const GPoint lower_right) {
   int16_t i, j, shading_offset, half_shading_offset;
   float dy_over_dx     = (float) (upper_right.y - upper_left.y) /
                                  (upper_right.x - upper_left.x);
   GColor primary_color = GColorWhite;
 
-  for (i = upper_left.x; i <= upper_right.x && i < GRAPHICS_FRAME_WIDTH; ++i)
-  {
+  for (i = upper_left.x; i <= upper_right.x && i < GRAPHICS_FRAME_WIDTH; ++i) {
     // Determine vertical distance between points:
     shading_offset = 1 + ((upper_left.y + (i - upper_left.x) * dy_over_dx) /
                           MAX_VISIBILITY_DEPTH);
     if ((int16_t) (upper_left.y + (i - upper_left.x) * dy_over_dx) %
         MAX_VISIBILITY_DEPTH >= MAX_VISIBILITY_DEPTH / 2 +
-                                MAX_VISIBILITY_DEPTH % 2)
-    {
+                                MAX_VISIBILITY_DEPTH % 2) {
       shading_offset++;
     }
     half_shading_offset = (shading_offset / 2) + (shading_offset % 2);
@@ -1104,15 +994,11 @@ bool draw_wall(GContext *ctx,
     // Now, draw points from top to bottom:
     for (j = upper_left.y + (i - upper_left.x) * dy_over_dx;
          j < lower_left.y - (i - upper_left.x) * dy_over_dx;
-         ++j)
-    {
+         ++j) {
       if ((j + (int16_t) ((i - upper_left.x) * dy_over_dx) +
-          (i % 2 == 0 ? 0 : half_shading_offset)) % shading_offset == 0)
-      {
+          (i % 2 == 0 ? 0 : half_shading_offset)) % shading_offset == 0) {
         graphics_context_set_stroke_color(ctx, primary_color);
-      }
-      else
-      {
+      } else {
         graphics_context_set_stroke_color(ctx, GColorBlack);
       }
 #ifdef PBL_COLOR
@@ -1138,8 +1024,7 @@ bool draw_wall(GContext *ctx,
 #endif
 
   // Ad hoc solution to a minor visual issue (remove if no longer relevant):
-  if (upper_left.y == g_back_wall_coords[1][0][TOP_LEFT].y)
-  {
+  if (upper_left.y == g_back_wall_coords[1][0][TOP_LEFT].y) {
 #ifdef PBL_COLOR
     graphics_draw_line(ctx,
                        GPoint(lower_left.x,
@@ -1170,20 +1055,16 @@ Description: Draws an entrance graphic on the ceiling of a given cell location.
     Outputs: "True" if the entrance is successfully drawn on the screen (i.e.,
              the entrance isn't located entirely off-screen).
 ******************************************************************************/
-bool draw_entrance(GContext *ctx, const int8_t depth, const int8_t position)
-{
+bool draw_entrance(GContext *ctx, const int8_t depth, const int8_t position) {
   uint8_t h_radius, v_radius; // Horizontal and vertical radii for an ellipse.
 
   h_radius = ELLIPSE_RADIUS_RATIO *
                (g_back_wall_coords[depth][position][BOTTOM_RIGHT].x -
                 g_back_wall_coords[depth][position][TOP_LEFT].x);
-  if (depth == 0)
-  {
+  if (depth == 0) {
     v_radius = ELLIPSE_RADIUS_RATIO *
                  g_back_wall_coords[depth][position][TOP_LEFT].y;
-  }
-  else
-  {
+  } else {
     v_radius = ELLIPSE_RADIUS_RATIO *
                  (g_back_wall_coords[depth][position][TOP_LEFT].y -
                   g_back_wall_coords[depth - 1][position][TOP_LEFT].y);
@@ -1210,21 +1091,17 @@ Description: Draws an exit graphic on the floor of a given cell location.
     Outputs: "True" if the exit is successfully drawn on the screen (i.e., the
              exit isn't located entirely off-screen).
 ******************************************************************************/
-bool draw_exit(GContext *ctx, const int8_t depth, const int8_t position)
-{
+bool draw_exit(GContext *ctx, const int8_t depth, const int8_t position) {
   uint8_t h_radius, v_radius; // Horizontal and vertical radii for an ellipse.
 
   h_radius = ELLIPSE_RADIUS_RATIO *
                (g_back_wall_coords[depth][position][BOTTOM_RIGHT].x -
                 g_back_wall_coords[depth][position][TOP_LEFT].x);
-  if (depth == 0)
-  {
+  if (depth == 0) {
     v_radius = ELLIPSE_RADIUS_RATIO *
                  (GRAPHICS_FRAME_HEIGHT -
                   g_back_wall_coords[depth][position][BOTTOM_RIGHT].y);
-  }
-  else
-  {
+  } else {
     v_radius = ELLIPSE_RADIUS_RATIO *
                  (g_back_wall_coords[depth - 1][position][BOTTOM_RIGHT].y -
                   g_back_wall_coords[depth][position][BOTTOM_RIGHT].y);
@@ -1256,22 +1133,19 @@ bool fill_ellipse(GContext *ctx,
                   const GPoint center,
                   const uint8_t h_radius,
                   const uint8_t v_radius,
-                  const GColor color)
-{
+                  const GColor color) {
   int16_t theta;
   uint8_t x_offset, y_offset;
 
   if (center.x + h_radius < 0                     ||
       center.x - h_radius >= GRAPHICS_FRAME_WIDTH ||
       center.y + v_radius < 0                     ||
-      center.y - v_radius >= GRAPHICS_FRAME_HEIGHT)
-  {
+      center.y - v_radius >= GRAPHICS_FRAME_HEIGHT) {
     return false;
   }
 
   graphics_context_set_stroke_color(ctx, color);
-  for (theta = 0; theta < NINETY_DEGREES; theta += DEFAULT_ROTATION_RATE)
-  {
+  for (theta = 0; theta < NINETY_DEGREES; theta += DEFAULT_ROTATION_RATE) {
     x_offset = cos_lookup(theta) * h_radius / TRIG_MAX_RATIO;
     y_offset = sin_lookup(theta) * v_radius / TRIG_MAX_RATIO;
 #ifdef PBL_COLOR
@@ -1307,8 +1181,7 @@ Description: Updates and displays the message box.
 
     Outputs: None.
 ******************************************************************************/
-void show_message_box(void)
-{
+void show_message_box(void) {
   text_layer_set_text(g_message_box_text_layer, g_message_str);
   show_window(g_message_box_window);
 }
@@ -1324,18 +1197,14 @@ Description: Handles changes to the game world every second while in active
 
     Outputs: None.
 ******************************************************************************/
-static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
-{
+static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   int8_t new_achievement_index; // To check for pending achievement messages.
 
-  if (!g_game_paused)
-  {
+  if (!g_game_paused) {
     g_maze->seconds++;
-    if (g_maze->seconds > MAX_SECONDS)
-    {
+    if (g_maze->seconds > MAX_SECONDS) {
       g_maze->seconds = MAX_SECONDS;
-      if (!g_player->achievement_unlocked[ONE_HOUR_ACHIEVEMENT])
-      {
+      if (!g_player->achievement_unlocked[ONE_HOUR_ACHIEVEMENT]) {
         g_player->achievement_unlocked[ONE_HOUR_ACHIEVEMENT] = true;
         g_new_achievement_unlocked[ONE_HOUR_ACHIEVEMENT]     = true;
       }
@@ -1343,15 +1212,12 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
     layer_mark_dirty(window_get_root_layer(g_graphics_window));
 
     // Check for pending time/achievement messages:
-    if (g_new_best_time > -1)
-    {
+    if (g_new_best_time > -1) {
       strcpy(g_message_str, "\nNew Best Time!\n");
       strcat_time(g_message_str, g_new_best_time);
       show_message_box();
       g_new_best_time = -1;
-    }
-    else if ((new_achievement_index = get_new_achievement_index()) > -1)
-    {
+    } else if ((new_achievement_index = get_new_achievement_index()) > -1) {
       snprintf(g_message_str,
                MESSAGE_STR_LEN,
                "Achievement Unlocked!\n\n\"%s\"",
@@ -1372,16 +1238,11 @@ Description: Handles MazeCrawler going out of, or coming back into, focus
 
     Outputs: None.
 ******************************************************************************/
-void app_focus_handler(const bool in_focus)
-{
-  if (!in_focus) // Some other app has taken the focus away from MazeCrawler.
-  {
+void app_focus_handler(const bool in_focus) {
+  if (!in_focus) {
     g_game_paused = true;
-  }
-  else // MazeCrawler is now back in focus.
-  {
-    if (window_stack_get_top_window() == g_graphics_window)
-    {
+  } else {
+    if (window_stack_get_top_window() == g_graphics_window) {
      g_game_paused = false;
     }
   }
@@ -1396,8 +1257,7 @@ Description: Called when the graphics window appears.
 
     Outputs: None.
 ******************************************************************************/
-static void graphics_window_appear(Window *window)
-{
+static void graphics_window_appear(Window *window) {
   g_game_paused = false;
 }
 
@@ -1410,8 +1270,7 @@ Description: Called when the graphics window disappears.
 
     Outputs: None.
 ******************************************************************************/
-static void graphics_window_disappear(Window *window)
-{
+static void graphics_window_disappear(Window *window) {
   g_game_paused = true;
 }
 
@@ -1427,10 +1286,8 @@ Description: The graphics window's single-click handler for the Pebble's "up"
     Outputs: None.
 ******************************************************************************/
 void graphics_up_single_repeating_click(ClickRecognizerRef recognizer,
-                                        void *context)
-{
-  if (!g_game_paused)
-  {
+                                        void *context) {
+  if (!g_game_paused) {
     move_player(g_player->direction);
   }
 }
@@ -1446,13 +1303,10 @@ Description: The graphics window's multi-click handler for the "up" button.
 
     Outputs: None.
 ******************************************************************************/
-void graphics_up_multi_click(ClickRecognizerRef recognizer, void *context)
-{
-  if (!g_game_paused)
-  {
+void graphics_up_multi_click(ClickRecognizerRef recognizer, void *context) {
+  if (!g_game_paused) {
     // Turn to the left:
-    switch (g_player->direction)
-    {
+    switch (g_player->direction) {
       case NORTH:
         g_player->direction = WEST;
         break;
@@ -1483,10 +1337,8 @@ Description: The graphics window's single-click handler for the "down" button.
     Outputs: None.
 ******************************************************************************/
 void graphics_down_single_repeating_click(ClickRecognizerRef recognizer,
-                                          void *context)
-{
-  if (!g_game_paused)
-  {
+                                          void *context) {
+  if (!g_game_paused) {
     move_player(get_opposite_direction(g_player->direction));
   }
 }
@@ -1502,13 +1354,10 @@ Description: The graphics window's multi-click handler for the "down" button.
 
     Outputs: None.
 ******************************************************************************/
-void graphics_down_multi_click(ClickRecognizerRef recognizer, void *context)
-{
-  if (!g_game_paused)
-  {
+void graphics_down_multi_click(ClickRecognizerRef recognizer, void *context) {
+  if (!g_game_paused) {
     // Turn to the right:
-    switch (g_player->direction)
-    {
+    switch (g_player->direction) {
       case NORTH:
         g_player->direction = EAST;
         break;
@@ -1538,8 +1387,8 @@ Description: The graphics window's single-click handler for the "select"
 
     Outputs: None.
 ******************************************************************************/
-void graphics_select_single_click(ClickRecognizerRef recognizer, void *context)
-{
+void graphics_select_single_click(ClickRecognizerRef recognizer,
+                                  void *context) {
   menu_layer_set_selected_index(g_in_game_menu,
                                 (MenuIndex) {0, 0},
                                 MenuRowAlignTop,
@@ -1556,8 +1405,7 @@ Description: Button-click configuration provider for the graphics window.
 
     Outputs: None.
 ******************************************************************************/
-void graphics_click_config_provider(void *context)
-{
+void graphics_click_config_provider(void *context) {
   // "Up" button:
   window_single_repeating_click_subscribe(BUTTON_ID_UP,
                                           CLICK_REPEAT_INTERVAL,
@@ -1597,8 +1445,7 @@ Description: The message box window's single-click handler for the "select"
     Outputs: None.
 ******************************************************************************/
 void message_box_select_single_click(ClickRecognizerRef recognizer,
-                                     void *context)
-{
+                                     void *context) {
   window_stack_pop(NOT_ANIMATED);
 }
 
@@ -1611,8 +1458,7 @@ Description: Button-click configurations for the message box window.
 
     Outputs: None.
 ******************************************************************************/
-void message_box_click_config_provider(void *context)
-{
+void message_box_click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_SELECT,
                                 message_box_select_single_click);
 }
@@ -1629,8 +1475,7 @@ Description: The narration window's single-click handler for all buttons.
 
     Outputs: None.
 ******************************************************************************/
-void narration_single_click(ClickRecognizerRef recognizer, void *context)
-{
+void narration_single_click(ClickRecognizerRef recognizer, void *context) {
   g_narration_page_num++;
   show_narration();
 }
@@ -1644,8 +1489,7 @@ Description: Button-click configurations for the narration window.
 
     Outputs: None.
 ******************************************************************************/
-void narration_click_config_provider(void *context)
-{
+void narration_click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_SELECT, narration_single_click);
   window_single_click_subscribe(BUTTON_ID_UP, narration_single_click);
   window_single_click_subscribe(BUTTON_ID_DOWN, narration_single_click);
@@ -1666,10 +1510,8 @@ Description: Returns the number of rows in a given menu.
 ******************************************************************************/
 static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer,
                                            uint16_t section_index,
-                                           void *data)
-{
-  if (menu_layer == g_main_menu)
-  {
+                                           void *data) {
+  if (menu_layer == g_main_menu) {
     return MAIN_MENU_NUM_ROWS;
   }
 
@@ -1691,10 +1533,8 @@ Description: Instructions for drawing each row of the main menu.
 static void main_menu_draw_row_callback(GContext* ctx,
                                         const Layer *cell_layer,
                                         MenuIndex *cell_index,
-                                        void *data)
-{
-  switch (cell_index->row)
-  {
+                                        void *data) {
+  switch (cell_index->row) {
     case 0:
       menu_cell_basic_draw(ctx,
                            cell_layer,
@@ -1739,10 +1579,8 @@ Description: Called when a given cell of the main menu is selected.
 ******************************************************************************/
 void main_menu_select_callback(MenuLayer *menu_layer,
                                MenuIndex *cell_index,
-                               void *data)
-{
-  switch (cell_index->row)
-  {
+                               void *data) {
+  switch (cell_index->row) {
     case 0: // Play
       window_stack_push(g_graphics_window, NOT_ANIMATED);
       break;
@@ -1776,10 +1614,8 @@ Description: Instructions for drawing each row of the in-game menu.
 static void in_game_menu_draw_row_callback(GContext* ctx,
                                            const Layer *cell_layer,
                                            MenuIndex *cell_index,
-                                           void *data)
-{
-  switch (cell_index->row)
-  {
+                                           void *data) {
+  switch (cell_index->row) {
     case 0:
       menu_cell_basic_draw(ctx,
                            cell_layer,
@@ -1824,10 +1660,8 @@ Description: Called when a given cell of the in-game menu is selected.
 ******************************************************************************/
 void in_game_menu_select_callback(MenuLayer *menu_layer,
                                   MenuIndex *cell_index,
-                                  void *data)
-{
-  switch (cell_index->row)
-  {
+                                  void *data) {
+  switch (cell_index->row) {
     case 0: // New Maze
       init_maze();
       window_stack_pop(NOT_ANIMATED);
@@ -1856,14 +1690,11 @@ Description: Returns the number of achievements the player has unlocked.
 
     Outputs: The number of achievements the player has unlocked.
 ******************************************************************************/
-int8_t get_num_achievements_unlocked(void)
-{
+int8_t get_num_achievements_unlocked(void) {
   int8_t i, count;
 
-  for (i = 0, count = 0; i < NUM_ACHIEVEMENTS; ++i)
-  {
-    if (g_player->achievement_unlocked[i])
-    {
+  for (i = 0, count = 0; i < NUM_ACHIEVEMENTS; ++i) {
+    if (g_player->achievement_unlocked[i]) {
       count++;
     }
   }
@@ -1881,14 +1712,11 @@ Description: Checks for new unlocked achievements, returning the index of the
 
     Outputs: Index of the first new achievement found or -1 if none are found.
 ******************************************************************************/
-int8_t get_new_achievement_index(void)
-{
+int8_t get_new_achievement_index(void) {
   int8_t i;
 
-  for (i = 0; i < NUM_ACHIEVEMENTS; ++i)
-  {
-    if (g_new_achievement_unlocked[i])
-    {
+  for (i = 0; i < NUM_ACHIEVEMENTS; ++i) {
+    if (g_new_achievement_unlocked[i]) {
       return i;
     }
   }
@@ -1908,30 +1736,21 @@ Description: Returns the central point, with respect to the graphics layer, of
     Outputs: GPoint coordinates of the floor's central point within the
              designated cell.
 ******************************************************************************/
-GPoint get_floor_center_point(const int8_t depth, const int8_t position)
-{
+GPoint get_floor_center_point(const int8_t depth, const int8_t position) {
   int16_t x_midpoint1, x_midpoint2, x, y;
 
   x_midpoint1 = 0.5 * (g_back_wall_coords[depth][position][TOP_LEFT].x +
                        g_back_wall_coords[depth][position][BOTTOM_RIGHT].x);
-  if (depth == 0)
-  {
-    if (position < STRAIGHT_AHEAD)      // Just to the left of the player.
-    {
+  if (depth == 0) {
+    if (position < STRAIGHT_AHEAD) {         // To the left of the player.
       x_midpoint2 = -0.5 * GRAPHICS_FRAME_WIDTH;
-    }
-    else if (position > STRAIGHT_AHEAD) // Just to the right of the player.
-    {
+    } else if (position > STRAIGHT_AHEAD) {  // To the right of the player.
       x_midpoint2 = 1.5 * GRAPHICS_FRAME_WIDTH;
-    }
-    else                                // Directly under the player.
-    {
+    } else {                                 // Directly under the player.
       x_midpoint2 = x_midpoint1;
     }
     y = GRAPHICS_FRAME_HEIGHT;
-  }
-  else
-  {
+  } else {
     x_midpoint2 = 0.5 *
       (g_back_wall_coords[depth - 1][position][TOP_LEFT].x +
        g_back_wall_coords[depth - 1][position][BOTTOM_RIGHT].x);
@@ -1955,8 +1774,7 @@ Description: Returns the central point, with respect to the graphics layer, of
     Outputs: GPoint coordinates of the ceiling's central point within the
              designated cell.
 ******************************************************************************/
-GPoint get_ceiling_center_point(const int8_t depth, const int8_t position)
-{
+GPoint get_ceiling_center_point(const int8_t depth, const int8_t position) {
   GPoint floor_center = get_floor_center_point(depth, position);
 
   return GPoint(floor_center.x, GRAPHICS_FRAME_HEIGHT - floor_center.y);
@@ -1977,10 +1795,8 @@ Description: Given a set of cell coordinates, returns new cell coordinates a
 ******************************************************************************/
 GPoint get_cell_farther_away(const GPoint reference_point,
                              const int8_t direction,
-                             const int8_t distance)
-{
-  switch(direction)
-  {
+                             const int8_t distance) {
+  switch(direction) {
     case NORTH:
       return GPoint(reference_point.x, reference_point.y - distance);
     case SOUTH:
@@ -2006,10 +1822,8 @@ Description: Given a set of cell coordinates, returns new cell coordinates a
 ******************************************************************************/
 GPoint get_cell_to_the_left(const GPoint reference_point,
                             const int8_t reference_direction,
-                            const int8_t distance)
-{
-  switch(reference_direction)
-  {
+                            const int8_t distance) {
+  switch(reference_direction) {
     case NORTH:
       return GPoint(reference_point.x - distance, reference_point.y);
     case SOUTH:
@@ -2035,10 +1849,8 @@ Description: Given a set of cell coordinates, returns new cell coordinates a
 ******************************************************************************/
 GPoint get_cell_to_the_right(const GPoint reference_point,
                              const int8_t reference_direction,
-                             const int8_t distance)
-{
-  switch(reference_direction)
-  {
+                             const int8_t distance) {
+  switch(reference_direction) {
     case NORTH:
       return GPoint(reference_point.x + distance, reference_point.y);
     case SOUTH:
@@ -2059,8 +1871,7 @@ Description: Given a set of cell coordinates, returns the cell's type.
 
     Outputs: Integer representing the cell's type.
 ******************************************************************************/
-int8_t get_cell_type(GPoint cell_coords)
-{
+int8_t get_cell_type(GPoint cell_coords) {
   return g_maze->cells[cell_coords.x][cell_coords.y];
 }
 
@@ -2074,8 +1885,7 @@ Description: Determines whether a given cell lies outside the current maze
 
     Outputs: Returns "true" if the cell is out of bounds.
 ******************************************************************************/
-bool out_of_bounds(const GPoint cell_coords)
-{
+bool out_of_bounds(const GPoint cell_coords) {
   return cell_coords.x < 0              ||
          cell_coords.x >= g_maze->width ||
          cell_coords.y < 0              ||
@@ -2093,8 +1903,7 @@ Description: Determines whether a given cell is "solid" (and is thus impassable
 
     Outputs: Returns "true" if the cell is solid.
 ******************************************************************************/
-bool is_solid(const GPoint cell_coords)
-{
+bool is_solid(const GPoint cell_coords) {
   return out_of_bounds(cell_coords) || get_cell_type(cell_coords) == SOLID;
 }
 
@@ -2108,10 +1917,8 @@ Description: Returns the opposite of a given direction value (i.e., given the
 
     Outputs: Integer representing the opposite of the given direction.
 ******************************************************************************/
-int8_t get_opposite_direction(const int8_t direction)
-{
-  switch(direction)
-  {
+int8_t get_opposite_direction(const int8_t direction) {
+  switch(direction) {
     case NORTH:
       return SOUTH;
     case SOUTH:
@@ -2134,10 +1941,8 @@ Description: Concatenates a given amount of time to the end of a given string
 
     Outputs: None.
 ******************************************************************************/
-void strcat_time(char *const dest_str, int16_t seconds)
-{
-  if (seconds > MAX_SECONDS)
-  {
+void strcat_time(char *const dest_str, int16_t seconds) {
+  if (seconds > MAX_SECONDS) {
     seconds = MAX_SECONDS;
   }
   snprintf(dest_str + strlen(dest_str),
@@ -2156,10 +1961,8 @@ Description: Initializes the narration window.
 
     Outputs: None.
 ******************************************************************************/
-void init_narration(void)
-{
-  if (g_narration_window == NULL)
-  {
+void init_narration(void) {
+  if (g_narration_window == NULL) {
     g_narration_window = window_create();
     window_set_background_color(g_narration_window, GColorBlack);
     window_set_click_config_provider(g_narration_window,
@@ -2189,10 +1992,8 @@ Description: Deinitializes the narration window.
 
     Outputs: None.
 ******************************************************************************/
-void deinit_narration(void)
-{
-  if (g_narration_window != NULL)
-  {
+void deinit_narration(void) {
+  if (g_narration_window != NULL) {
     text_layer_destroy(g_narration_text_layer);
     window_destroy(g_narration_window);
     g_narration_window = NULL;
@@ -2208,8 +2009,7 @@ Description: Initializes the MazeCrawler Pebble game.
 
     Outputs: None.
 ******************************************************************************/
-void init(void)
-{
+void init(void) {
   int8_t i;
 
   g_game_paused = true;
@@ -2218,8 +2018,7 @@ void init(void)
   // Graphics window initialization:
   g_graphics_window = window_create();
   window_set_background_color(g_graphics_window, GColorBlack);
-  window_set_window_handlers(g_graphics_window, (WindowHandlers)
-  {
+  window_set_window_handlers(g_graphics_window, (WindowHandlers) {
     .appear    = graphics_window_appear,
     .disappear = graphics_window_disappear,
   });
@@ -2346,8 +2145,7 @@ void init(void)
   // Main menu initialization:
   g_main_menu_window = window_create();
   g_main_menu        = menu_layer_create(FULL_SCREEN_FRAME);
-  menu_layer_set_callbacks(g_main_menu, NULL, (MenuLayerCallbacks)
-  {
+  menu_layer_set_callbacks(g_main_menu, NULL, (MenuLayerCallbacks) {
     .get_num_rows = menu_get_num_rows_callback,
     .draw_row     = main_menu_draw_row_callback,
     .select_click = main_menu_select_callback,
@@ -2364,8 +2162,7 @@ void init(void)
   // In-game menu initialization:
   g_in_game_menu_window = window_create();
   g_in_game_menu        = menu_layer_create(FULL_SCREEN_FRAME);
-  menu_layer_set_callbacks(g_in_game_menu, NULL, (MenuLayerCallbacks)
-  {
+  menu_layer_set_callbacks(g_in_game_menu, NULL, (MenuLayerCallbacks) {
     .get_num_rows = menu_get_num_rows_callback,
     .draw_row     = in_game_menu_draw_row_callback,
     .select_click = in_game_menu_select_callback,
@@ -2397,8 +2194,7 @@ void init(void)
   // Misc. variable initialization:
   g_narration_window = NULL;
   g_new_best_time    = -1;
-  for (i = 0; i < NUM_ACHIEVEMENTS; ++i)
-  {
+  for (i = 0; i < NUM_ACHIEVEMENTS; ++i) {
     g_new_achievement_unlocked[i] = false;
   }
   init_wall_coords();
@@ -2418,21 +2214,15 @@ void init(void)
   window_stack_push(g_main_menu_window, ANIMATED);
   g_player = malloc(sizeof(player_t));
   g_maze   = malloc(sizeof(maze_t));
-  if (persist_exists(PLAYER_STORAGE_KEY))
-  {
+  if (persist_exists(PLAYER_STORAGE_KEY)) {
     persist_read_data(PLAYER_STORAGE_KEY, g_player, sizeof(player_t));
-    if (persist_exists(MAZE_STORAGE_KEY))
-    {
+    if (persist_exists(MAZE_STORAGE_KEY)) {
       persist_read_data(MAZE_STORAGE_KEY, g_maze, sizeof(maze_t));
       update_compass();
-    }
-    else
-    {
+    } else {
       init_maze();
     }
-  }
-  else
-  {
+  } else {
     init_player();
     init_maze();
     g_current_narration = INTRO_NARRATION;
@@ -2453,8 +2243,7 @@ Description: Deinitializes the MazeCrawler Pebble game.
 
     Outputs: None.
 ******************************************************************************/
-void deinit(void)
-{
+void deinit(void) {
   persist_write_data(PLAYER_STORAGE_KEY, g_player, sizeof(player_t));
   persist_write_data(MAZE_STORAGE_KEY, g_maze, sizeof(maze_t));
   app_focus_service_unsubscribe();
@@ -2488,8 +2277,7 @@ Description: Main function for the MazeCrawler Pebble game.
 
     Outputs: Number of errors encountered.
 ******************************************************************************/
-int main(void)
-{
+int main(void) {
   init();
   app_event_loop();
   deinit();
