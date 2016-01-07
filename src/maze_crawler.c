@@ -167,18 +167,18 @@ void update_status_bar(GContext *ctx) {
   // Draw the compass:
 #ifdef PBL_COLOR
   graphics_context_set_fill_color(ctx, GColorLightGray);
+#else
+  graphics_context_set_fill_color(ctx, GColorWhite);
+#endif
   graphics_fill_circle(ctx,
                        GPoint(HALF_SCREEN_WIDTH,
                               GRAPHICS_FRAME_HEIGHT + STATUS_BAR_HEIGHT +
                                 STATUS_BAR_HEIGHT / 2),
                        COMPASS_RADIUS);
+#ifdef PBL_COLOR
   graphics_context_set_stroke_color(ctx, GColorDarkGray);
 #else
-  graphics_context_set_fill_color(ctx, GColorWhite);
-  graphics_fill_circle(ctx,
-                       GPoint(HALF_SCREEN_WIDTH,
-                              GRAPHICS_FRAME_HEIGHT + STATUS_BAR_HEIGHT / 2),
-                       COMPASS_RADIUS);
+  graphics_context_set_stroke_color(ctx, GColorBlack);
 #endif
   graphics_context_set_fill_color(ctx, GColorBlack);
   gpath_draw_outline(ctx, g_compass_path);
@@ -780,14 +780,9 @@ void draw_floor_and_ceiling(GContext *ctx) {
          x < GRAPHICS_FRAME_WIDTH;
          x += shading_offset) {
       // Draw one point on the ceiling and another on the floor:
-#ifdef PBL_COLOR
       graphics_draw_pixel(ctx, GPoint(x, y + STATUS_BAR_HEIGHT));
       graphics_draw_pixel(ctx, GPoint(x, GRAPHICS_FRAME_HEIGHT - y +
                                            STATUS_BAR_HEIGHT));
-#else
-      graphics_draw_pixel(ctx, GPoint(x, y));
-      graphics_draw_pixel(ctx, GPoint(x, GRAPHICS_FRAME_HEIGHT - y));
-#endif
     }
   }
 }
@@ -900,7 +895,6 @@ bool draw_cell_contents(GContext *ctx,
        !is_solid(get_cell_to_the_left(cell_coords2,
                                       g_player->direction,
                                       1)))) {
-#ifdef PBL_COLOR
     graphics_draw_line(ctx,
                        GPoint(g_back_wall_coords[depth][position][TOP_LEFT].x,
                               g_back_wall_coords[depth][position][TOP_LEFT].y +
@@ -908,12 +902,6 @@ bool draw_cell_contents(GContext *ctx,
                        GPoint(g_back_wall_coords[depth][position][TOP_LEFT].x,
                           g_back_wall_coords[depth][position][BOTTOM_RIGHT].y +
                             STATUS_BAR_HEIGHT));
-#else
-    graphics_draw_line(ctx,
-                       g_back_wall_coords[depth][position][TOP_LEFT],
-                       GPoint(g_back_wall_coords[depth][position][TOP_LEFT].x,
-                         g_back_wall_coords[depth][position][BOTTOM_RIGHT].y));
-#endif
   }
   if ((back_wall_drawn && (right_wall_drawn ||
        !is_solid(get_cell_to_the_right(cell_coords2,
@@ -923,7 +911,6 @@ bool draw_cell_contents(GContext *ctx,
        !is_solid(get_cell_to_the_right(cell_coords2,
                                        g_player->direction,
                                        1)))) {
-#ifdef PBL_COLOR
     graphics_draw_line(ctx,
                    GPoint(g_back_wall_coords[depth][position][BOTTOM_RIGHT].x,
                           g_back_wall_coords[depth][position][BOTTOM_RIGHT].y +
@@ -931,12 +918,6 @@ bool draw_cell_contents(GContext *ctx,
                    GPoint(g_back_wall_coords[depth][position][BOTTOM_RIGHT].x,
                           g_back_wall_coords[depth][position][TOP_LEFT].y +
                             STATUS_BAR_HEIGHT));
-#else
-    graphics_draw_line(ctx,
-                    g_back_wall_coords[depth][position][BOTTOM_RIGHT],
-                    GPoint(g_back_wall_coords[depth][position][BOTTOM_RIGHT].x,
-                           g_back_wall_coords[depth][position][TOP_LEFT].y));
-#endif
   }
 
   // Entrance/exit markers:
@@ -1001,41 +982,27 @@ bool draw_wall(GContext *ctx,
       } else {
         graphics_context_set_stroke_color(ctx, GColorBlack);
       }
-#ifdef PBL_COLOR
       graphics_draw_pixel(ctx, GPoint(i, j + STATUS_BAR_HEIGHT));
-#else
-      graphics_draw_pixel(ctx, GPoint(i, j));
-#endif
     }
   }
 
   // Draw lines along the top and bottom of the wall:
   graphics_context_set_stroke_color(ctx, GColorBlack);
-#ifdef PBL_COLOR
   graphics_draw_line(ctx,
                      GPoint(upper_left.x, upper_left.y + STATUS_BAR_HEIGHT),
                      GPoint(upper_right.x, upper_right.y + STATUS_BAR_HEIGHT));
   graphics_draw_line(ctx,
                      GPoint(lower_left.x, lower_left.y + STATUS_BAR_HEIGHT),
                      GPoint(lower_right.x, lower_right.y + STATUS_BAR_HEIGHT));
-#else
-  graphics_draw_line(ctx, upper_left, upper_right);
-  graphics_draw_line(ctx, lower_left, lower_right);
 #endif
 
   // Ad hoc solution to a minor visual issue (remove if no longer relevant):
   if (upper_left.y == g_back_wall_coords[1][0][TOP_LEFT].y) {
-#ifdef PBL_COLOR
     graphics_draw_line(ctx,
                        GPoint(lower_left.x,
                               lower_left.y + 1 + STATUS_BAR_HEIGHT),
                        GPoint(lower_right.x,
                               lower_right.y + 1 + STATUS_BAR_HEIGHT));
-#else
-    graphics_draw_line(ctx,
-                       GPoint(lower_left.x, lower_left.y + 1),
-                       GPoint(lower_right.x, lower_right.y + 1));
-#endif
   }
 
   return true;
@@ -1148,7 +1115,6 @@ bool fill_ellipse(GContext *ctx,
   for (theta = 0; theta < NINETY_DEGREES; theta += DEFAULT_ROTATION_RATE) {
     x_offset = cos_lookup(theta) * h_radius / TRIG_MAX_RATIO;
     y_offset = sin_lookup(theta) * v_radius / TRIG_MAX_RATIO;
-#ifdef PBL_COLOR
     graphics_draw_line(ctx,
                        GPoint(center.x - x_offset,
                               center.y - y_offset + STATUS_BAR_HEIGHT),
@@ -1159,14 +1125,6 @@ bool fill_ellipse(GContext *ctx,
                               center.y + y_offset + STATUS_BAR_HEIGHT),
                        GPoint(center.x + x_offset,
                               center.y + y_offset + STATUS_BAR_HEIGHT));
-#else
-    graphics_draw_line(ctx,
-                       GPoint(center.x - x_offset, center.y - y_offset),
-                       GPoint(center.x + x_offset, center.y - y_offset));
-    graphics_draw_line(ctx,
-                       GPoint(center.x - x_offset, center.y + y_offset),
-                       GPoint(center.x + x_offset, center.y + y_offset));
-#endif
   }
 
   return true;
@@ -1974,12 +1932,10 @@ void init_narration(void) {
     text_layer_set_text_alignment(g_narration_text_layer, GTextAlignmentLeft);
     layer_add_child(window_get_root_layer(g_narration_window),
                     text_layer_get_layer(g_narration_text_layer));
-    g_narration_page_num = 0;
-#ifdef PBL_COLOR
     g_narration_status_bar = status_bar_layer_create();
     layer_add_child(window_get_root_layer(g_narration_window),
                     status_bar_layer_get_layer(g_narration_status_bar));
-#endif
+    g_narration_page_num = 0;
   }
 }
 
@@ -2040,11 +1996,11 @@ void init(void) {
   text_layer_set_text_alignment(g_time_text_layer, GTextAlignmentRight);
   layer_add_child(window_get_root_layer(g_graphics_window),
                   text_layer_get_layer(g_time_text_layer));
-#ifdef PBL_COLOR
   g_graphics_status_bar = status_bar_layer_create();
   layer_add_child(window_get_root_layer(g_graphics_window),
                   status_bar_layer_get_layer(g_graphics_status_bar));
 
+#ifdef PBL_COLOR
   // Blue background color scheme:
   g_background_colors[0][0] = GColorCeleste;
   g_background_colors[0][1] = GColorCeleste;
@@ -2153,11 +2109,9 @@ void init(void) {
   menu_layer_set_click_config_onto_window(g_main_menu, g_main_menu_window);
   layer_add_child(window_get_root_layer(g_main_menu_window),
                   menu_layer_get_layer(g_main_menu));
-#ifdef PBL_COLOR
   g_main_menu_status_bar = status_bar_layer_create();
   layer_add_child(window_get_root_layer(g_main_menu_window),
                   status_bar_layer_get_layer(g_main_menu_status_bar));
-#endif
 
   // In-game menu initialization:
   g_in_game_menu_window = window_create();
@@ -2171,11 +2125,9 @@ void init(void) {
                                           g_in_game_menu_window);
   layer_add_child(window_get_root_layer(g_in_game_menu_window),
                   menu_layer_get_layer(g_in_game_menu));
-#ifdef PBL_COLOR
   g_in_game_menu_status_bar = status_bar_layer_create();
   layer_add_child(window_get_root_layer(g_in_game_menu_window),
                   status_bar_layer_get_layer(g_in_game_menu_status_bar));
-#endif
 
   // Message box window intialization:
   g_message_box_window = window_create();
@@ -2199,16 +2151,10 @@ void init(void) {
   }
   init_wall_coords();
   g_compass_path = gpath_create(&COMPASS_PATH_INFO);
-#ifdef PBL_COLOR
   gpath_move_to(g_compass_path, GPoint(HALF_SCREEN_WIDTH,
                                        GRAPHICS_FRAME_HEIGHT +
                                          STATUS_BAR_HEIGHT   +
                                          STATUS_BAR_HEIGHT / 2));
-#else
-  gpath_move_to(g_compass_path, GPoint(HALF_SCREEN_WIDTH,
-                                       GRAPHICS_FRAME_HEIGHT +
-                                         STATUS_BAR_HEIGHT / 2));
-#endif
 
   // Load/init data and present main menu (after intro text, if applicable):
   window_stack_push(g_main_menu_window, ANIMATED);
@@ -2248,12 +2194,10 @@ void deinit(void) {
   persist_write_data(MAZE_STORAGE_KEY, g_maze, sizeof(maze_t));
   app_focus_service_unsubscribe();
   tick_timer_service_unsubscribe();
-#ifdef PBL_COLOR
   status_bar_layer_destroy(g_main_menu_status_bar);
   status_bar_layer_destroy(g_in_game_menu_status_bar);
   status_bar_layer_destroy(g_narration_status_bar);
   status_bar_layer_destroy(g_graphics_status_bar);
-#endif
   deinit_narration();
   menu_layer_destroy(g_main_menu);
   window_destroy(g_main_menu_window);
