@@ -994,7 +994,6 @@ bool draw_wall(GContext *ctx,
   graphics_draw_line(ctx,
                      GPoint(lower_left.x, lower_left.y + STATUS_BAR_HEIGHT),
                      GPoint(lower_right.x, lower_right.y + STATUS_BAR_HEIGHT));
-#endif
 
   // Ad hoc solution to a minor visual issue (remove if no longer relevant):
   if (upper_left.y == g_back_wall_coords[1][0][TOP_LEFT].y) {
