@@ -39,7 +39,7 @@ void show_narration(void) {
     return;
   } else if (g_current_narration == INTRO_NARRATION &&
              g_narration_page_num == INTRO_NARRATION_NUM_PAGES) {
-    g_current_narration  = CONTROLS_NARRATION;
+    g_current_narration = CONTROLS_NARRATION;
     g_narration_page_num = 0;
   }
 
@@ -51,7 +51,7 @@ void show_narration(void) {
              g_narration_strings[g_current_narration][g_narration_page_num]);
   } else {  // STATS_NARRATION
     switch (g_narration_page_num) {
-      case 0: // Max. total chars: 62
+      case 0:  // Max. total chars: 62
         snprintf(narration_str,
                  NARRATION_STR_LEN + 1,
                  "Mazes Completed:\n  %d\nBest Time:\n  ",
@@ -132,10 +132,10 @@ Description: Initializes the global player struct.
 void init_player(void) {
   int8_t i;
 
-  g_player->position  = GPoint(0, 0);
+  g_player->position = GPoint(0, 0);
   g_player->direction = rand() % NUM_DIRECTIONS;
-  g_player->level     = 1;
-  g_player->points    = 0;
+  g_player->level = 1;
+  g_player->points = 0;
   g_player->best_time = MAX_SECONDS;
   for (i = 0; i < NUM_ACHIEVEMENTS; ++i) {
     g_player->achievement_unlocked[i] = false;
@@ -206,7 +206,7 @@ void update_compass(void) {
     case EAST:
       gpath_rotate_to(g_compass_path, TRIG_MAX_ANGLE * 0.75);
       break;
-    default: // case WEST:
+    default:  // case WEST:
       gpath_rotate_to(g_compass_path, TRIG_MAX_ANGLE / 4);
       break;
   }
@@ -223,7 +223,7 @@ Description: Moves and orients the player to the maze's starting position and
     Outputs: None.
 ******************************************************************************/
 void reposition_player(void) {
-  g_player->position  = g_maze->entrance;
+  g_player->position = g_maze->entrance;
   g_player->direction = g_maze->starting_direction;
   update_compass();
 }
@@ -279,7 +279,7 @@ bool shift_position(GPoint *const position, const int8_t direction) {
     case EAST:
       destination = GPoint(position->x + 1, position->y);
       break;
-    default: // case WEST:
+    default:  // case WEST:
       destination = GPoint(position->x - 1, position->y);
       break;
   }
@@ -322,7 +322,7 @@ bool check_for_maze_completion(void) {
       g_player->points = MAX_POINTS;
       if (!g_player->achievement_unlocked[MAX_POINTS_ACHIEVEMENT]) {
         g_player->achievement_unlocked[MAX_POINTS_ACHIEVEMENT] = true;
-        g_new_achievement_unlocked[MAX_POINTS_ACHIEVEMENT]     = true;
+        g_new_achievement_unlocked[MAX_POINTS_ACHIEVEMENT] = true;
       }
     } else {
       g_player->points += points_earned;
@@ -417,7 +417,7 @@ bool check_for_maze_completion(void) {
       case 28:
         strcpy(g_message_str, "Wowzers");
         break;
-      default: // case 29:
+      default:
         strcpy(g_message_str, "Yippee");
         break;
     }
@@ -435,64 +435,64 @@ bool check_for_maze_completion(void) {
     } else {
       if(!g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT]) {
         g_player->achievement_unlocked[MAX_LEVEL_ACHIEVEMENT] = true;
-        g_new_achievement_unlocked[MAX_LEVEL_ACHIEVEMENT]     = true;
+        g_new_achievement_unlocked[MAX_LEVEL_ACHIEVEMENT] = true;
       }
     }
     if (g_maze->seconds < g_player->best_time) {
       g_player->best_time = g_maze->seconds;
-      g_new_best_time     = g_player->best_time;
+      g_new_best_time = g_player->best_time;
     }
     if (g_maze->seconds < 30 &&
         !g_player->achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT]) {
       g_player->achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT] = true;
-      g_new_achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT]     = true;
+      g_new_achievement_unlocked[UNDER_THIRTY_SECONDS_ACHIEVEMENT] = true;
     }
     if (g_maze->seconds < 10 &&
         !g_player->achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT]) {
       g_player->achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT] = true;
-      g_new_achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT]     = true;
+      g_new_achievement_unlocked[UNDER_TEN_SECONDS_ACHIEVEMENT] = true;
     }
     switch(g_player->level) {
       case 2:
         if(!g_player->achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT]) {
           g_player->achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT]     = true;
+          g_new_achievement_unlocked[FIRST_LEVEL_ACHIEVEMENT] = true;
         }
         break;
       case 10:
         if(!g_player->achievement_unlocked[LEVEL_10_ACHIEVEMENT]) {
           g_player->achievement_unlocked[LEVEL_10_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[LEVEL_10_ACHIEVEMENT]     = true;
+          g_new_achievement_unlocked[LEVEL_10_ACHIEVEMENT] = true;
         }
         break;
       case 50:
         if(!g_player->achievement_unlocked[LEVEL_50_ACHIEVEMENT]) {
           g_player->achievement_unlocked[LEVEL_50_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[LEVEL_50_ACHIEVEMENT]     = true;
+          g_new_achievement_unlocked[LEVEL_50_ACHIEVEMENT] = true;
         }
         break;
       case 100:
         if(!g_player->achievement_unlocked[LEVEL_100_ACHIEVEMENT]) {
           g_player->achievement_unlocked[LEVEL_100_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[LEVEL_100_ACHIEVEMENT]     = true;
+          g_new_achievement_unlocked[LEVEL_100_ACHIEVEMENT] = true;
         }
         break;
       case 500:
         if(!g_player->achievement_unlocked[LEVEL_500_ACHIEVEMENT]) {
           g_player->achievement_unlocked[LEVEL_500_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[LEVEL_500_ACHIEVEMENT]     = true;
+          g_new_achievement_unlocked[LEVEL_500_ACHIEVEMENT] = true;
         }
         break;
       case 1000:
         if(!g_player->achievement_unlocked[LEVEL_1000_ACHIEVEMENT]) {
           g_player->achievement_unlocked[LEVEL_1000_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[LEVEL_1000_ACHIEVEMENT]     = true;
+          g_new_achievement_unlocked[LEVEL_1000_ACHIEVEMENT] = true;
         }
         break;
       case 5000:
         if(!g_player->achievement_unlocked[LEVEL_5000_ACHIEVEMENT]) {
           g_player->achievement_unlocked[LEVEL_5000_ACHIEVEMENT] = true;
-          g_new_achievement_unlocked[LEVEL_5000_ACHIEVEMENT]     = true;
+          g_new_achievement_unlocked[LEVEL_5000_ACHIEVEMENT] = true;
         }
         break;
     }
@@ -521,11 +521,11 @@ Description: Initializes the global "back_wall_coords" array so that it
 ******************************************************************************/
 void init_wall_coords(void) {
   uint8_t i, j, wall_width;
-  const float perspective_modifier = 2.0; // Helps determine FOV, etc.
+  const float perspective_modifier = 2.0;  // Helps determine FOV, etc.
 
   for (i = 0; i < MAX_VISIBILITY_DEPTH - 1; ++i) {
     for (j = 0; j < (STRAIGHT_AHEAD * 2) + 1; ++j) {
-      g_back_wall_coords[i][j][TOP_LEFT]     = GPoint(0, 0);
+      g_back_wall_coords[i][j][TOP_LEFT] = GPoint(0, 0);
       g_back_wall_coords[i][j][BOTTOM_RIGHT] = GPoint(0, 0);
     }
   }
@@ -547,19 +547,17 @@ void init_wall_coords(void) {
     wall_width = g_back_wall_coords[i][STRAIGHT_AHEAD][BOTTOM_RIGHT].x -
                    g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT].x;
     for (j = 1; j <= STRAIGHT_AHEAD; ++j) {
-      g_back_wall_coords[i][STRAIGHT_AHEAD - j][TOP_LEFT]       =
+      g_back_wall_coords[i][STRAIGHT_AHEAD - j][TOP_LEFT] =
         g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT];
-      g_back_wall_coords[i][STRAIGHT_AHEAD - j][TOP_LEFT].x     -= wall_width *
-                                                                     j;
-      g_back_wall_coords[i][STRAIGHT_AHEAD - j][BOTTOM_RIGHT]   =
+      g_back_wall_coords[i][STRAIGHT_AHEAD - j][TOP_LEFT].x -= wall_width * j;
+      g_back_wall_coords[i][STRAIGHT_AHEAD - j][BOTTOM_RIGHT] =
         g_back_wall_coords[i][STRAIGHT_AHEAD][BOTTOM_RIGHT];
       g_back_wall_coords[i][STRAIGHT_AHEAD - j][BOTTOM_RIGHT].x -= wall_width *
                                                                      j;
-      g_back_wall_coords[i][STRAIGHT_AHEAD + j][TOP_LEFT]       =
+      g_back_wall_coords[i][STRAIGHT_AHEAD + j][TOP_LEFT] =
         g_back_wall_coords[i][STRAIGHT_AHEAD][TOP_LEFT];
-      g_back_wall_coords[i][STRAIGHT_AHEAD + j][TOP_LEFT].x     += wall_width *
-                                                                     j;
-      g_back_wall_coords[i][STRAIGHT_AHEAD + j][BOTTOM_RIGHT]   =
+      g_back_wall_coords[i][STRAIGHT_AHEAD + j][TOP_LEFT].x += wall_width * j;
+      g_back_wall_coords[i][STRAIGHT_AHEAD + j][BOTTOM_RIGHT] =
         g_back_wall_coords[i][STRAIGHT_AHEAD][BOTTOM_RIGHT];
       g_back_wall_coords[i][STRAIGHT_AHEAD + j][BOTTOM_RIGHT].x += wall_width *
                                                                      j;
@@ -587,11 +585,11 @@ void init_maze(void) {
 
 #ifdef PBL_COLOR
   g_maze->floor_color_scheme = rand() % NUM_BACKGROUND_COLOR_SCHEMES;
-  g_maze->wall_color_scheme  = rand() % NUM_BACKGROUND_COLOR_SCHEMES;
+  g_maze->wall_color_scheme = rand() % NUM_BACKGROUND_COLOR_SCHEMES;
 #endif
 
   // Determine width and height:
-  g_maze->width  = rand() % (MAX_MAZE_WIDTH - MIN_MAZE_WIDTH + 1) +
+  g_maze->width = rand() % (MAX_MAZE_WIDTH - MIN_MAZE_WIDTH + 1) +
                      MIN_MAZE_WIDTH;
   g_maze->height = rand() % (MAX_MAZE_HEIGHT - MIN_MAZE_HEIGHT + 1) +
                      MIN_MAZE_HEIGHT;
@@ -607,19 +605,19 @@ void init_maze(void) {
   switch (rand() % NUM_DIRECTIONS) {
     case NORTH:
       maze_carver_position = RANDOM_POINT_NORTH;
-      exit                 = RANDOM_POINT_SOUTH;
+      exit = RANDOM_POINT_SOUTH;
       break;
     case SOUTH:
       maze_carver_position = RANDOM_POINT_SOUTH;
-      exit                 = RANDOM_POINT_NORTH;
+      exit = RANDOM_POINT_NORTH;
       break;
     case EAST:
       maze_carver_position = RANDOM_POINT_EAST;
-      exit                 = RANDOM_POINT_WEST;
+      exit = RANDOM_POINT_WEST;
       break;
-    default: // case WEST:
+    default:  // case WEST:
       maze_carver_position = RANDOM_POINT_WEST;
-      exit                 = RANDOM_POINT_EAST;
+      exit = RANDOM_POINT_EAST;
       break;
   }
   g_maze->cells[maze_carver_position.x][maze_carver_position.y] = ENTRANCE;
@@ -646,7 +644,7 @@ void init_maze(void) {
           maze_carver_position.x++;
         }
         break;
-      default: // case WEST:
+      default:  // case WEST:
         if (maze_carver_position.x > 0) {
           maze_carver_position.x--;
         }
@@ -689,7 +687,7 @@ int8_t set_maze_starting_direction(void) {
                                          1)) &&
           !(checked_direction[NORTH] &&
             checked_direction[SOUTH] &&
-            checked_direction[EAST]  &&
+            checked_direction[EAST] &&
             checked_direction[WEST]));
 
   return g_maze->starting_direction;
@@ -809,18 +807,18 @@ bool draw_cell_contents(GContext *ctx,
   GPoint cell_coords2;
   bool back_wall_drawn, left_wall_drawn, right_wall_drawn;
 
-  if (is_solid(cell_coords)                ||
-      depth    <  0                        ||
-      depth    >= MAX_VISIBILITY_DEPTH - 1 ||
-      position <  0                        ||
+  if (is_solid(cell_coords) ||
+      depth <  0 ||
+      depth >= MAX_VISIBILITY_DEPTH - 1 ||
+      position <  0 ||
       position >  STRAIGHT_AHEAD * 2) {
     return false;
   }
 
   // Back wall:
-  left   = g_back_wall_coords[depth][position][TOP_LEFT].x;
-  right  = g_back_wall_coords[depth][position][BOTTOM_RIGHT].x;
-  top    = g_back_wall_coords[depth][position][TOP_LEFT].y;
+  left = g_back_wall_coords[depth][position][TOP_LEFT].x;
+  right = g_back_wall_coords[depth][position][BOTTOM_RIGHT].x;
+  top = g_back_wall_coords[depth][position][TOP_LEFT].y;
   bottom = g_back_wall_coords[depth][position][BOTTOM_RIGHT].y;
   if (bottom - top < MIN_WALL_HEIGHT) {
     return false;
@@ -841,10 +839,10 @@ bool draw_cell_contents(GContext *ctx,
   // Left wall:
   right = left;
   if (depth == 0) {
-    left     = 0;
+    left = 0;
     y_offset = top;
   } else {
-    left     = g_back_wall_coords[depth - 1][position][TOP_LEFT].x;
+    left = g_back_wall_coords[depth - 1][position][TOP_LEFT].x;
     y_offset = top - g_back_wall_coords[depth - 1][position][TOP_LEFT].y;
   }
   if (position <= STRAIGHT_AHEAD) {
@@ -951,8 +949,8 @@ bool draw_wall(GContext *ctx,
                const GPoint upper_right,
                const GPoint lower_right) {
   int16_t i, j, shading_offset, half_shading_offset;
-  float dy_over_dx     = (float) (upper_right.y - upper_left.y) /
-                                 (upper_right.x - upper_left.x);
+  float dy_over_dx = (float) (upper_right.y - upper_left.y) /
+                             (upper_right.x - upper_left.x);
   GColor primary_color = GColorWhite;
 
   for (i = upper_left.x; i <= upper_right.x && i < GRAPHICS_FRAME_WIDTH; ++i) {
@@ -1022,7 +1020,7 @@ Description: Draws an entrance graphic on the ceiling of a given cell location.
              the entrance isn't located entirely off-screen).
 ******************************************************************************/
 bool draw_entrance(GContext *ctx, const int8_t depth, const int8_t position) {
-  uint8_t h_radius, v_radius; // Horizontal and vertical radii for an ellipse.
+  uint8_t h_radius, v_radius;  // Horizontal and vertical radii for an ellipse.
 
   h_radius = ELLIPSE_RADIUS_RATIO *
                (g_back_wall_coords[depth][position][BOTTOM_RIGHT].x -
@@ -1058,7 +1056,7 @@ Description: Draws an exit graphic on the floor of a given cell location.
              exit isn't located entirely off-screen).
 ******************************************************************************/
 bool draw_exit(GContext *ctx, const int8_t depth, const int8_t position) {
-  uint8_t h_radius, v_radius; // Horizontal and vertical radii for an ellipse.
+  uint8_t h_radius, v_radius;  // Horizontal and vertical radii for an ellipse.
 
   h_radius = ELLIPSE_RADIUS_RATIO *
                (g_back_wall_coords[depth][position][BOTTOM_RIGHT].x -
@@ -1103,9 +1101,9 @@ bool fill_ellipse(GContext *ctx,
   int16_t theta;
   uint8_t x_offset, y_offset;
 
-  if (center.x + h_radius < 0                     ||
+  if (center.x + h_radius < 0 ||
       center.x - h_radius >= GRAPHICS_FRAME_WIDTH ||
-      center.y + v_radius < 0                     ||
+      center.y + v_radius < 0 ||
       center.y - v_radius >= GRAPHICS_FRAME_HEIGHT) {
     return false;
   }
@@ -1155,7 +1153,7 @@ Description: Handles changes to the game world every second while in active
     Outputs: None.
 ******************************************************************************/
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-  int8_t new_achievement_index; // To check for pending achievement messages.
+  int8_t new_achievement_index;  // To check for pending achievement messages.
 
   if (!g_game_paused) {
     g_maze->seconds++;
@@ -1163,7 +1161,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
       g_maze->seconds = MAX_SECONDS;
       if (!g_player->achievement_unlocked[ONE_HOUR_ACHIEVEMENT]) {
         g_player->achievement_unlocked[ONE_HOUR_ACHIEVEMENT] = true;
-        g_new_achievement_unlocked[ONE_HOUR_ACHIEVEMENT]     = true;
+        g_new_achievement_unlocked[ONE_HOUR_ACHIEVEMENT] = true;
       }
     }
     layer_mark_dirty(window_get_root_layer(g_graphics_window));
@@ -1273,7 +1271,7 @@ void graphics_up_multi_click(ClickRecognizerRef recognizer, void *context) {
       case SOUTH:
         g_player->direction = EAST;
         break;
-      default: // case: EAST
+      default:  // case: EAST
         g_player->direction = NORTH;
         break;
     }
@@ -1324,7 +1322,7 @@ void graphics_down_multi_click(ClickRecognizerRef recognizer, void *context) {
       case SOUTH:
         g_player->direction = WEST;
         break;
-      default: // case: WEST
+      default:  // case: WEST
         g_player->direction = NORTH;
         break;
     }
@@ -1538,18 +1536,18 @@ void main_menu_select_callback(MenuLayer *menu_layer,
                                MenuIndex *cell_index,
                                void *data) {
   switch (cell_index->row) {
-    case 0: // Play
+    case 0:  // Play
       window_stack_push(g_graphics_window, NOT_ANIMATED);
       break;
-    case 1: // Stats
+    case 1:  // Stats
       g_current_narration = STATS_NARRATION;
       show_narration();
       break;
-    case 2: // Controls
+    case 2:  // Controls
       g_current_narration = CONTROLS_NARRATION;
       show_narration();
       break;
-    default: // About
+    default:  // About
       g_current_narration = GAME_INFO_NARRATION;
       show_narration();
       break;
@@ -1619,19 +1617,19 @@ void in_game_menu_select_callback(MenuLayer *menu_layer,
                                   MenuIndex *cell_index,
                                   void *data) {
   switch (cell_index->row) {
-    case 0: // New Maze
+    case 0:  // New Maze
       init_maze();
       window_stack_pop(NOT_ANIMATED);
       break;
-    case 1: // Stats
+    case 1:  // Stats
       g_current_narration = STATS_NARRATION;
       show_narration();
       break;
-    case 2: // Controls
+    case 2:  // Controls
       g_current_narration = CONTROLS_NARRATION;
       show_narration();
       break;
-    default: // About
+    default:  // About
       g_current_narration = GAME_INFO_NARRATION;
       show_narration();
       break;
@@ -1699,11 +1697,11 @@ GPoint get_floor_center_point(const int8_t depth, const int8_t position) {
   x_midpoint1 = 0.5 * (g_back_wall_coords[depth][position][TOP_LEFT].x +
                        g_back_wall_coords[depth][position][BOTTOM_RIGHT].x);
   if (depth == 0) {
-    if (position < STRAIGHT_AHEAD) {         // To the left of the player.
+    if (position < STRAIGHT_AHEAD) {  // To the left of the player.
       x_midpoint2 = -0.5 * GRAPHICS_FRAME_WIDTH;
     } else if (position > STRAIGHT_AHEAD) {  // To the right of the player.
       x_midpoint2 = 1.5 * GRAPHICS_FRAME_WIDTH;
-    } else {                                 // Directly under the player.
+    } else {  // Directly under the player.
       x_midpoint2 = x_midpoint1;
     }
     y = GRAPHICS_FRAME_HEIGHT;
@@ -1760,7 +1758,7 @@ GPoint get_cell_farther_away(const GPoint reference_point,
       return GPoint(reference_point.x, reference_point.y + distance);
     case EAST:
       return GPoint(reference_point.x + distance, reference_point.y);
-    default: // case WEST:
+    default:  // case WEST:
       return GPoint(reference_point.x - distance, reference_point.y);
   }
 }
@@ -1787,7 +1785,7 @@ GPoint get_cell_to_the_left(const GPoint reference_point,
       return GPoint(reference_point.x + distance, reference_point.y);
     case EAST:
       return GPoint(reference_point.x, reference_point.y - distance);
-    default: // case WEST:
+    default:  // case WEST:
       return GPoint(reference_point.x, reference_point.y + distance);
   }
 }
@@ -1814,7 +1812,7 @@ GPoint get_cell_to_the_right(const GPoint reference_point,
       return GPoint(reference_point.x - distance, reference_point.y);
     case EAST:
       return GPoint(reference_point.x, reference_point.y + distance);
-    default: // case WEST:
+    default:  // case WEST:
       return GPoint(reference_point.x, reference_point.y - distance);
   }
 }
@@ -1843,9 +1841,9 @@ Description: Determines whether a given cell lies outside the current maze
     Outputs: Returns "true" if the cell is out of bounds.
 ******************************************************************************/
 bool out_of_bounds(const GPoint cell_coords) {
-  return cell_coords.x < 0              ||
+  return cell_coords.x < 0 ||
          cell_coords.x >= g_maze->width ||
-         cell_coords.y < 0              ||
+         cell_coords.y < 0 ||
          cell_coords.y >= g_maze->height;
 }
 
@@ -1882,7 +1880,7 @@ int8_t get_opposite_direction(const int8_t direction) {
       return NORTH;
     case EAST:
       return WEST;
-    default: // case WEST:
+    default:  // case WEST:
       return EAST;
   }
 }
@@ -1974,7 +1972,7 @@ void init(void) {
   g_graphics_window = window_create();
   window_set_background_color(g_graphics_window, GColorBlack);
   window_set_window_handlers(g_graphics_window, (WindowHandlers) {
-    .appear    = graphics_window_appear,
+    .appear = graphics_window_appear,
     .disappear = graphics_window_disappear,
   });
   window_set_click_config_provider(g_graphics_window,
@@ -2099,10 +2097,10 @@ void init(void) {
 
   // Main menu initialization:
   g_main_menu_window = window_create();
-  g_main_menu        = menu_layer_create(FULL_SCREEN_FRAME);
+  g_main_menu = menu_layer_create(FULL_SCREEN_FRAME);
   menu_layer_set_callbacks(g_main_menu, NULL, (MenuLayerCallbacks) {
     .get_num_rows = menu_get_num_rows_callback,
-    .draw_row     = main_menu_draw_row_callback,
+    .draw_row = main_menu_draw_row_callback,
     .select_click = main_menu_select_callback,
   });
   menu_layer_set_click_config_onto_window(g_main_menu, g_main_menu_window);
@@ -2114,10 +2112,10 @@ void init(void) {
 
   // In-game menu initialization:
   g_in_game_menu_window = window_create();
-  g_in_game_menu        = menu_layer_create(FULL_SCREEN_FRAME);
+  g_in_game_menu = menu_layer_create(FULL_SCREEN_FRAME);
   menu_layer_set_callbacks(g_in_game_menu, NULL, (MenuLayerCallbacks) {
     .get_num_rows = menu_get_num_rows_callback,
-    .draw_row     = in_game_menu_draw_row_callback,
+    .draw_row = in_game_menu_draw_row_callback,
     .select_click = in_game_menu_select_callback,
   });
   menu_layer_set_click_config_onto_window(g_in_game_menu,
@@ -2144,7 +2142,7 @@ void init(void) {
 
   // Misc. variable initialization:
   g_narration_window = NULL;
-  g_new_best_time    = -1;
+  g_new_best_time = -1;
   for (i = 0; i < NUM_ACHIEVEMENTS; ++i) {
     g_new_achievement_unlocked[i] = false;
   }
@@ -2152,13 +2150,13 @@ void init(void) {
   g_compass_path = gpath_create(&COMPASS_PATH_INFO);
   gpath_move_to(g_compass_path, GPoint(HALF_SCREEN_WIDTH,
                                        GRAPHICS_FRAME_HEIGHT +
-                                         STATUS_BAR_HEIGHT   +
+                                         STATUS_BAR_HEIGHT +
                                          STATUS_BAR_HEIGHT / 2));
 
   // Load/init data and present main menu (after intro text, if applicable):
   window_stack_push(g_main_menu_window, ANIMATED);
   g_player = malloc(sizeof(player_t));
-  g_maze   = malloc(sizeof(maze_t));
+  g_maze = malloc(sizeof(maze_t));
   if (persist_exists(PLAYER_STORAGE_KEY)) {
     persist_read_data(PLAYER_STORAGE_KEY, g_player, sizeof(player_t));
     if (persist_exists(MAZE_STORAGE_KEY)) {
