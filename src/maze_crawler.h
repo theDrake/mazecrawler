@@ -1,21 +1,21 @@
-/******************************************************************************
+/*******************************************************************************
    Filename: maze_crawler.h
 
-     Author: David C. Drake (http://davidcdrake.com)
+     Author: David C. Drake (https://davidcdrake.com)
 
-Description: Header file for MazeCrawler, a first-person 3D maze-navigation
-             game developed for the Pebble smartwatch (SDK 3). More information
-             available online: http://davidcdrake.com/mazecrawler
-******************************************************************************/
+Description: Header file for MazeCrawler, a first-person 3D maze-navigation game
+             developed for the Pebble smartwatch (SDK 3). More information
+             available online: https://davidcdrake.com/mazecrawler
+*******************************************************************************/
 
 #ifndef MAZE_CRAWLER_H_
 #define MAZE_CRAWLER_H_
 
 #include <pebble.h>
 
-/******************************************************************************
+/*******************************************************************************
   Enumerations
-******************************************************************************/
+*******************************************************************************/
 
 // Achievements:
 enum {
@@ -61,9 +61,9 @@ enum {
   NUM_DIRECTIONS
 };
 
-/******************************************************************************
+/*******************************************************************************
   Other Constants
-******************************************************************************/
+*******************************************************************************/
 
 #define MESSAGE_STR_LEN                  50
 #define LEVEL_STR_LEN                    7
@@ -189,9 +189,9 @@ static const char *const g_achievement_descriptions[] = {
   "Completed level 9999!",
 };
 
-/******************************************************************************
+/*******************************************************************************
   Structures
-******************************************************************************/
+*******************************************************************************/
 
 typedef struct Maze {
   int8_t cells[MAX_MAZE_WIDTH][MAX_MAZE_HEIGHT],
@@ -215,9 +215,9 @@ typedef struct PlayerCharacter {
   bool achievement_unlocked[NUM_ACHIEVEMENTS];
 } __attribute__((__packed__)) player_t;
 
-/******************************************************************************
+/*******************************************************************************
   Global Variables
-******************************************************************************/
+*******************************************************************************/
 
 Window *g_main_menu_window,
        *g_in_game_menu_window,
@@ -253,9 +253,9 @@ GColor g_background_colors[NUM_BACKGROUND_COLOR_SCHEMES]
                           [NUM_BACKGROUND_COLORS_PER_SCHEME];
 #endif
 
-/******************************************************************************
+/*******************************************************************************
   Function Declarations
-******************************************************************************/
+*******************************************************************************/
 
 void show_narration(void);
 void show_window(Window *const window);

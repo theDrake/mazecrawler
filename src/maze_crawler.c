@@ -1,16 +1,16 @@
-/******************************************************************************
+/*******************************************************************************
    Filename: maze_crawler.c
 
-     Author: David C. Drake (http://davidcdrake.com)
+     Author: David C. Drake (https://davidcdrake.com)
 
 Description: Function definitions for MazeCrawler, a first-person 3D maze-
              navigation game developed for the Pebble smartwatch (SDK 3). More
-             information available online: http://davidcdrake.com/mazecrawler
-******************************************************************************/
+             information available online: https://davidcdrake.com/mazecrawler
+*******************************************************************************/
 
 #include "maze_crawler.h"
 
-/******************************************************************************
+/*******************************************************************************
    Function: show_narration
 
 Description: Displays narration text via the narration window. The type of
@@ -20,7 +20,7 @@ Description: Displays narration text via the narration window. The type of
      Inputs: None.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void show_narration(void) {
   static char narration_str[NARRATION_STR_LEN + 1];
 
@@ -97,7 +97,7 @@ void show_narration(void) {
   show_window(g_narration_window);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: show_window
 
 Description: Displays a given window. (Assumes that window has already been
@@ -106,7 +106,7 @@ Description: Displays a given window. (Assumes that window has already been
      Inputs: window - Pointer to the desired window.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void show_window(Window *const window) {
   if (window == NULL) {
     return;
@@ -120,7 +120,7 @@ void show_window(Window *const window) {
   light_enable_interaction();
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: init_player
 
 Description: Initializes the global player struct.
@@ -128,7 +128,7 @@ Description: Initializes the global player struct.
      Inputs: None.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void init_player(void) {
   int8_t i;
 
@@ -142,7 +142,7 @@ void init_player(void) {
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: update_status_bar
 
 Description: Updates the text displayed in the lower status bar.
@@ -150,7 +150,7 @@ Description: Updates the text displayed in the lower status bar.
      Inputs: ctx - Pointer to the relevant graphics context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void update_status_bar(GContext *ctx) {
   static char level_str[LEVEL_STR_LEN + 1], time_str[TIME_STR_LEN + 1];
 
@@ -185,7 +185,7 @@ void update_status_bar(GContext *ctx) {
   gpath_draw_filled(ctx, g_compass_path);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: update_compass
 
 Description: Updates the rotation angle of the compass needle according to the
@@ -194,7 +194,7 @@ Description: Updates the rotation angle of the compass needle according to the
      Inputs: None.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void update_compass(void) {
   switch(g_player->direction) {
     case NORTH:
@@ -212,7 +212,7 @@ void update_compass(void) {
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: reposition_player
 
 Description: Moves and orients the player to the maze's starting position and
@@ -221,14 +221,14 @@ Description: Moves and orients the player to the maze's starting position and
      Inputs: None.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void reposition_player(void) {
   g_player->position = g_maze->entrance;
   g_player->direction = g_maze->starting_direction;
   update_compass();
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: move_player
 
 Description: Attempts to move the player one cell forward in a given direction
@@ -238,7 +238,7 @@ Description: Attempts to move the player one cell forward in a given direction
      Inputs: direction - Desired direction of movement.
 
     Outputs: Returns "true" if the player successfully moved.
-******************************************************************************/
+*******************************************************************************/
 bool move_player(const int8_t direction) {
   if (shift_position(&(g_player->position), direction)) {
     layer_mark_dirty(window_get_root_layer(g_graphics_window));
@@ -253,7 +253,7 @@ bool move_player(const int8_t direction) {
   return false;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: shift_position
 
 Description: Attempts to shift a given set of position coordinates one cell
@@ -264,7 +264,7 @@ Description: Attempts to shift a given set of position coordinates one cell
              direction - Desired direction of movement.
 
     Outputs: Returns "true" if the character successfully moved.
-******************************************************************************/
+*******************************************************************************/
 bool shift_position(GPoint *const position, const int8_t direction) {
   GPoint destination;
 
@@ -295,7 +295,7 @@ bool shift_position(GPoint *const position, const int8_t direction) {
   return true;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: check_for_maze_completion
 
 Description: Determines whether the current maze/level has been completed, then
@@ -304,7 +304,7 @@ Description: Determines whether the current maze/level has been completed, then
      Inputs: None.
 
     Outputs: Returns "true" if the maze has been completed.
-******************************************************************************/
+*******************************************************************************/
 bool check_for_maze_completion(void) {
   int32_t points_earned, max_time_bonus;
 
@@ -506,19 +506,19 @@ bool check_for_maze_completion(void) {
   return false;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: init_wall_coords
 
-Description: Initializes the global "back_wall_coords" array so that it
-             contains the top-left and bottom-right coordinates for every
-             potential back wall location on the screen. (This establishes the
-             field of view and sense of perspective while also facilitating
-             convenient drawing of the 3D environment.)
+Description: Initializes the global "back_wall_coords" array so it contains the
+             top-left and bottom-right coordinates for every potential back wall
+             location on the screen. (This establishes the field of view and
+             sense of perspective while also facilitating convenient drawing of
+             the 3D environment.)
 
      Inputs: None.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void init_wall_coords(void) {
   uint8_t i, j, wall_width;
   const float perspective_modifier = 2.0;  // Helps determine FOV, etc.
@@ -565,20 +565,20 @@ void init_wall_coords(void) {
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: init_maze
 
 Description: Initializes the global maze struct by setting its width and height
              according to the current maze size value then setting entrance and
-             exit points and procedurally carving a path between them. Also
-             sets a starting direction, repositions the player, sets the
-             number of seconds spent in the maze to zero, and saves data to
-             persistent storage as a precaution.
+             exit points and procedurally carving a path between them. Also sets
+             a starting direction, repositions the player, sets the number of
+             seconds spent in the maze to zero, and saves data to persistent
+             storage as a precaution.
 
      Inputs: None.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void init_maze(void) {
   int8_t i, j, maze_carver_direction;
   GPoint exit, maze_carver_position;
@@ -661,17 +661,17 @@ void init_maze(void) {
   persist_write_data(MAZE_STORAGE_KEY, g_maze, sizeof(maze_t));
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: set_maze_starting_direction
 
-Description: Finds a viable starting direction (i.e., not facing a wall) for
-             the current maze. (There should always be a viable direction, but
-             if there isn't, the last direction checked will be selected.)
+Description: Finds a viable starting direction (i.e., not facing a wall) for the
+             current maze. (There should always be a viable direction, but if
+             there isn't, the last direction checked will be selected.)
 
      Inputs: None.
 
     Outputs: Value representing the selected starting direction.
-******************************************************************************/
+*******************************************************************************/
 int8_t set_maze_starting_direction(void) {
   int8_t i;
   bool checked_direction[NUM_DIRECTIONS];
@@ -693,7 +693,7 @@ int8_t set_maze_starting_direction(void) {
   return g_maze->starting_direction;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: draw_scene
 
 Description: Draws a (simplistic) 3D scene based on the player's current
@@ -703,7 +703,7 @@ Description: Draws a (simplistic) 3D scene based on the player's current
              ctx   - Pointer to the relevant graphics context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void draw_scene(Layer *layer, GContext *ctx) {
   int8_t i, depth;
   GPoint cell_coords, cell_coords2;
@@ -744,7 +744,7 @@ void draw_scene(Layer *layer, GContext *ctx) {
   update_status_bar(ctx);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: draw_floor_and_ceiling
 
 Description: Draws the floor and ceiling.
@@ -752,7 +752,7 @@ Description: Draws the floor and ceiling.
      Inputs: ctx - Pointer to the relevant graphics context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void draw_floor_and_ceiling(GContext *ctx) {
   uint8_t x, y, max_y, shading_offset;
 
@@ -785,7 +785,7 @@ void draw_floor_and_ceiling(GContext *ctx) {
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: draw_cell_contents
 
 Description: Draws walls and other contents for a given cell.
@@ -798,7 +798,7 @@ Description: Draws walls and other contents for a given cell.
                            in "g_back_wall_coords".
 
     Outputs: "True" unless the cell is located entirely off-screen.
-******************************************************************************/
+*******************************************************************************/
 bool draw_cell_contents(GContext *ctx,
                         const GPoint cell_coords,
                         const int8_t depth,
@@ -898,8 +898,8 @@ bool draw_cell_contents(GContext *ctx,
                               g_back_wall_coords[depth][position][TOP_LEFT].y +
                                 STATUS_BAR_HEIGHT),
                        GPoint(g_back_wall_coords[depth][position][TOP_LEFT].x,
-                          g_back_wall_coords[depth][position][BOTTOM_RIGHT].y +
-                            STATUS_BAR_HEIGHT));
+                           g_back_wall_coords[depth][position][BOTTOM_RIGHT].y +
+                             STATUS_BAR_HEIGHT));
   }
   if ((back_wall_drawn && (right_wall_drawn ||
        !is_solid(get_cell_to_the_right(cell_coords2,
@@ -929,20 +929,20 @@ bool draw_cell_contents(GContext *ctx,
   return true;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: draw_wall
 
 Description: Draws a wall according to specifications.
 
-     Inputs: ctx              - Pointer to the relevant graphics context.
-             upper_left       - Coordinates for the wall's upper-left point.
-             lower_left       - Coordinates for the wall's lower-left point.
-             upper_right      - Coordinates for the wall's upper-right point.
-             lower_right      - Coordinates for the wall's lower-right point.
+     Inputs: ctx         - Pointer to the relevant graphics context.
+             upper_left  - Coordinates for the wall's upper-left point.
+             lower_left  - Coordinates for the wall's lower-left point.
+             upper_right - Coordinates for the wall's upper-right point.
+             lower_right - Coordinates for the wall's lower-right point.
 
     Outputs: "True" if the wall is successfully drawn on the screen (i.e., the
              wall isn't located entirely off-screen).
-******************************************************************************/
+*******************************************************************************/
 bool draw_wall(GContext *ctx,
                const GPoint upper_left,
                const GPoint lower_left,
@@ -1005,7 +1005,7 @@ bool draw_wall(GContext *ctx,
   return true;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: draw_entrance
 
 Description: Draws an entrance graphic on the ceiling of a given cell location.
@@ -1014,11 +1014,11 @@ Description: Draws an entrance graphic on the ceiling of a given cell location.
              depth    - Front-back visual depth of the entrance cell in
                         "g_back_wall_coords".
              position - Left-right visual position of the entrance cell in
-                        in "g_back_wall_coords".
+                        "g_back_wall_coords".
 
     Outputs: "True" if the entrance is successfully drawn on the screen (i.e.,
              the entrance isn't located entirely off-screen).
-******************************************************************************/
+*******************************************************************************/
 bool draw_entrance(GContext *ctx, const int8_t depth, const int8_t position) {
   uint8_t h_radius, v_radius;  // Horizontal and vertical radii for an ellipse.
 
@@ -1041,7 +1041,7 @@ bool draw_entrance(GContext *ctx, const int8_t depth, const int8_t position) {
                       GColorBlack);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: draw_exit
 
 Description: Draws an exit graphic on the floor of a given cell location.
@@ -1050,11 +1050,11 @@ Description: Draws an exit graphic on the floor of a given cell location.
              depth    - Front-back visual depth of the exit cell in
                         "g_back_wall_coords".
              position - Left-right visual position of the exit cell in
-                        in "g_back_wall_coords".
+                        "g_back_wall_coords".
 
     Outputs: "True" if the exit is successfully drawn on the screen (i.e., the
              exit isn't located entirely off-screen).
-******************************************************************************/
+*******************************************************************************/
 bool draw_exit(GContext *ctx, const int8_t depth, const int8_t position) {
   uint8_t h_radius, v_radius;  // Horizontal and vertical radii for an ellipse.
 
@@ -1078,7 +1078,7 @@ bool draw_exit(GContext *ctx, const int8_t depth, const int8_t position) {
                       GColorBlack);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: fill_ellipse
 
 Description: Draws a filled ellipse according to given specifications.
@@ -1092,7 +1092,7 @@ Description: Draws a filled ellipse according to given specifications.
 
     Outputs: Returns "true" if the ellipse is successfully drawn on the screen
              (i.e., the ellipse isn't located entirely off-screen).
-******************************************************************************/
+*******************************************************************************/
 bool fill_ellipse(GContext *ctx,
                   const GPoint center,
                   const uint8_t h_radius,
@@ -1127,7 +1127,7 @@ bool fill_ellipse(GContext *ctx,
   return true;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: show_message_box
 
 Description: Updates and displays the message box.
@@ -1135,13 +1135,13 @@ Description: Updates and displays the message box.
      Inputs: None.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void show_message_box(void) {
   text_layer_set_text(g_message_box_text_layer, g_message_str);
   show_window(g_message_box_window);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: tick_handler
 
 Description: Handles changes to the game world every second while in active
@@ -1151,7 +1151,7 @@ Description: Handles changes to the game world every second while in active
              units_changed - Indicates which time unit changed.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   int8_t new_achievement_index;  // To check for pending achievement messages.
 
@@ -1183,7 +1183,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: app_focus_handler
 
 Description: Handles MazeCrawler going out of, or coming back into, focus
@@ -1192,7 +1192,7 @@ Description: Handles MazeCrawler going out of, or coming back into, focus
      Inputs: in_focus - "True" if MazeCrawler is now in focus.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void app_focus_handler(const bool in_focus) {
   if (!in_focus) {
     g_game_paused = true;
@@ -1203,7 +1203,7 @@ void app_focus_handler(const bool in_focus) {
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: graphics_window_appear
 
 Description: Called when the graphics window appears.
@@ -1211,12 +1211,12 @@ Description: Called when the graphics window appears.
      Inputs: window - Pointer to the graphics window.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 static void graphics_window_appear(Window *window) {
   g_game_paused = false;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: graphics_window_disappear
 
 Description: Called when the graphics window disappears.
@@ -1224,12 +1224,12 @@ Description: Called when the graphics window disappears.
      Inputs: window - Pointer to the graphics window.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 static void graphics_window_disappear(Window *window) {
   g_game_paused = true;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: graphics_up_single_repeating_click
 
 Description: The graphics window's single-click handler for the Pebble's "up"
@@ -1239,7 +1239,7 @@ Description: The graphics window's single-click handler for the Pebble's "up"
              context    - Pointer to the associated context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void graphics_up_single_repeating_click(ClickRecognizerRef recognizer,
                                         void *context) {
   if (!g_game_paused) {
@@ -1247,7 +1247,7 @@ void graphics_up_single_repeating_click(ClickRecognizerRef recognizer,
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: graphics_up_multi_click
 
 Description: The graphics window's multi-click handler for the "up" button.
@@ -1257,7 +1257,7 @@ Description: The graphics window's multi-click handler for the "up" button.
              context    - Pointer to the associated context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void graphics_up_multi_click(ClickRecognizerRef recognizer, void *context) {
   if (!g_game_paused) {
     // Turn to the left:
@@ -1280,7 +1280,7 @@ void graphics_up_multi_click(ClickRecognizerRef recognizer, void *context) {
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: graphics_down_single_repeating_click
 
 Description: The graphics window's single-click handler for the "down" button.
@@ -1290,7 +1290,7 @@ Description: The graphics window's single-click handler for the "down" button.
              context    - Pointer to the associated context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void graphics_down_single_repeating_click(ClickRecognizerRef recognizer,
                                           void *context) {
   if (!g_game_paused) {
@@ -1298,7 +1298,7 @@ void graphics_down_single_repeating_click(ClickRecognizerRef recognizer,
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: graphics_down_multi_click
 
 Description: The graphics window's multi-click handler for the "down" button.
@@ -1308,7 +1308,7 @@ Description: The graphics window's multi-click handler for the "down" button.
              context    - Pointer to the associated context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void graphics_down_multi_click(ClickRecognizerRef recognizer, void *context) {
   if (!g_game_paused) {
     // Turn to the right:
@@ -1331,7 +1331,7 @@ void graphics_down_multi_click(ClickRecognizerRef recognizer, void *context) {
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: graphics_select_single_click
 
 Description: The graphics window's single-click handler for the "select"
@@ -1341,7 +1341,7 @@ Description: The graphics window's single-click handler for the "select"
              context    - Pointer to the associated context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void graphics_select_single_click(ClickRecognizerRef recognizer,
                                   void *context) {
   menu_layer_set_selected_index(g_in_game_menu,
@@ -1351,7 +1351,7 @@ void graphics_select_single_click(ClickRecognizerRef recognizer,
   window_stack_push(g_in_game_menu_window, NOT_ANIMATED);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: graphics_click_config_provider
 
 Description: Button-click configuration provider for the graphics window.
@@ -1359,7 +1359,7 @@ Description: Button-click configuration provider for the graphics window.
      Inputs: context - Pointer to the associated context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void graphics_click_config_provider(void *context) {
   // "Up" button:
   window_single_repeating_click_subscribe(BUTTON_ID_UP,
@@ -1374,8 +1374,8 @@ void graphics_click_config_provider(void *context) {
 
   // "Down" button:
   window_single_repeating_click_subscribe(BUTTON_ID_DOWN,
-                                         CLICK_REPEAT_INTERVAL,
-                                         graphics_down_single_repeating_click);
+                                          CLICK_REPEAT_INTERVAL,
+                                          graphics_down_single_repeating_click);
   window_multi_click_subscribe(BUTTON_ID_DOWN,
                                MULTI_CLICK_MIN,
                                MULTI_CLICK_MAX,
@@ -1388,7 +1388,7 @@ void graphics_click_config_provider(void *context) {
                                 graphics_select_single_click);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: message_box_select_single_click
 
 Description: The message box window's single-click handler for the "select"
@@ -1398,13 +1398,13 @@ Description: The message box window's single-click handler for the "select"
              context    - Pointer to the associated context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void message_box_select_single_click(ClickRecognizerRef recognizer,
                                      void *context) {
   window_stack_pop(NOT_ANIMATED);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: message_box_click_config_provider
 
 Description: Button-click configurations for the message box window.
@@ -1412,30 +1412,30 @@ Description: Button-click configurations for the message box window.
      Inputs: context - Pointer to the associated context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void message_box_click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_SELECT,
                                 message_box_select_single_click);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: narration_single_click
 
-Description: The narration window's single-click handler for all buttons.
-             Either the next page of narration text will be displayed or the
-             narration window will be closed.
+Description: The narration window's single-click handler for all buttons. Either
+             the next page of narration text will be displayed or the narration
+             window will be closed.
 
      Inputs: recognizer - The click recognizer.
              context    - Pointer to the associated context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void narration_single_click(ClickRecognizerRef recognizer, void *context) {
   g_narration_page_num++;
   show_narration();
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: narration_click_config_provider
 
 Description: Button-click configurations for the narration window.
@@ -1443,7 +1443,7 @@ Description: Button-click configurations for the narration window.
      Inputs: context - Pointer to the associated context.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void narration_click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_SELECT, narration_single_click);
   window_single_click_subscribe(BUTTON_ID_UP, narration_single_click);
@@ -1451,7 +1451,7 @@ void narration_click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_BACK, narration_single_click);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: menu_get_num_rows_callback
 
 Description: Returns the number of rows in a given menu.
@@ -1462,7 +1462,7 @@ Description: Returns the number of rows in a given menu.
              data          - Pointer to additional data (not used).
 
     Outputs: The number of rows in the indicated menu.
-******************************************************************************/
+*******************************************************************************/
 static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer,
                                            uint16_t section_index,
                                            void *data) {
@@ -1473,7 +1473,7 @@ static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer,
   return IN_GAME_MENU_NUM_ROWS;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: main_menu_draw_row_callback
 
 Description: Instructions for drawing each row of the main menu.
@@ -1484,7 +1484,7 @@ Description: Instructions for drawing each row of the main menu.
              data       - Pointer to additional data (not used).
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 static void main_menu_draw_row_callback(GContext* ctx,
                                         const Layer *cell_layer,
                                         MenuIndex *cell_index,
@@ -1521,7 +1521,7 @@ static void main_menu_draw_row_callback(GContext* ctx,
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: main_menu_select_callback
 
 Description: Called when a given cell of the main menu is selected.
@@ -1531,7 +1531,7 @@ Description: Called when a given cell of the main menu is selected.
              data       - Pointer to additional data (not used).
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void main_menu_select_callback(MenuLayer *menu_layer,
                                MenuIndex *cell_index,
                                void *data) {
@@ -1554,7 +1554,7 @@ void main_menu_select_callback(MenuLayer *menu_layer,
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: in_game_menu_draw_row_callback
 
 Description: Instructions for drawing each row of the in-game menu.
@@ -1565,7 +1565,7 @@ Description: Instructions for drawing each row of the in-game menu.
              data       - Pointer to additional data (not used).
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 static void in_game_menu_draw_row_callback(GContext* ctx,
                                            const Layer *cell_layer,
                                            MenuIndex *cell_index,
@@ -1602,7 +1602,7 @@ static void in_game_menu_draw_row_callback(GContext* ctx,
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: in_game_menu_select_callback
 
 Description: Called when a given cell of the in-game menu is selected.
@@ -1612,7 +1612,7 @@ Description: Called when a given cell of the in-game menu is selected.
              data       - Pointer to additional data (not used).
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void in_game_menu_select_callback(MenuLayer *menu_layer,
                                   MenuIndex *cell_index,
                                   void *data) {
@@ -1636,7 +1636,7 @@ void in_game_menu_select_callback(MenuLayer *menu_layer,
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: get_num_achievements_unlocked
 
 Description: Returns the number of achievements the player has unlocked.
@@ -1644,7 +1644,7 @@ Description: Returns the number of achievements the player has unlocked.
      Inputs: None.
 
     Outputs: The number of achievements the player has unlocked.
-******************************************************************************/
+*******************************************************************************/
 int8_t get_num_achievements_unlocked(void) {
   int8_t i, count;
 
@@ -1657,7 +1657,7 @@ int8_t get_num_achievements_unlocked(void) {
   return count;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: get_new_achievement_index
 
 Description: Checks for new unlocked achievements, returning the index of the
@@ -1666,7 +1666,7 @@ Description: Checks for new unlocked achievements, returning the index of the
      Inputs: None.
 
     Outputs: Index of the first new achievement found or -1 if none are found.
-******************************************************************************/
+*******************************************************************************/
 int8_t get_new_achievement_index(void) {
   int8_t i;
 
@@ -1679,7 +1679,7 @@ int8_t get_new_achievement_index(void) {
   return -1;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: get_floor_center_point
 
 Description: Returns the central point, with respect to the graphics layer, of
@@ -1690,7 +1690,7 @@ Description: Returns the central point, with respect to the graphics layer, of
 
     Outputs: GPoint coordinates of the floor's central point within the
              designated cell.
-******************************************************************************/
+*******************************************************************************/
 GPoint get_floor_center_point(const int8_t depth, const int8_t position) {
   int16_t x_midpoint1, x_midpoint2, x, y;
 
@@ -1717,7 +1717,7 @@ GPoint get_floor_center_point(const int8_t depth, const int8_t position) {
   return GPoint(x, y);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: get_ceiling_center_point
 
 Description: Returns the central point, with respect to the graphics layer, of
@@ -1728,14 +1728,14 @@ Description: Returns the central point, with respect to the graphics layer, of
 
     Outputs: GPoint coordinates of the ceiling's central point within the
              designated cell.
-******************************************************************************/
+*******************************************************************************/
 GPoint get_ceiling_center_point(const int8_t depth, const int8_t position) {
   GPoint floor_center = get_floor_center_point(depth, position);
 
   return GPoint(floor_center.x, GRAPHICS_FRAME_HEIGHT - floor_center.y);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: get_cell_farther_away
 
 Description: Given a set of cell coordinates, returns new cell coordinates a
@@ -1745,9 +1745,8 @@ Description: Given a set of cell coordinates, returns new cell coordinates a
              direction       - Direction of interest.
              distance        - How far back we want to go.
 
-    Outputs: Cell coordinates a given distance farther away from those passed
-             in.
-******************************************************************************/
+    Outputs: Cell coordinates a given distance away from those passed in.
+*******************************************************************************/
 GPoint get_cell_farther_away(const GPoint reference_point,
                              const int8_t direction,
                              const int8_t distance) {
@@ -1763,7 +1762,7 @@ GPoint get_cell_farther_away(const GPoint reference_point,
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: get_cell_to_the_left
 
 Description: Given a set of cell coordinates, returns new cell coordinates a
@@ -1774,7 +1773,7 @@ Description: Given a set of cell coordinates, returns new cell coordinates a
              distance            - How far to the left we want to go.
 
     Outputs: Cell coordinates a given distance to the left of those passed in.
-******************************************************************************/
+*******************************************************************************/
 GPoint get_cell_to_the_left(const GPoint reference_point,
                             const int8_t reference_direction,
                             const int8_t distance) {
@@ -1790,7 +1789,7 @@ GPoint get_cell_to_the_left(const GPoint reference_point,
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: get_cell_to_the_right
 
 Description: Given a set of cell coordinates, returns new cell coordinates a
@@ -1801,7 +1800,7 @@ Description: Given a set of cell coordinates, returns new cell coordinates a
              distance            - How far to the right we want to go.
 
     Outputs: Cell coordinates a given distance to the right of those passed in.
-******************************************************************************/
+*******************************************************************************/
 GPoint get_cell_to_the_right(const GPoint reference_point,
                              const int8_t reference_direction,
                              const int8_t distance) {
@@ -1817,7 +1816,7 @@ GPoint get_cell_to_the_right(const GPoint reference_point,
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: get_cell_type
 
 Description: Given a set of cell coordinates, returns the cell's type.
@@ -1825,12 +1824,12 @@ Description: Given a set of cell coordinates, returns the cell's type.
      Inputs: cell_coords - Coordinates of the cell of interest.
 
     Outputs: Integer representing the cell's type.
-******************************************************************************/
+*******************************************************************************/
 int8_t get_cell_type(GPoint cell_coords) {
   return g_maze->cells[cell_coords.x][cell_coords.y];
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: out_of_bounds
 
 Description: Determines whether a given cell lies outside the current maze
@@ -1839,7 +1838,7 @@ Description: Determines whether a given cell lies outside the current maze
      Inputs: cell_coords - Coordinates of the cell of interest.
 
     Outputs: Returns "true" if the cell is out of bounds.
-******************************************************************************/
+*******************************************************************************/
 bool out_of_bounds(const GPoint cell_coords) {
   return cell_coords.x < 0 ||
          cell_coords.x >= g_maze->width ||
@@ -1847,7 +1846,7 @@ bool out_of_bounds(const GPoint cell_coords) {
          cell_coords.y >= g_maze->height;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: is_solid
 
 Description: Determines whether a given cell is "solid" (and is thus impassable
@@ -1857,12 +1856,12 @@ Description: Determines whether a given cell is "solid" (and is thus impassable
      Inputs: cell_coords - Coordinates of the cell of interest.
 
     Outputs: Returns "true" if the cell is solid.
-******************************************************************************/
+*******************************************************************************/
 bool is_solid(const GPoint cell_coords) {
   return out_of_bounds(cell_coords) || get_cell_type(cell_coords) == SOLID;
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: get_opposite_direction
 
 Description: Returns the opposite of a given direction value (i.e., given the
@@ -1871,7 +1870,7 @@ Description: Returns the opposite of a given direction value (i.e., given the
      Inputs: direction - The direction whose opposite is desired.
 
     Outputs: Integer representing the opposite of the given direction.
-******************************************************************************/
+*******************************************************************************/
 int8_t get_opposite_direction(const int8_t direction) {
   switch(direction) {
     case NORTH:
@@ -1885,17 +1884,17 @@ int8_t get_opposite_direction(const int8_t direction) {
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: strcat_time
 
-Description: Concatenates a given amount of time to the end of a given string
-             in "MM:SS" format.
+Description: Concatenates a given amount of time to the end of a given string in
+             "MM:SS" format.
 
      Inputs: dest_str - Pointer to the destination string.
              seconds  - Number of seconds in the time of interest.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void strcat_time(char *const dest_str, int16_t seconds) {
   if (seconds > MAX_SECONDS) {
     seconds = MAX_SECONDS;
@@ -1907,7 +1906,7 @@ void strcat_time(char *const dest_str, int16_t seconds) {
            seconds % 60);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: init_narration
 
 Description: Initializes the narration window.
@@ -1915,7 +1914,7 @@ Description: Initializes the narration window.
      Inputs: None.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void init_narration(void) {
   if (g_narration_window == NULL) {
     g_narration_window = window_create();
@@ -1936,7 +1935,7 @@ void init_narration(void) {
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: deinit_narration
 
 Description: Deinitializes the narration window.
@@ -1944,7 +1943,7 @@ Description: Deinitializes the narration window.
      Inputs: None.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void deinit_narration(void) {
   if (g_narration_window != NULL) {
     text_layer_destroy(g_narration_text_layer);
@@ -1953,7 +1952,7 @@ void deinit_narration(void) {
   }
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: init
 
 Description: Initializes the MazeCrawler Pebble game.
@@ -1961,7 +1960,7 @@ Description: Initializes the MazeCrawler Pebble game.
      Inputs: None.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void init(void) {
   int8_t i;
 
@@ -2135,8 +2134,7 @@ void init(void) {
   text_layer_set_background_color(g_message_box_text_layer, GColorBlack);
   text_layer_set_text_color(g_message_box_text_layer, GColorWhite);
   text_layer_set_font(g_message_box_text_layer, MESSAGE_BOX_FONT);
-  text_layer_set_text_alignment(g_message_box_text_layer,
-                                GTextAlignmentCenter);
+  text_layer_set_text_alignment(g_message_box_text_layer, GTextAlignmentCenter);
   layer_add_child(window_get_root_layer(g_message_box_window),
                   text_layer_get_layer(g_message_box_text_layer));
 
@@ -2177,7 +2175,7 @@ void init(void) {
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: deinit
 
 Description: Deinitializes the MazeCrawler Pebble game.
@@ -2185,7 +2183,7 @@ Description: Deinitializes the MazeCrawler Pebble game.
      Inputs: None.
 
     Outputs: None.
-******************************************************************************/
+*******************************************************************************/
 void deinit(void) {
   persist_write_data(PLAYER_STORAGE_KEY, g_player, sizeof(player_t));
   persist_write_data(MAZE_STORAGE_KEY, g_maze, sizeof(maze_t));
@@ -2209,7 +2207,7 @@ void deinit(void) {
   free(g_player);
 }
 
-/******************************************************************************
+/*******************************************************************************
    Function: main
 
 Description: Main function for the MazeCrawler Pebble game.
@@ -2217,7 +2215,7 @@ Description: Main function for the MazeCrawler Pebble game.
      Inputs: None.
 
     Outputs: Number of errors encountered.
-******************************************************************************/
+*******************************************************************************/
 int main(void) {
   init();
   app_event_loop();

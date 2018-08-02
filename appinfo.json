@@ -1,23 +1,23 @@
 {
-    "appKeys": {},
-    "capabilities": [
-        ""
-    ],
-    "companyName": "David C. Drake",
-    "longName": "MazeCrawler",
-    "projectType": "native",
-    "resources": {
-        "media": []
-    },
-    "sdkVersion": "3",
-    "shortName": "MazeCrawler",
-    "targetPlatforms": [
-        "aplite",
-        "basalt"
-    ],
-    "uuid": "0d03bd47-b5d2-4644-b746-b056b5492383",
-    "versionLabel": "1.9",
-    "watchapp": {
-        "watchface": false
-    }
+  "appKeys": {},
+  "capabilities": [
+    ""
+  ],
+  "companyName": "David C. Drake",
+  "longName": "MazeCrawler",
+  "projectType": "native",
+  "resources": {
+    "media": []
+  },
+  "sdkVersion": "3",
+  "shortName": "MazeCrawler",
+  "targetPlatforms": [
+    "aplite",
+    "basalt"
+  ],
+  "uuid": "0d03bd47-b5d2-4644-b746-b056b5492383",
+  "versionLabel": "1.9",
+  "watchapp": {
+    "watchface": false
+  }
 }
