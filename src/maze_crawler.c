@@ -100,8 +100,7 @@ void show_narration(void) {
 /*******************************************************************************
    Function: show_window
 
-Description: Displays a given window. (Assumes that window has already been
-             initialized.)
+Description: Displays a given window. (Assumes the window's initialized.)
 
      Inputs: window - Pointer to the desired window.
 
@@ -1739,7 +1738,7 @@ GPoint get_ceiling_center_point(const int8_t depth, const int8_t position) {
    Function: get_cell_farther_away
 
 Description: Given a set of cell coordinates, returns new cell coordinates a
-             given distance farther away in a given direction.
+             given distance away in a given direction.
 
      Inputs: reference_point - Reference cell coordinates.
              direction       - Direction of interest.
